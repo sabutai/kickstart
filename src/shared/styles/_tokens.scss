@@ -13,7 +13,8 @@ $color-line: rgba(255, 255, 255, 0.1);
 
 // Акцент зависит от режима: ребёнок — оранжевый, взрослый — белый.
 $color-accent-child: #ff5a1f;
-$color-accent-child-text: #ffffff;
+// В макетах белый, но он даёт 3.12:1 на оранжевом (< 4.5:1); тёмный — 4.95:1.
+$color-accent-child-text: #0b2a1b;
 $color-accent-coach: #ffffff;
 $color-accent-coach-text: #0b2a1b;
 
@@ -38,3 +39,8 @@ $color-card-overlay: rgba(11, 42, 27, 0.75);
 $color-card-overlay-solid: rgba(11, 42, 27, 0.94); // если backdrop-filter не поддерживается
 $blur-card: 12px;
 $font-size-min: 11px; // минимум для подписей
+
+$color-outline: #111111; // обводка маскота
+$color-track: rgba(255, 255, 255, 0.16); // пустые пипсы, дорожка кольца
+$color-chip-selected: #ffffff;
+$color-chip-selected-text: #0b2a1b;

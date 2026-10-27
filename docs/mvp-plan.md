@@ -53,8 +53,8 @@
 
 - [x] Шрифты Oswald и Manrope локально (без Google Fonts — приложение офлайн) (2)
 - [x] Компонент фона экрана: картинка + градиенты сверху и снизу; карточка с полупрозрачной подложкой `rgba(11,42,27,0.75)` и `backdrop-filter: blur` (3)
-- [ ] Button, Chip, LevelPips, ProgressRing, StatRow, ExerciseCard, EmptyState с Киком (8)
-- [ ] RTL-тесты компонентов, контраст ≥ 4.5:1, зоны нажатия ≥ 44 px (3)
+- [x] Button, Chip, LevelPips, ProgressRing, StatRow, ExerciseCard, EmptyState с Киком (8)
+- [x] RTL-тесты компонентов, контраст ≥ 4.5:1, зоны нажатия ≥ 44 px (3)
 
 ### 2. Контент и данные (16 ч)
 

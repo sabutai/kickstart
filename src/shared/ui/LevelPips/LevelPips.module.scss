@@ -1,0 +1,31 @@
+@use '../../styles/tokens' as *;
+
+.root {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.pips {
+  display: flex;
+  gap: 3px;
+}
+
+.pip {
+  width: 14px;
+  height: 5px;
+  border-radius: 2px;
+  background: $color-track;
+}
+
+.on {
+  background: $color-volt;
+}
+
+.label {
+  font-size: $font-size-min;
+  font-weight: 700;
+  color: $color-gray;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}

@@ -17,6 +17,12 @@ export const ru = {
     exercise: 'Упражнение',
     onboarding: 'Знакомство',
   },
+  ui: {
+    level: 'Уровень {{level}} из {{max}}',
+    levelShort: 'Ур. {{level}}',
+    minutes: '{{count}} мин',
+    loading: 'Загрузка',
+  },
   common: {
     back: 'Назад',
     comingSoon: 'Экран появится на этапе {{stage}}',
