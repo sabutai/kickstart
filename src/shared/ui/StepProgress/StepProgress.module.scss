@@ -1,0 +1,18 @@
+@use '../../styles/tokens' as *;
+
+.root {
+  display: flex;
+  flex: 1;
+  gap: 6px;
+}
+
+.bar {
+  flex: 1;
+  height: 4px;
+  border-radius: 2px;
+  background: $color-track;
+}
+
+.on {
+  background: $color-volt;
+}

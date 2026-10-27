@@ -1,0 +1,129 @@
+@use '../../shared/styles/tokens' as *;
+
+.shell {
+  position: relative;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-height: 0;
+  overflow: hidden;
+  background: repeating-linear-gradient(135deg, $color-ink 0 46px, $color-ink-deep 46px 92px);
+}
+
+.top {
+  position: relative;
+  // Одна строка: «Назад» | полоска шагов | «Пропустить». Боковые колонки одинаковой фиксированной ширины
+  // зарезервированы всегда, поэтому полоска стоит по центру и не двигается между шагами.
+  display: grid;
+  grid-template-columns: 88px 1fr 88px;
+  align-items: center;
+  gap: 12px;
+  min-height: $tap-min;
+  padding: calc(16px + env(safe-area-inset-top)) $space-screen-x 0;
+  box-sizing: content-box;
+}
+
+.topSlot {
+  display: flex;
+  align-items: center;
+  min-height: $tap-min;
+}
+
+.topSlotEnd {
+  justify-content: flex-end;
+}
+
+.skip {
+  min-height: $tap-min;
+  padding: 0 4px;
+  font-size: 13px;
+  font-weight: 700;
+  color: $color-gray;
+
+  &:focus-visible {
+    outline: 2px solid $color-volt;
+    outline-offset: 2px;
+  }
+}
+
+.body {
+  position: relative;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 24px;
+  padding: 24px $space-screen-x 16px;
+  overflow-y: auto;
+}
+
+.headline {
+  margin: 0;
+  font-family: $font-display;
+  font-size: 30px;
+  font-weight: 700;
+  line-height: 1.05;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.subcopy {
+  margin: 6px 0 0;
+  font-size: 14px;
+  font-weight: 600;
+  color: $color-gray;
+}
+
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.sectionLabel {
+  font-size: $font-size-min;
+  font-weight: 800;
+  color: $color-gray;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.hint {
+  margin: 0;
+  font-size: 12px;
+  color: $color-gray;
+}
+
+.presets {
+  display: flex;
+  gap: 9px;
+  flex-wrap: wrap;
+}
+
+.monthRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.month {
+  font-family: $font-display;
+  font-size: 18px;
+  font-weight: 700;
+  text-transform: capitalize;
+}
+
+.error {
+  margin: 0;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.footer {
+  position: relative;
+  padding: 8px $space-screen-x calc(16px + env(safe-area-inset-bottom));
+}
+
+.centerRow {
+  display: flex;
+  justify-content: center;
+}

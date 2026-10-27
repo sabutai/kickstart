@@ -80,3 +80,5 @@ export const appLifecycle = {
     if (isNative()) void App.exitApp();
   },
 };
+
+export { openDatabase } from './sqlite';

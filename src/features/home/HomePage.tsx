@@ -5,7 +5,7 @@ import { Screen } from '../../shared/ui/Screen/Screen';
 export function HomePage() {
   const { t } = useTranslation();
   return (
-    <Screen title={t('screens.home')}>
+    <Screen title={t('screens.home')} background="home">
       <p>{t('common.comingSoon', { stage: 4 })}</p>
     </Screen>
   );

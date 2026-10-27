@@ -1,0 +1,114 @@
+@use '../../shared/styles/tokens' as *;
+
+.monthRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.month {
+  margin: 0;
+  font-family: $font-display;
+  font-size: 20px;
+  font-weight: 700;
+  text-transform: capitalize;
+}
+
+.legend {
+  display: flex;
+  gap: 16px;
+  margin: 8px 0 16px;
+  padding: 0;
+  list-style: none;
+  font-size: $font-size-min;
+  font-weight: 700;
+  color: $color-gray;
+
+  li {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+}
+
+.swatch {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+
+.swatchDone {
+  background: $color-volt;
+}
+
+.swatchPlanned {
+  border: 2px solid var(--accent);
+}
+
+.dayArea {
+  margin-bottom: 16px;
+}
+
+.cardHead {
+  display: flex;
+  gap: 14px;
+  align-items: center;
+}
+
+.dayBadge {
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  width: 52px;
+  height: 52px;
+  border-radius: $radius-card;
+  background: var(--accent);
+  color: var(--accent-text);
+  font-family: $font-display;
+  font-size: 22px;
+  font-weight: 700;
+}
+
+.cardInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.cardLabel {
+  font-size: $font-size-min;
+  font-weight: 800;
+  color: $color-volt;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.cardTitle {
+  font-family: $font-display;
+  font-size: 18px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.cardMeta {
+  margin: 4px 0 0;
+  font-size: 13px;
+  font-weight: 600;
+  color: $color-gray;
+}
+
+.actions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 14px;
+}
+
+.rejection {
+  margin: 12px 0 0;
+  font-size: 13px;
+  font-weight: 700;
+}

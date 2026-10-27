@@ -1,0 +1,1599 @@
+{
+  "exercises": [
+    {
+      "id": "alertness-run",
+      "category": "warmup",
+      "partKinds": ["program"],
+      "title": {
+        "ru": "Беговая игра «Внимание»"
+      },
+      "why": {
+        "ru": "Учит резко останавливаться и сразу ловить равновесие на одной ноге — как в игре при торможении."
+      },
+      "setup": {
+        "ru": "Ребёнок в одном конце коридора или комнаты, взрослый — в другом, лицом к нему."
+      },
+      "steps": {
+        "ru": [
+          "По команде «Беги!» ребёнок бежит к взрослому (дома можно бег на месте в высоком темпе).",
+          "Взрослый кричит «Правая!» или «Левая!».",
+          "Ребёнок мгновенно останавливается и встаёт на названную ногу. Вторая нога согнута и приподнята, руки можно развести для равновесия.",
+          "Стоит 3 секунды. Можно чуть подпрыгнуть, чтобы поймать баланс, но вторая нога на пол не опускается. Опустил — возвращается на старт.",
+          "Снова «Беги!»."
+        ]
+      },
+      "mistakes": {
+        "ru": [
+          "Колено опорной ноги внутрь",
+          "Перекошенный таз",
+          "Носок внутрь или наружу",
+          "Нога полностью выпрямлена в колене"
+        ]
+      },
+      "cue": {
+        "ru": "Беги, стоп, стой на одной ноге!"
+      },
+      "levels": [
+        {
+          "level": 1,
+          "variation": {
+            "ru": "По голосу «правая/левая» встать на эту ногу на 3 с."
+          },
+          "volume": {
+            "sets": 3,
+            "reps": 5,
+            "restSec": 30
+          },
+          "demo": {
+            "kind": "video",
+            "src": "content/alertness-run_l1.mp4",
+            "poster": "content/alertness-run_l1.webp"
+          }
+        },
+        {
+          "level": 2,
+          "variation": {
+            "ru": "По жесту взрослого (правая рука = правая нога) — ребёнок смотрит на взрослого."
+          },
+          "volume": {
+            "sets": 3,
+            "reps": 5,
+            "restSec": 30
+          },
+          "demo": {
+            "kind": "video",
+            "src": "content/alertness-run_l2.mp4",
+            "poster": "content/alertness-run_l2.webp"
+          }
+        },
+        {
+          "level": 3,
+          "variation": {
+            "ru": "То же, что уровень 1, с мячом в руках."
+          },
+          "volume": {
+            "sets": 3,
+            "reps": 5,
+            "restSec": 30
+          },
+          "demo": {
+            "kind": "image",
+            "src": "content/alertness-run_l3.webp",
+            "poster": "content/alertness-run_l3.webp"
+          }
+        },
+        {
+          "level": 4,
+          "variation": {
+            "ru": "То же, что уровень 2, с мячом в руках."
+          },
+          "volume": {
+            "sets": 3,
+            "reps": 5,
+            "restSec": 30
+          },
+          "demo": {
+            "kind": "image",
+            "src": "content/alertness-run_l4.webp",
+            "poster": "content/alertness-run_l4.webp"
+          }
+        },
+        {
+          "level": 5,
+          "variation": {
+            "ru": "Ребёнок ведёт мяч ногами; по команде останавливает его подошвой и встаёт на одну ногу, не касаясь мяча свободной ногой."
+          },
+          "volume": {
+            "sets": 3,
+            "reps": 5,
+            "restSec": 30
+          },
+          "demo": {
+            "kind": "image",
+            "src": "content/alertness-run_l5.webp",
+            "poster": "content/alertness-run_l5.webp"
+          }
+        }
+      ]
+    },
+    {
+      "id": "skating-jumps",
+      "category": "balance",
+      "partKinds": ["program"],
+      "title": {
+        "ru": "Прыжки конькобежца"
+      },
+      "why": {
+        "ru": "Укрепляет голеностоп и колено, учит мягко приземляться на одну ногу после движения вбок."
+      },
+      "setup": {
+        "ru": "Стоя на левой ноге, колено слегка согнуто, правая нога чуть приподнята."
+      },
+      "steps": {
+        "ru": [
+          "Оттолкнуться левой ногой и прыгнуть вправо-вперёд, как конькобежец.",
+          "Приземлиться на правую ногу, колено согнуть, чтобы смягчить удар. Левая нога на пол не ставится, остаётся сзади на весу.",
+          "Замереть на 3 с, держа равновесие.",
+          "По команде прыгнуть обратно влево-вперёд — получается зигзаг.",
+          "Дома можно прыгать вправо-влево на месте через линию из скотча."
+        ]
+      },
+      "mistakes": {
+        "ru": [
+          "Колено внутрь при приземлении",
+          "Слишком сильный наклон вперёд",
+          "Корпус заваливается в сторону",
+          "Приземление на прямую ногу «с грохотом»"
+        ]
+      },
+      "cue": {
+        "ru": "Прыгай далеко, приземлись мягко, держи равновесие!"
+      },
+      "levels": [
+        {
+          "level": 1,
+          "variation": {
+            "ru": "Прыжок с ноги на ногу вперёд-вбок, держать равновесие 3 с."
+          },
+          "volume": {
+            "sets": 2,
+            "reps": 5,
+            "perSide": true,
+            "restSec": 30
+          },
+          "demo": {
+            "kind": "video",
+            "src": "content/skating-jumps_l1.mp4",
+            "poster": "content/skating-jumps_l1.webp"
+          }
+        },
+        {
+          "level": 2,
+          "variation": {
+            "ru": "С мячом в обеих руках перед грудью."
+          },
+          "volume": {
+            "sets": 2,
+            "reps": 5,
+            "perSide": true,
+            "restSec": 30
+          },
+          "demo": {
+            "kind": "video",
+            "src": "content/skating-jumps_l2.mp4",
+            "poster": "content/skating-jumps_l2.webp"
+          }
+        },
+        {
+          "level": 3,
+          "variation": {
+            "ru": "Мяч лежит на раскрытой вытянутой ладони (серия правой рукой, серия левой)."
+          },
+          "volume": {
+            "sets": 2,
+            "reps": 5,
+            "perSide": true,
+            "restSec": 30
+          },
+          "demo": {
+            "kind": "image",
+            "src": "content/skating-jumps_l3.webp",
+            "poster": "content/skating-jumps_l3.webp"
+          }
+        },
+        {
+          "level": 4,
+          "variation": {
+            "ru": "После приземления на одной ноге поднять мяч над головой, медленно наклониться и мягко положить мяч на пол, выпрямиться."
+          },
+          "volume": {
+            "sets": 2,
+            "reps": 5,
+            "perSide": true,
+            "restSec": 30
+          },
+          "demo": {
+            "kind": "image",
+            "src": "content/skating-jumps_l4.webp",
+            "poster": "content/skating-jumps_l4.webp"
+          }
+        },
+        {
+          "level": 5,
+          "variation": {
+            "ru": "После приземления — «ласточка»: свободная нога назад, руки с мячом вперёд; мяч, голова, корпус и нога в одну линию, параллельно полу."
+          },
+          "volume": {
+            "sets": 2,
+            "reps": 5,
+            "perSide": true,
+            "restSec": 30
+          },
+          "demo": {
+            "kind": "image",
+            "src": "content/skating-jumps_l5.webp",
+            "poster": "content/skating-jumps_l5.webp"
+          }
+        }
+      ]
+    },
+    {
+      "id": "single-leg-stance",
+      "category": "balance",
+      "partKinds": ["program"],
+      "title": {
+        "ru": "Стойка на одной ноге"
+      },
+      "why": {
+        "ru": "Держать равновесие, когда внимание занято другим — мячом или соперником."
+      },
+      "setup": {
+        "ru": "Ребёнок и взрослый друг напротив друга в 2–3 м (уровни 1–2: 3–5 м), оба на одной ноге (взрослый может стоять на двух)."
+      },
+      "mistakes": {
+        "ru": [
+          "Колено внутрь",
+          "Перекошенный таз",
+          "Носок опорной ноги не смотрит в сторону передачи",
+          "Колено опорной ноги переразогнуто («заперто»)"
+        ]
+      },
+      "cue": {
+        "ru": "Держи равновесие, что бы ни случилось!"
+      },
+      "levels": [
+        {
+          "level": 1,
+          "variation": {
+            "ru": "Перебрасываться мячом руками на расстоянии 3–5 м: взрослый бросает на уровне груди, ребёнок ловит, не опуская свободную ногу, и бросает обратно."
+          },
+          "volume": {
+            "sets": 1,
+            "reps": 5,
+            "perSide": true,
+            "restSec": 30
+          },
+          "demo": {
+            "kind": "video",
+            "src": "content/single-leg-stance_l1.mp4",
+            "poster": "content/single-leg-stance_l1.webp"
+          }
+        },
+        {
+          "level": 2,
+          "variation": {
+            "ru": "Поймав мяч, обнести его вокруг поднятого колена и только потом бросить."
+          },
+          "volume": {
+            "sets": 1,
+            "reps": 5,
+            "perSide": true,
+            "restSec": 30
+          },
+          "demo": {
+            "kind": "video",
+            "src": "content/single-leg-stance_l2.mp4",
+            "poster": "content/single-leg-stance_l2.webp"
+          }
+        },
+        {
+          "level": 3,
+          "variation": {
+            "ru": "Передачи по полу внутренней стороной стопы свободной ногой, 2–5 м: остановил — отдал."
+          },
+          "volume": {
+            "sets": 1,
+            "reps": 5,
+            "perSide": true,
+            "restSec": 30
+          },
+          "demo": {
+            "kind": "image",
+            "src": "content/single-leg-stance_l3.webp",
+            "poster": "content/single-leg-stance_l3.webp"
+          }
+        },
+        {
+          "level": 4,
+          "variation": {
+            "ru": "Взрослый набрасывает мяч руками в ногу, ребёнок отбивает его с лёта обратно в руки."
+          },
+          "volume": {
+            "sets": 1,
+            "reps": 5,
+            "perSide": true,
+            "restSec": 30
+          },
+          "demo": {
+            "kind": "image",
+            "src": "content/single-leg-stance_l4.webp",
+            "poster": "content/single-leg-stance_l4.webp"
+          }
+        },
+        {
+          "level": 5,
+          "variation": {
+            "ru": "Оба держат по мячу на уровне груди и мягко толкают мячи друг в друга, стараясь вывести партнёра из равновесия; мячи всё время касаются, ударять нельзя. 20 с на ногу. Взрослый делает это стоя на коленях и не в полную силу."
+          },
+          "volume": {
+            "sets": 1,
+            "workSec": 20,
+            "perSide": true,
+            "restSec": 30
+          },
+          "demo": {
+            "kind": "image",
+            "src": "content/single-leg-stance_l5.webp",
+            "poster": "content/single-leg-stance_l5.webp"
+          }
+        }
+      ]
+    },
+    {
+      "id": "press-up-plank",
+      "category": "strength",
+      "partKinds": ["program"],
+      "title": {
+        "ru": "Упор лёжа"
+      },
+      "why": {
+        "ru": "Крепкий корпус (пресс, спина) и руки — основа для борьбы корпус в корпус."
+      },
+      "setup": {
+        "ru": "Упор лёжа на прямых руках, как для отжиманий. Кисти и стопы на ширине таза. Голова, плечи, спина и таз — одна прямая линия, взгляд в пол, живот и ягодицы напряжены."
+      },
+      "mistakes": {
+        "ru": [
+          "Таз провисает («гамак») или задран («домик»)",
+          "Стопы развёрнуты внутрь или наружу",
+          "Резкие движения",
+          "Проверка: палка на спине касается затылка, лопаток и крестца"
+        ]
+      },
+      "cue": {
+        "ru": "Держи тело прямым от головы до ног, напряги живот и спину!"
+      },
+      "levels": [
+        {
+          "level": 1,
+          "variation": {
+            "ru": "«Тоннель»: ребёнок держит упор, взрослый прокатывает под ним мяч туда и обратно."
+          },
+          "volume": {
+            "sets": 3,
+            "workSec": 15,
+            "restSec": 30
+          },
+          "demo": {
+            "kind": "video",
+            "src": "content/press-up-plank_l1.mp4",
+            "poster": "content/press-up-plank_l1.webp"
+          }
+        },
+        {
+          "level": 2,
+          "variation": {
+            "ru": "Упор на предплечьях, голени на мяче: локти на полу, мяч под серединой голеней. Медленно сдвинуться вперёд, пока мяч не окажется у стоп, и назад, пока не окажется почти под коленями. Локти не двигаются."
+          },
+          "volume": {
+            "sets": 3,
+            "workSec": 15,
+            "restSec": 30
+          },
+          "demo": {
+            "kind": "video",
+            "src": "content/press-up-plank_l2.mp4",
+            "poster": "content/press-up-plank_l2.webp"
+          }
+        },
+        {
+          "level": 3,
+          "variation": {
+            "ru": "Восьмёрка вокруг рук: в упоре лёжа мяч перед кистями; поднять одну руку и прокатить мяч вокруг другой руки, затем поменять руки."
+          },
+          "volume": {
+            "sets": 3,
+            "workSec": 15,
+            "restSec": 30
+          },
+          "demo": {
+            "kind": "image",
+            "src": "content/press-up-plank_l3.webp",
+            "poster": "content/press-up-plank_l3.webp"
+          }
+        },
+        {
+          "level": 4,
+          "variation": {
+            "ru": "От руки к ноге: левой рукой прокатить мяч под собой к левой стопе, левой стопой откатить к правой руке; повторить с другой стороны."
+          },
+          "volume": {
+            "sets": 3,
+            "workSec": 15,
+            "restSec": 30
+          },
+          "demo": {
+            "kind": "image",
+            "src": "content/press-up-plank_l4.webp",
+            "poster": "content/press-up-plank_l4.webp"
+          }
+        },
+        {
+          "level": 5,
+          "variation": {
+            "ru": "Руки на мяче: обе кисти на мяче, мелкими шагами отвести стопы назад и вернуть. Дома только на нескользком полу и с ненадутым мячом."
+          },
+          "volume": {
+            "sets": 3,
+            "workSec": 10,
+            "restSec": 30
+          },
+          "demo": {
+            "kind": "image",
+            "src": "content/press-up-plank_l5.webp",
+            "poster": "content/press-up-plank_l5.webp"
+          }
+        }
+      ]
+    },
+    {
+      "id": "single-leg-hops",
+      "category": "strength",
+      "partKinds": ["program"],
+      "title": {
+        "ru": "Прыжки на одной ноге"
+      },
+      "why": {
+        "ru": "Сила ног, равновесие и безопасное приземление — главная защита колена."
+      },
+      "setup": {
+        "ru": "Стоя на одной ноге, колено слегка согнуто, вокруг свободно минимум 1,5 м."
+      },
+      "steps": {
+        "ru": [
+          "По команде «Прыгай!» прыгнуть вперёд на одной ноге и приземлиться на неё же.",
+          "Приземление мягкое: сначала носок, потом пятка, колено сгибается и смотрит вперёд над стопой.",
+          "Замереть на 3 с. Дальность прыжка важна меньше, чем удержать приземление."
+        ]
+      },
+      "mistakes": {
+        "ru": [
+          "Колено внутрь и перекошенный таз",
+          "Сильный наклон вперёд",
+          "Взгляд в пол",
+          "Стопа развёрнута внутрь или наружу"
+        ]
+      },
+      "cue": {
+        "ru": "Прыгай далеко, приземлись мягко, держи равновесие!"
+      },
+      "levels": [
+        {
+          "level": 1,
+          "variation": {
+            "ru": "Вперёд."
+          },
+          "volume": {
+            "sets": 1,
+            "reps": 5,
+            "perSide": true,
+            "restSec": 30
+          },
+          "demo": {
+            "kind": "video",
+            "src": "content/single-leg-hops_l1.mp4",
+            "poster": "content/single-leg-hops_l1.webp"
+          }
+        },
+        {
+          "level": 2,
+          "variation": {
+            "ru": "Вперёд или назад — взрослый показывает рукой."
+          },
+          "volume": {
+            "sets": 1,
+            "reps": 5,
+            "perSide": true,
+            "restSec": 30
+          },
+          "demo": {
+            "kind": "video",
+            "src": "content/single-leg-hops_l2.mp4",
+            "poster": "content/single-leg-hops_l2.webp"
+          }
+        },
+        {
+          "level": 3,
+          "variation": {
+            "ru": "Вбок."
+          },
+          "volume": {
+            "sets": 1,
+            "reps": 5,
+            "perSide": true,
+            "restSec": 30
+          },
+          "demo": {
+            "kind": "image",
+            "src": "content/single-leg-hops_l3.webp",
+            "poster": "content/single-leg-hops_l3.webp"
+          }
+        },
+        {
+          "level": 4,
+          "variation": {
+            "ru": "В любом из четырёх направлений — показывает взрослый."
+          },
+          "volume": {
+            "sets": 1,
+            "reps": 5,
+            "perSide": true,
+            "restSec": 30
+          },
+          "demo": {
+            "kind": "image",
+            "src": "content/single-leg-hops_l4.webp",
+            "poster": "content/single-leg-hops_l4.webp"
+          }
+        },
+        {
+          "level": 5,
+          "variation": {
+            "ru": "То же, что уровень 4, с мячом в обеих руках."
+          },
+          "volume": {
+            "sets": 1,
+            "reps": 5,
+            "perSide": true,
+            "restSec": 30
+          },
+          "demo": {
+            "kind": "image",
+            "src": "content/single-leg-hops_l5.webp",
+            "poster": "content/single-leg-hops_l5.webp"
+          }
+        }
+      ]
+    },
+    {
+      "id": "spiderman",
+      "category": "strength",
+      "partKinds": ["program"],
+      "title": {
+        "ru": "«Спайдермен»"
+      },
+      "why": {
+        "ru": "Мышцы корпуса и задняя поверхность бедра — её чаще всего тянут футболисты."
+      },
+      "setup": {
+        "ru": "Сесть на пол, ноги согнуты, стопы на полу. Руки поставить сзади, пальцами к ногам. Поднять таз так, чтобы плечи, таз и колени были на одной прямой — «столик» животом вверх. Стопы под коленями или чуть впереди, угол в колене больше 90°. Мяч перед стопами."
+      },
+      "mistakes": {
+        "ru": [
+          "Таз провисает к полу",
+          "Голова запрокинута назад или прижата к груди",
+          "Стопы развёрнуты внутрь или наружу"
+        ]
+      },
+      "cue": {
+        "ru": "Попа вверх, живот напряги!"
+      },
+      "levels": [
+        {
+          "level": 1,
+          "variation": {
+            "ru": "«Погладить мяч»: таз наверху, поднять одну ногу, стопой медленно прокатить мяч вперёд и назад, поставить ногу; затем другой ногой."
+          },
+          "volume": {
+            "sets": 3,
+            "workSec": 15,
+            "restSec": 30
+          },
+          "demo": {
+            "kind": "video",
+            "src": "content/spiderman_l1.mp4",
+            "poster": "content/spiderman_l1.webp"
+          }
+        },
+        {
+          "level": 2,
+          "variation": {
+            "ru": "«Растянуться»: переступая руками, отодвинуть их назад и вернуть; потом, переступая ногами, отодвинуть их вперёд, пока тело не вытянется, и вернуть. Таз всё время наверху."
+          },
+          "volume": {
+            "sets": 3,
+            "workSec": 15,
+            "restSec": 30
+          },
+          "demo": {
+            "kind": "video",
+            "src": "content/spiderman_l2.mp4",
+            "poster": "content/spiderman_l2.webp"
+          }
+        },
+        {
+          "level": 3,
+          "variation": {
+            "ru": "«Краб»: идти в этой позе ногами вперёд 3–5 м."
+          },
+          "volume": {
+            "sets": 3,
+            "reps": 1,
+            "restSec": 30
+          },
+          "demo": {
+            "kind": "image",
+            "src": "content/spiderman_l3.webp",
+            "poster": "content/spiderman_l3.webp"
+          }
+        },
+        {
+          "level": 4,
+          "variation": {
+            "ru": "«Краб с мячом»: то же, подталкивая мяч перед собой ногами."
+          },
+          "volume": {
+            "sets": 3,
+            "reps": 1,
+            "restSec": 30
+          },
+          "demo": {
+            "kind": "image",
+            "src": "content/spiderman_l4.webp",
+            "poster": "content/spiderman_l4.webp"
+          }
+        },
+        {
+          "level": 5,
+          "variation": {
+            "ru": "«Подшипник»: обе стопы на мяче, медленно двигаться вперёд, перекатывая мяч стопами."
+          },
+          "volume": {
+            "sets": 3,
+            "reps": 1,
+            "restSec": 30
+          },
+          "demo": {
+            "kind": "image",
+            "src": "content/spiderman_l5.webp",
+            "poster": "content/spiderman_l5.webp"
+          }
+        }
+      ]
+    },
+    {
+      "id": "sideways-roll",
+      "category": "strength",
+      "partKinds": ["program"],
+      "title": {
+        "ru": "Перекат вбок"
+      },
+      "why": {
+        "ru": "Учит правильно падать — не на выставленную прямую руку и не на голову. Техника падения — одно из трёх направлений программы."
+      },
+      "setup": {
+        "ru": "Только на матрасе или толстом коврике, вокруг 2 м свободно. Пауза между перекатами не меньше 5 с; взрослый каждый раз называет сторону."
+      },
+      "steps": {
+        "ru": [
+          "Сесть на корточки, обе ладони на матрасе перед коленями.",
+          "Прижать подбородок к груди — самый важный момент.",
+          "Правую руку чуть согнуть и завести вперёд-влево, как будто обнимаешь мяч.",
+          "Перекатиться по внешней стороне правой руки, затем правого плеча и наискосок по спине — от правого плеча к левому бедру. Голова матраса не касается.",
+          "Выйти обратно на ноги или в присед."
+        ]
+      },
+      "mistakes": {
+        "ru": [
+          "Прямая рука, выставленная в пол",
+          "Голова касается матраса",
+          "Перекат прямо через голову, как кувырок, а не наискосок через плечо"
+        ]
+      },
+      "cue": {
+        "ru": "Свернись в мячик!"
+      },
+      "levels": [
+        {
+          "level": 1,
+          "variation": {
+            "ru": "Из приседа."
+          },
+          "volume": {
+            "sets": 1,
+            "reps": 5,
+            "perSide": true,
+            "restSec": 30
+          },
+          "demo": {
+            "kind": "video",
+            "src": "content/sideways-roll_l1.mp4",
+            "poster": "content/sideways-roll_l1.webp"
+          }
+        },
+        {
+          "level": 2,
+          "variation": {
+            "ru": "Медленно из положения стоя: присесть, прижать подбородок, перекатиться."
+          },
+          "volume": {
+            "sets": 1,
+            "reps": 5,
+            "perSide": true,
+            "restSec": 30
+          },
+          "demo": {
+            "kind": "video",
+            "src": "content/sideways-roll_l2.mp4",
+            "poster": "content/sideways-roll_l2.webp"
+          }
+        },
+        {
+          "level": 3,
+          "variation": {
+            "ru": "Динамично из положения стоя, одним слитным движением."
+          },
+          "volume": {
+            "sets": 1,
+            "reps": 5,
+            "perSide": true,
+            "restSec": 30
+          },
+          "demo": {
+            "kind": "image",
+            "src": "content/sideways-roll_l3.webp",
+            "poster": "content/sideways-roll_l3.webp"
+          }
+        },
+        {
+          "level": 4,
+          "variation": {
+            "ru": "С медленного шага."
+          },
+          "volume": {
+            "sets": 1,
+            "reps": 5,
+            "perSide": true,
+            "restSec": 30
+          },
+          "demo": {
+            "kind": "image",
+            "src": "content/sideways-roll_l4.webp",
+            "poster": "content/sideways-roll_l4.webp"
+          }
+        },
+        {
+          "level": 5,
+          "variation": {
+            "ru": "С быстрого шага или лёгкого бега."
+          },
+          "volume": {
+            "sets": 1,
+            "reps": 5,
+            "perSide": true,
+            "restSec": 30
+          },
+          "demo": {
+            "kind": "image",
+            "src": "content/sideways-roll_l5.webp",
+            "poster": "content/sideways-roll_l5.webp"
+          }
+        }
+      ],
+      "safety": {
+        "homeMaxLevel": 3,
+        "needsMat": true
+      }
+    },
+    {
+      "id": "toe-taps",
+      "category": "technique",
+      "partKinds": ["ball"],
+      "title": {
+        "ru": "Тычки"
+      },
+      "lookFor": {
+        "ru": "Касание передней частью подошвы без давления; вторая нога пружинит"
+      },
+      "levels": [
+        {
+          "level": 1,
+          "variation": {
+            "ru": "Мяч перед собой. Поочерёдно касаться верха мяча подошвой правой и левой ноги, как бег на месте. Мяч не двигается"
+          },
+          "volume": {
+            "sets": 2,
+            "workSec": 30,
+            "workSecMax": 45,
+            "restSec": 20
+          },
+          "demo": {
+            "kind": "image",
+            "src": "content/toe-taps_l1.webp",
+            "poster": "content/toe-taps_l1.webp"
+          }
+        }
+      ]
+    },
+    {
+      "id": "sole-rolls",
+      "category": "technique",
+      "partKinds": ["ball"],
+      "title": {
+        "ru": "Перекаты подошвой"
+      },
+      "lookFor": {
+        "ru": "Мяч не уходит дальше длины стопы; опорная нога согнута"
+      },
+      "levels": [
+        {
+          "level": 1,
+          "variation": {
+            "ru": "Подошва на мяче. Катать мяч вперёд-назад, потом вправо-влево, не отрывая стопу"
+          },
+          "volume": {
+            "sets": 2,
+            "workSec": 30,
+            "workSecMax": 45,
+            "restSec": 20
+          },
+          "demo": {
+            "kind": "image",
+            "src": "content/sole-rolls_l1.webp",
+            "poster": "content/sole-rolls_l1.webp"
+          }
+        }
+      ]
+    },
+    {
+      "id": "pendulum",
+      "category": "technique",
+      "partKinds": ["ball"],
+      "title": {
+        "ru": "«Маятник»"
+      },
+      "lookFor": {
+        "ru": "Мяч смещается на 15–20 см, не больше"
+      },
+      "levels": [
+        {
+          "level": 1,
+          "variation": {
+            "ru": "Мяч между стопами. Перебрасывать его внутренней стороной стопы с ноги на ногу лёгкими подскоками"
+          },
+          "volume": {
+            "sets": 2,
+            "workSec": 30,
+            "workSecMax": 45,
+            "restSec": 20
+          },
+          "demo": {
+            "kind": "image",
+            "src": "content/pendulum_l1.webp",
+            "poster": "content/pendulum_l1.webp"
+          }
+        }
+      ]
+    },
+    {
+      "id": "inside-outside",
+      "category": "technique",
+      "partKinds": ["ball"],
+      "title": {
+        "ru": "Внутренняя–внешняя"
+      },
+      "lookFor": {
+        "ru": "Стопа расслаблена, мяч не дальше ширины плеч"
+      },
+      "levels": [
+        {
+          "level": 1,
+          "variation": {
+            "ru": "Одной ногой: касание внутренней стороной (мяч уходит внутрь), сразу внешней (возвращается). Опорная нога подпрыгивает"
+          },
+          "volume": {
+            "sets": 2,
+            "workSec": 30,
+            "workSecMax": 45,
+            "restSec": 20
+          },
+          "demo": {
+            "kind": "image",
+            "src": "content/inside-outside_l1.webp",
+            "poster": "content/inside-outside_l1.webp"
+          }
+        }
+      ]
+    },
+    {
+      "id": "roll-stop",
+      "category": "technique",
+      "partKinds": ["ball"],
+      "title": {
+        "ru": "Перекат + внутренняя"
+      },
+      "lookFor": {
+        "ru": "Движение непрерывное, без лишнего касания"
+      },
+      "fromWeek": 5,
+      "levels": [
+        {
+          "level": 1,
+          "variation": {
+            "ru": "Правой подошвой прокатить мяч поперёк себя влево, левой внутренней стороной остановить и подвинуть обратно; потом в другую сторону"
+          },
+          "volume": {
+            "sets": 2,
+            "workSec": 30,
+            "workSecMax": 45,
+            "restSec": 20
+          },
+          "demo": {
+            "kind": "image",
+            "src": "content/roll-stop_l1.webp",
+            "poster": "content/roll-stop_l1.webp"
+          }
+        }
+      ]
+    },
+    {
+      "id": "snail",
+      "category": "technique",
+      "partKinds": ["ball"],
+      "title": {
+        "ru": "«Улитка»"
+      },
+      "lookFor": {
+        "ru": "Мяч всегда на расстоянии шага, фишки не сбиваем"
+      },
+      "fromWeek": 5,
+      "levels": [
+        {
+          "level": 1,
+          "variation": {
+            "ru": "4 фишки (бутылки) по кругу ~1,5 м. Вести мяч вокруг мелкими касаниями, на каждый шаг — касание. По часовой — правой, против — левой"
+          },
+          "volume": {
+            "sets": 2,
+            "workSec": 30,
+            "workSecMax": 45,
+            "restSec": 20
+          },
+          "demo": {
+            "kind": "image",
+            "src": "content/snail_l1.webp",
+            "poster": "content/snail_l1.webp"
+          }
+        }
+      ]
+    },
+    {
+      "id": "stop-turn",
+      "category": "technique",
+      "partKinds": ["ball"],
+      "title": {
+        "ru": "Остановка и рывок"
+      },
+      "lookFor": {
+        "ru": "После разворота — ускорение, а не пауза"
+      },
+      "fromWeek": 5,
+      "levels": [
+        {
+          "level": 1,
+          "variation": {
+            "ru": "2–3 касания вперёд, остановить мяч подошвой, развернуться вокруг мяча и двумя быстрыми касаниями уйти в обратную сторону"
+          },
+          "volume": {
+            "sets": 2,
+            "workSec": 30,
+            "workSecMax": 45,
+            "restSec": 20
+          },
+          "demo": {
+            "kind": "image",
+            "src": "content/stop-turn_l1.webp",
+            "poster": "content/stop-turn_l1.webp"
+          }
+        }
+      ]
+    },
+    {
+      "id": "wall-pass",
+      "category": "technique",
+      "partKinds": ["ball"],
+      "title": {
+        "ru": "У стены"
+      },
+      "lookFor": {
+        "ru": "Мягкий приём, «уводя» стопу назад; нужен мягкий мяч"
+      },
+      "levels": [
+        {
+          "level": 1,
+          "variation": {
+            "ru": "В 2–3 м от стены. Пас в стену внутренней стороной стопы, принять отскок одним касанием другой ногой, отдать снова"
+          },
+          "volume": {
+            "sets": 2,
+            "workSec": 30,
+            "workSecMax": 45,
+            "restSec": 20
+          },
+          "demo": {
+            "kind": "image",
+            "src": "content/wall-pass_l1.webp",
+            "poster": "content/wall-pass_l1.webp"
+          }
+        }
+      ]
+    },
+    {
+      "id": "ladder",
+      "category": "games",
+      "partKinds": ["feet"],
+      "title": {
+        "ru": "Лесенка из скотча"
+      },
+      "lookFor": {
+        "ru": "Не наступать на линии, не смотреть постоянно под ноги"
+      },
+      "levels": [
+        {
+          "level": 1,
+          "variation": {
+            "ru": "5 клеток ~40×40 см на полу. Варианты: по одной ноге в клетку (как бег); две ноги в клетку (правая, левая, следующая); боком приставным шагом"
+          },
+          "volume": {
+            "sets": 3,
+            "workSec": 10,
+            "workSecMax": 15,
+            "restSec": 30
+          },
+          "demo": {
+            "kind": "image",
+            "src": "content/ladder_l1.webp",
+            "poster": "content/ladder_l1.webp"
+          }
+        }
+      ]
+    },
+    {
+      "id": "line-hops",
+      "category": "games",
+      "partKinds": ["feet"],
+      "title": {
+        "ru": "Прыжки через линию"
+      },
+      "lookFor": {
+        "ru": "Приземление на носки, колени пружинят, прыжок низкий"
+      },
+      "levels": [
+        {
+          "level": 1,
+          "variation": {
+            "ru": "Ноги вместе, быстрые низкие прыжки через линию вперёд-назад 10 с, потом вправо-влево. Усложнение — на одной ноге"
+          },
+          "volume": {
+            "sets": 3,
+            "workSec": 10,
+            "workSecMax": 15,
+            "restSec": 30
+          },
+          "demo": {
+            "kind": "image",
+            "src": "content/line-hops_l1.webp",
+            "poster": "content/line-hops_l1.webp"
+          }
+        }
+      ]
+    },
+    {
+      "id": "fast-feet",
+      "category": "games",
+      "partKinds": ["feet"],
+      "title": {
+        "ru": "Частый бег на месте"
+      },
+      "lookFor": {
+        "ru": "Колени слегка согнуты, корпус чуть вперёд"
+      },
+      "levels": [
+        {
+          "level": 1,
+          "variation": {
+            "ru": "Очень быстро перебирать ногами на месте, стопы едва отрываются. По хлопку — полуоборот прыжком и дальше"
+          },
+          "volume": {
+            "sets": 3,
+            "workSec": 10,
+            "workSecMax": 15,
+            "restSec": 30
+          },
+          "demo": {
+            "kind": "image",
+            "src": "content/fast-feet_l1.webp",
+            "poster": "content/fast-feet_l1.webp"
+          }
+        }
+      ]
+    },
+    {
+      "id": "fake-burst",
+      "category": "games",
+      "partKinds": ["feet"],
+      "title": {
+        "ru": "Финт и рывок"
+      },
+      "lookFor": {
+        "ru": "Вес реально уходит на ногу; колено при толчке не заваливается внутрь"
+      },
+      "fromWeek": 5,
+      "levels": [
+        {
+          "level": 1,
+          "variation": {
+            "ru": "Шаг влево с переносом веса и наклоном плеча («обманка»), сразу толчок этой же ногой и 2 быстрых шага вправо. Вернуться, повторить в другую сторону"
+          },
+          "volume": {
+            "sets": 3,
+            "workSec": 10,
+            "workSecMax": 15,
+            "restSec": 30
+          },
+          "demo": {
+            "kind": "image",
+            "src": "content/fake-burst_l1.webp",
+            "poster": "content/fake-burst_l1.webp"
+          }
+        }
+      ]
+    },
+    {
+      "id": "ladder-ball",
+      "category": "games",
+      "partKinds": ["feet"],
+      "title": {
+        "ru": "Работа ног с мячом"
+      },
+      "lookFor": {
+        "ru": "Мяч не убегает дальше одной клетки"
+      },
+      "fromWeek": 5,
+      "levels": [
+        {
+          "level": 1,
+          "variation": {
+            "ru": "Пройти лесенку, касаясь мяча в каждой клетке внутренней стороной, в конце остановить подошвой"
+          },
+          "volume": {
+            "sets": 3,
+            "workSec": 10,
+            "workSecMax": 15,
+            "restSec": 30
+          },
+          "demo": {
+            "kind": "image",
+            "src": "content/ladder-ball_l1.webp",
+            "poster": "content/ladder-ball_l1.webp"
+          }
+        }
+      ]
+    },
+    {
+      "id": "traffic-light",
+      "category": "games",
+      "partKinds": ["game"],
+      "title": {
+        "ru": "«Светофор»"
+      },
+      "levels": [
+        {
+          "level": 1,
+          "variation": {
+            "ru": "Взрослый называет цвет в случайном порядке: «зелёный» — быстрый бег на месте, «жёлтый» — присесть, «красный» — замереть на одной ноге. Ошибся — очко взрослому. Усложнение: показывать цветные предметы молча"
+          },
+          "volume": {
+            "sets": 1,
+            "workSec": 180,
+            "workSecMax": 240,
+            "restSec": 0
+          },
+          "demo": {
+            "kind": "image",
+            "src": "content/traffic-light_l1.webp",
+            "poster": "content/traffic-light_l1.webp"
+          }
+        }
+      ]
+    },
+    {
+      "id": "tails",
+      "category": "games",
+      "partKinds": ["game"],
+      "title": {
+        "ru": "«Хвостики»"
+      },
+      "levels": [
+        {
+          "level": 1,
+          "variation": {
+            "ru": "У ребёнка за поясом сзади лента или платок. Взрослый на коленях пытается её выдернуть, ребёнок уворачивается, не выходя из квадрата 2×2 м. Раунд 20 с"
+          },
+          "volume": {
+            "sets": 1,
+            "workSec": 180,
+            "workSecMax": 240,
+            "restSec": 0
+          },
+          "demo": {
+            "kind": "image",
+            "src": "content/tails_l1.webp",
+            "poster": "content/tails_l1.webp"
+          }
+        }
+      ]
+    },
+    {
+      "id": "catch-ball",
+      "category": "games",
+      "partKinds": ["game"],
+      "title": {
+        "ru": "«Поймай мяч»"
+      },
+      "levels": [
+        {
+          "level": 1,
+          "variation": {
+            "ru": "Взрослый держит теннисный или маленький мяч на высоте плеч и неожиданно роняет. Ребёнок в 1–1,5 м ловит до второго отскока. Получается — отойти на шаг"
+          },
+          "volume": {
+            "sets": 1,
+            "workSec": 180,
+            "workSecMax": 240,
+            "restSec": 0
+          },
+          "demo": {
+            "kind": "image",
+            "src": "content/catch-ball_l1.webp",
+            "poster": "content/catch-ball_l1.webp"
+          }
+        }
+      ]
+    },
+    {
+      "id": "mirror",
+      "category": "games",
+      "partKinds": ["game"],
+      "title": {
+        "ru": "«Зеркало»"
+      },
+      "levels": [
+        {
+          "level": 1,
+          "variation": {
+            "ru": "Лицом друг к другу в стойке защитника. Взрослый делает приставные шаги вправо-влево-вперёд-назад, ребёнок повторяет как можно быстрее. 20 с, потом поменяться ролями"
+          },
+          "volume": {
+            "sets": 1,
+            "workSec": 180,
+            "workSecMax": 240,
+            "restSec": 0
+          },
+          "demo": {
+            "kind": "image",
+            "src": "content/mirror_l1.webp",
+            "poster": "content/mirror_l1.webp"
+          }
+        }
+      ]
+    },
+    {
+      "id": "one-v-one",
+      "category": "games",
+      "partKinds": ["cooldown"],
+      "title": {
+        "ru": "1 на 1 со взрослым"
+      },
+      "levels": [
+        {
+          "level": 1,
+          "variation": {
+            "ru": "Ворота из двух бутылок, взрослый на коленях, ребёнок обыгрывает и забивает"
+          },
+          "volume": {
+            "sets": 1,
+            "workSec": 120,
+            "workSecMax": 180,
+            "restSec": 0
+          },
+          "demo": {
+            "kind": "image",
+            "src": "content/one-v-one_l1.webp",
+            "poster": "content/one-v-one_l1.webp"
+          }
+        }
+      ]
+    },
+    {
+      "id": "skittles",
+      "category": "games",
+      "partKinds": ["cooldown"],
+      "title": {
+        "ru": "«Кегли»"
+      },
+      "levels": [
+        {
+          "level": 1,
+          "variation": {
+            "ru": "Сбить пасом бутылки с 2–3 м, по очереди правой и левой"
+          },
+          "volume": {
+            "sets": 1,
+            "workSec": 120,
+            "workSecMax": 180,
+            "restSec": 0
+          },
+          "demo": {
+            "kind": "image",
+            "src": "content/skittles_l1.webp",
+            "poster": "content/skittles_l1.webp"
+          }
+        }
+      ]
+    },
+    {
+      "id": "shield-ball",
+      "category": "games",
+      "partKinds": ["cooldown"],
+      "title": {
+        "ru": "«Удержи мяч»"
+      },
+      "levels": [
+        {
+          "level": 1,
+          "variation": {
+            "ru": "20 с прикрывать мяч корпусом и подошвой, взрослый пытается его коснуться"
+          },
+          "volume": {
+            "sets": 1,
+            "workSec": 120,
+            "workSecMax": 180,
+            "restSec": 0
+          },
+          "demo": {
+            "kind": "image",
+            "src": "content/shield-ball_l1.webp",
+            "poster": "content/shield-ball_l1.webp"
+          }
+        }
+      ]
+    },
+    {
+      "id": "deep-squat",
+      "category": "mobility",
+      "partKinds": ["cooldown"],
+      "title": {
+        "ru": "Глубокий присед"
+      },
+      "lookFor": {
+        "ru": "Пятки на полу, колени смотрят туда же, куда носки"
+      },
+      "levels": [
+        {
+          "level": 1,
+          "variation": {
+            "ru": "Стопы чуть шире плеч, носки слегка в стороны. Опуститься как можно ниже и посидеть 20–30 с, локтями мягко раздвигая колени. Можно держаться за опору"
+          },
+          "volume": {
+            "sets": 1,
+            "workSec": 20,
+            "workSecMax": 30,
+            "restSec": 0
+          },
+          "demo": {
+            "kind": "image",
+            "src": "content/deep-squat_l1.webp",
+            "poster": "content/deep-squat_l1.webp"
+          }
+        }
+      ]
+    },
+    {
+      "id": "worlds-greatest",
+      "category": "mobility",
+      "partKinds": ["cooldown"],
+      "title": {
+        "ru": "«Мир наизнанку»"
+      },
+      "lookFor": {
+        "ru": "Переднее колено над стопой, не внутрь"
+      },
+      "levels": [
+        {
+          "level": 1,
+          "variation": {
+            "ru": "Длинный выпад правой ногой вперёд, левое колено можно опустить. Левая ладонь на пол внутри правой стопы, правую руку потянуть вверх, поворачивая корпус и провожая её взглядом. 3 раза на сторону"
+          },
+          "volume": {
+            "sets": 1,
+            "workSec": 20,
+            "workSecMax": 30,
+            "restSec": 0,
+            "perSide": true
+          },
+          "demo": {
+            "kind": "image",
+            "src": "content/worlds-greatest_l1.webp",
+            "poster": "content/worlds-greatest_l1.webp"
+          }
+        }
+      ]
+    },
+    {
+      "id": "hip-90-90",
+      "category": "mobility",
+      "partKinds": ["cooldown"],
+      "title": {
+        "ru": "Таз 90/90"
+      },
+      "lookFor": {
+        "ru": "Спина прямая, движение из таза, а не наклоном корпуса"
+      },
+      "levels": [
+        {
+          "level": 1,
+          "variation": {
+            "ru": "Сидя: правая нога согнута перед собой под прямым углом, левая — сбоку сзади тоже под прямым углом. Медленно перекладывать оба колена в другую сторону, не отрывая стопы, и обратно. 5–6 раз. Можно опираться руками сзади"
+          },
+          "volume": {
+            "sets": 1,
+            "workSec": 20,
+            "workSecMax": 30,
+            "restSec": 0
+          },
+          "demo": {
+            "kind": "image",
+            "src": "content/hip-90-90_l1.webp",
+            "poster": "content/hip-90-90_l1.webp"
+          }
+        }
+      ]
+    },
+    {
+      "id": "cat-cow",
+      "category": "mobility",
+      "partKinds": ["cooldown"],
+      "title": {
+        "ru": "«Кошка–корова»"
+      },
+      "lookFor": {
+        "ru": "Движение по всей спине, руки не сгибаются"
+      },
+      "levels": [
+        {
+          "level": 1,
+          "variation": {
+            "ru": "На четвереньках: кисти под плечами, колени под тазом. На вдохе прогнуться, голова вверх; на выдохе округлить спину, подбородок к груди. 6–8 раз"
+          },
+          "volume": {
+            "sets": 1,
+            "workSec": 20,
+            "workSecMax": 30,
+            "restSec": 0
+          },
+          "demo": {
+            "kind": "image",
+            "src": "content/cat-cow_l1.webp",
+            "poster": "content/cat-cow_l1.webp"
+          }
+        }
+      ]
+    },
+    {
+      "id": "ankle-wall",
+      "category": "mobility",
+      "partKinds": ["cooldown"],
+      "title": {
+        "ru": "Голеностоп у стены"
+      },
+      "lookFor": {
+        "ru": "Пятка не отрывается, колено над средним пальцем"
+      },
+      "levels": [
+        {
+          "level": 1,
+          "variation": {
+            "ru": "Лицом к стене, передняя стопа в 10 см, задняя нога шагом назад. Мягко вести переднее колено к стене и обратно. Касается легко — отодвинуть стопу на пару сантиметров. 8–10 раз на ногу"
+          },
+          "volume": {
+            "sets": 1,
+            "workSec": 20,
+            "workSecMax": 30,
+            "restSec": 0,
+            "perSide": true
+          },
+          "demo": {
+            "kind": "image",
+            "src": "content/ankle-wall_l1.webp",
+            "poster": "content/ankle-wall_l1.webp"
+          }
+        }
+      ]
+    },
+    {
+      "id": "hamstring-reach",
+      "category": "mobility",
+      "partKinds": ["cooldown"],
+      "title": {
+        "ru": "Задняя поверхность бедра"
+      },
+      "lookFor": {
+        "ru": "Колени не сгибаются, без рывков"
+      },
+      "levels": [
+        {
+          "level": 1,
+          "variation": {
+            "ru": "Сидя, ноги прямые вместе, носки вверх. Тянуться грудью к коленям, руками к носкам, 20–30 с. Только в конце занятия"
+          },
+          "volume": {
+            "sets": 1,
+            "workSec": 20,
+            "workSecMax": 30,
+            "restSec": 0
+          },
+          "demo": {
+            "kind": "image",
+            "src": "content/hamstring-reach_l1.webp",
+            "poster": "content/hamstring-reach_l1.webp"
+          }
+        }
+      ]
+    }
+  ],
+  "session": {
+    "parts": [
+      {
+        "kind": "game",
+        "minutes": 3
+      },
+      {
+        "kind": "program",
+        "minutes": 15
+      },
+      {
+        "kind": "ball",
+        "minutes": 8
+      },
+      {
+        "kind": "feet",
+        "minutes": 4
+      },
+      {
+        "kind": "cooldown",
+        "minutes": 5
+      }
+    ]
+  }
+}

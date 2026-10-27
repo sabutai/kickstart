@@ -1,0 +1,22 @@
+@use '../../styles/tokens' as *;
+
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: $tap-min;
+  height: $tap-min;
+  border-radius: $radius-pill;
+  background: $color-surface;
+  color: $color-white;
+
+  &:focus-visible {
+    outline: 2px solid $color-volt;
+    outline-offset: 2px;
+  }
+
+  &:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+}

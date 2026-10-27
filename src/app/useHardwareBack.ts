@@ -2,9 +2,11 @@ import { useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router';
 import { appLifecycle } from '../shared/lib/platform';
 
+const EXIT_PATHS = ['/', '/onboarding/1'];
+
 /**
  * Аппаратная «Назад» на Android:
- * на главной — выход из приложения, иначе — шаг назад по истории.
+ * на главной и на первом шаге онбординга — выход из приложения, иначе — шаг назад по истории.
  */
 export function useHardwareBack(): void {
   const navigate = useNavigate();
@@ -12,7 +14,7 @@ export function useHardwareBack(): void {
 
   useEffect(() => {
     return appLifecycle.onBackButton(() => {
-      if (pathname === '/') {
+      if (EXIT_PATHS.includes(pathname)) {
         appLifecycle.exit();
       } else {
         void navigate(-1);

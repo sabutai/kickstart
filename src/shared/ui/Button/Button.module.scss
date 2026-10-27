@@ -1,0 +1,87 @@
+@use '../../styles/tokens' as *;
+
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: $tap-min;
+  border-radius: $radius-pill;
+  font-family: $font-display;
+  font-weight: 700;
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+  transition:
+    transform 0.08s ease,
+    opacity 0.15s ease;
+
+  &:active:not(:disabled) {
+    transform: scale(0.97);
+  }
+
+  &:focus-visible {
+    outline: 2px solid $color-volt;
+    outline-offset: 2px;
+  }
+
+  &:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+  }
+}
+
+.md {
+  padding: 0 22px;
+  font-size: 14px;
+}
+
+.lg {
+  min-height: 52px;
+  padding: 0 28px;
+  font-size: 16px;
+}
+
+.full {
+  display: flex;
+  width: 100%;
+}
+
+.primary {
+  background: var(--accent);
+  color: var(--accent-text);
+}
+
+.secondary {
+  background: $color-surface;
+  color: $color-white;
+}
+
+.ghost {
+  background: transparent;
+  color: $color-gray;
+}
+
+.icon {
+  display: inline-flex;
+}
+
+.spinner {
+  width: 16px;
+  height: 16px;
+  border: 2px solid currentColor;
+  border-right-color: transparent;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .spinner {
+    animation-duration: 2.4s;
+  }
+}

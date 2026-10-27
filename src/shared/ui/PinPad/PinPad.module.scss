@@ -1,0 +1,67 @@
+@use '../../styles/tokens' as *;
+
+.pad {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+.dots {
+  display: flex;
+  gap: 14px;
+}
+
+.dot {
+  width: 16px;
+  height: 16px;
+  border: 2px solid $color-gray;
+  border-radius: 50%;
+}
+
+.filled {
+  border-color: $color-volt;
+  background: $color-volt;
+}
+
+.error .dot {
+  border-color: $color-accent-child;
+}
+
+.error .filled {
+  background: $color-accent-child;
+}
+
+.keys {
+  display: grid;
+  grid-template-columns: repeat(3, 64px);
+  gap: 12px;
+}
+
+.key {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 64px;
+  height: 52px;
+  border-radius: $radius-card;
+  background: $color-surface;
+  color: $color-white;
+  font-family: $font-display;
+  font-size: 22px;
+  font-weight: 700;
+
+  &:active:not(:disabled) {
+    background: $color-track;
+  }
+
+  &:focus-visible {
+    outline: 2px solid $color-volt;
+    outline-offset: 2px;
+  }
+
+  &:disabled {
+    opacity: 0.35;
+    cursor: not-allowed;
+  }
+}

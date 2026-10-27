@@ -5,7 +5,7 @@ import { Screen } from '../../shared/ui/Screen/Screen';
 export function LibraryPage() {
   const { t } = useTranslation();
   return (
-    <Screen title={t('screens.library')}>
+    <Screen title={t('screens.library')} background="library">
       <p>{t('common.comingSoon', { stage: 4 })}</p>
     </Screen>
   );

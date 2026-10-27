@@ -5,7 +5,7 @@ import { Screen } from '../../shared/ui/Screen/Screen';
 export function ProfilePage() {
   const { t } = useTranslation();
   return (
-    <Screen title={t('screens.profile')}>
+    <Screen title={t('screens.profile')} background="profile">
       <p>{t('common.comingSoon', { stage: 6 })}</p>
     </Screen>
   );
