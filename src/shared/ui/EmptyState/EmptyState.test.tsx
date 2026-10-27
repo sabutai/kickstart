@@ -4,7 +4,13 @@ import { EmptyState } from './EmptyState';
 
 describe('EmptyState', () => {
   it('показывает заголовок, текст и действие', () => {
-    render(<EmptyState title="Пока пусто" text="Упражнений нет" action={<button type="button">Обновить</button>} />);
+    render(
+      <EmptyState
+        title="Пока пусто"
+        text="Упражнений нет"
+        action={<button type="button">Обновить</button>}
+      />,
+    );
     expect(screen.getByRole('heading', { name: 'Пока пусто' })).toBeInTheDocument();
     expect(screen.getByText('Упражнений нет')).toBeInTheDocument();
     expect(screen.getByRole('button', { name: 'Обновить' })).toBeInTheDocument();

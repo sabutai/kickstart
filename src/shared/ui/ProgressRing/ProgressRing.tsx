@@ -27,7 +27,13 @@ export function ProgressRing({ value, label, size = 66, strokeWidth = 7, childre
       aria-valuemax={100}
       aria-valuenow={Math.round(clamped * 100)}
     >
-      <svg className={styles.svg} width={size} height={size} viewBox={`0 0 ${size} ${size}`} aria-hidden="true">
+      <svg
+        className={styles.svg}
+        width={size}
+        height={size}
+        viewBox={`0 0 ${size} ${size}`}
+        aria-hidden="true"
+      >
         <circle className={styles.track} cx={center} cy={center} r={radius} strokeWidth={strokeWidth} />
         <circle
           className={styles.bar}

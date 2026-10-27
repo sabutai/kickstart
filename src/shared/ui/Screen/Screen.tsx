@@ -1,7 +1,8 @@
 import { useState, type ReactNode } from 'react';
 import styles from './Screen.module.scss';
 
-export type ScreenBackground = 'home' | 'library' | 'calendar' | 'profile' | 'timer' | 'exercise' | 'onboarding';
+export type ScreenBackground =
+  'home' | 'library' | 'calendar' | 'profile' | 'timer' | 'exercise' | 'onboarding';
 
 type Props = {
   title: string;

@@ -58,7 +58,13 @@ export function Button(props: Props) {
     ...rest
   } = props;
   return (
-    <button {...rest} type={type} className={className} disabled={disabled || loading} aria-busy={loading || undefined}>
+    <button
+      {...rest}
+      type={type}
+      className={className}
+      disabled={disabled || loading}
+      aria-busy={loading || undefined}
+    >
       {content}
     </button>
   );

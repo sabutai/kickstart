@@ -3,9 +3,7 @@
     {
       "id": "alertness-run",
       "category": "warmup",
-      "partKinds": [
-        "program"
-      ],
+      "partKinds": ["program"],
       "title": {
         "ru": "Беговая игра «Внимание»"
       },
@@ -121,9 +119,7 @@
     {
       "id": "skating-jumps",
       "category": "balance",
-      "partKinds": [
-        "program"
-      ],
+      "partKinds": ["program"],
       "title": {
         "ru": "Прыжки конькобежца"
       },
@@ -244,9 +240,7 @@
     {
       "id": "single-leg-stance",
       "category": "balance",
-      "partKinds": [
-        "program"
-      ],
+      "partKinds": ["program"],
       "title": {
         "ru": "Стойка на одной ноге"
       },
@@ -358,9 +352,7 @@
     {
       "id": "press-up-plank",
       "category": "strength",
-      "partKinds": [
-        "program"
-      ],
+      "partKinds": ["program"],
       "title": {
         "ru": "Упор лёжа"
       },
@@ -467,9 +459,7 @@
     {
       "id": "single-leg-hops",
       "category": "strength",
-      "partKinds": [
-        "program"
-      ],
+      "partKinds": ["program"],
       "title": {
         "ru": "Прыжки на одной ноге"
       },
@@ -588,9 +578,7 @@
     {
       "id": "spiderman",
       "category": "strength",
-      "partKinds": [
-        "program"
-      ],
+      "partKinds": ["program"],
       "title": {
         "ru": "«Спайдермен»"
       },
@@ -696,9 +684,7 @@
     {
       "id": "sideways-roll",
       "category": "strength",
-      "partKinds": [
-        "program"
-      ],
+      "partKinds": ["program"],
       "title": {
         "ru": "Перекат вбок"
       },
@@ -822,9 +808,7 @@
     {
       "id": "toe-taps",
       "category": "technique",
-      "partKinds": [
-        "ball"
-      ],
+      "partKinds": ["ball"],
       "title": {
         "ru": "Тычки"
       },
@@ -854,9 +838,7 @@
     {
       "id": "sole-rolls",
       "category": "technique",
-      "partKinds": [
-        "ball"
-      ],
+      "partKinds": ["ball"],
       "title": {
         "ru": "Перекаты подошвой"
       },
@@ -886,9 +868,7 @@
     {
       "id": "pendulum",
       "category": "technique",
-      "partKinds": [
-        "ball"
-      ],
+      "partKinds": ["ball"],
       "title": {
         "ru": "«Маятник»"
       },
@@ -918,9 +898,7 @@
     {
       "id": "inside-outside",
       "category": "technique",
-      "partKinds": [
-        "ball"
-      ],
+      "partKinds": ["ball"],
       "title": {
         "ru": "Внутренняя–внешняя"
       },
@@ -950,9 +928,7 @@
     {
       "id": "roll-stop",
       "category": "technique",
-      "partKinds": [
-        "ball"
-      ],
+      "partKinds": ["ball"],
       "title": {
         "ru": "Перекат + внутренняя"
       },
@@ -983,9 +959,7 @@
     {
       "id": "snail",
       "category": "technique",
-      "partKinds": [
-        "ball"
-      ],
+      "partKinds": ["ball"],
       "title": {
         "ru": "«Улитка»"
       },
@@ -1016,9 +990,7 @@
     {
       "id": "stop-turn",
       "category": "technique",
-      "partKinds": [
-        "ball"
-      ],
+      "partKinds": ["ball"],
       "title": {
         "ru": "Остановка и рывок"
       },
@@ -1049,9 +1021,7 @@
     {
       "id": "wall-pass",
       "category": "technique",
-      "partKinds": [
-        "ball"
-      ],
+      "partKinds": ["ball"],
       "title": {
         "ru": "У стены"
       },
@@ -1081,9 +1051,7 @@
     {
       "id": "ladder",
       "category": "games",
-      "partKinds": [
-        "feet"
-      ],
+      "partKinds": ["feet"],
       "title": {
         "ru": "Лесенка из скотча"
       },
@@ -1113,9 +1081,7 @@
     {
       "id": "line-hops",
       "category": "games",
-      "partKinds": [
-        "feet"
-      ],
+      "partKinds": ["feet"],
       "title": {
         "ru": "Прыжки через линию"
       },
@@ -1145,9 +1111,7 @@
     {
       "id": "fast-feet",
       "category": "games",
-      "partKinds": [
-        "feet"
-      ],
+      "partKinds": ["feet"],
       "title": {
         "ru": "Частый бег на месте"
       },
@@ -1177,9 +1141,7 @@
     {
       "id": "fake-burst",
       "category": "games",
-      "partKinds": [
-        "feet"
-      ],
+      "partKinds": ["feet"],
       "title": {
         "ru": "Финт и рывок"
       },
@@ -1210,9 +1172,7 @@
     {
       "id": "ladder-ball",
       "category": "games",
-      "partKinds": [
-        "feet"
-      ],
+      "partKinds": ["feet"],
       "title": {
         "ru": "Работа ног с мячом"
       },
@@ -1243,9 +1203,7 @@
     {
       "id": "traffic-light",
       "category": "games",
-      "partKinds": [
-        "game"
-      ],
+      "partKinds": ["game"],
       "title": {
         "ru": "«Светофор»"
       },
@@ -1272,9 +1230,7 @@
     {
       "id": "tails",
       "category": "games",
-      "partKinds": [
-        "game"
-      ],
+      "partKinds": ["game"],
       "title": {
         "ru": "«Хвостики»"
       },
@@ -1301,9 +1257,7 @@
     {
       "id": "catch-ball",
       "category": "games",
-      "partKinds": [
-        "game"
-      ],
+      "partKinds": ["game"],
       "title": {
         "ru": "«Поймай мяч»"
       },
@@ -1330,9 +1284,7 @@
     {
       "id": "mirror",
       "category": "games",
-      "partKinds": [
-        "game"
-      ],
+      "partKinds": ["game"],
       "title": {
         "ru": "«Зеркало»"
       },
@@ -1359,9 +1311,7 @@
     {
       "id": "one-v-one",
       "category": "games",
-      "partKinds": [
-        "cooldown"
-      ],
+      "partKinds": ["cooldown"],
       "title": {
         "ru": "1 на 1 со взрослым"
       },
@@ -1388,9 +1338,7 @@
     {
       "id": "skittles",
       "category": "games",
-      "partKinds": [
-        "cooldown"
-      ],
+      "partKinds": ["cooldown"],
       "title": {
         "ru": "«Кегли»"
       },
@@ -1417,9 +1365,7 @@
     {
       "id": "shield-ball",
       "category": "games",
-      "partKinds": [
-        "cooldown"
-      ],
+      "partKinds": ["cooldown"],
       "title": {
         "ru": "«Удержи мяч»"
       },
@@ -1446,9 +1392,7 @@
     {
       "id": "deep-squat",
       "category": "mobility",
-      "partKinds": [
-        "cooldown"
-      ],
+      "partKinds": ["cooldown"],
       "title": {
         "ru": "Глубокий присед"
       },
@@ -1478,9 +1422,7 @@
     {
       "id": "worlds-greatest",
       "category": "mobility",
-      "partKinds": [
-        "cooldown"
-      ],
+      "partKinds": ["cooldown"],
       "title": {
         "ru": "«Мир наизнанку»"
       },
@@ -1511,9 +1453,7 @@
     {
       "id": "hip-90-90",
       "category": "mobility",
-      "partKinds": [
-        "cooldown"
-      ],
+      "partKinds": ["cooldown"],
       "title": {
         "ru": "Таз 90/90"
       },
@@ -1543,9 +1483,7 @@
     {
       "id": "cat-cow",
       "category": "mobility",
-      "partKinds": [
-        "cooldown"
-      ],
+      "partKinds": ["cooldown"],
       "title": {
         "ru": "«Кошка–корова»"
       },
@@ -1575,9 +1513,7 @@
     {
       "id": "ankle-wall",
       "category": "mobility",
-      "partKinds": [
-        "cooldown"
-      ],
+      "partKinds": ["cooldown"],
       "title": {
         "ru": "Голеностоп у стены"
       },
@@ -1608,9 +1544,7 @@
     {
       "id": "hamstring-reach",
       "category": "mobility",
-      "partKinds": [
-        "cooldown"
-      ],
+      "partKinds": ["cooldown"],
       "title": {
         "ru": "Задняя поверхность бедра"
       },

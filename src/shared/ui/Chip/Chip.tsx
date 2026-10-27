@@ -29,7 +29,12 @@ export function Chip({ label, dotColor, selected = false, onClick, to }: Props) 
   }
   if (onClick) {
     return (
-      <button type="button" className={`${className} ${styles.interactive}`} aria-pressed={selected} onClick={onClick}>
+      <button
+        type="button"
+        className={`${className} ${styles.interactive}`}
+        aria-pressed={selected}
+        onClick={onClick}
+      >
         {content}
       </button>
     );

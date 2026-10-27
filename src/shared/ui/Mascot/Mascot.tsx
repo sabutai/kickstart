@@ -20,12 +20,22 @@ export function Mascot({ emotion = 'joy', size = 120 }: Props) {
       data-emotion={emotion}
     >
       <circle className={styles.head} cx="60" cy="62" r="44" strokeWidth="5" />
-      <path className={styles.cap} d="M18 48 Q60 26 102 48 L104 62 Q60 42 16 62 Z" strokeWidth="4" strokeLinejoin="round" />
+      <path
+        className={styles.cap}
+        d="M18 48 Q60 26 102 48 L104 62 Q60 42 16 62 Z"
+        strokeWidth="4"
+        strokeLinejoin="round"
+      />
       {emotion === 'joy' && (
         <>
           <path className={styles.line} d="M38 72 Q46 62 54 72" strokeWidth="4.5" />
           <path className={styles.line} d="M66 72 Q74 62 82 72" strokeWidth="4.5" />
-          <path className={styles.mouthFill} d="M44 84 Q60 104 76 84 Z" strokeWidth="3" strokeLinejoin="round" />
+          <path
+            className={styles.mouthFill}
+            d="M44 84 Q60 104 76 84 Z"
+            strokeWidth="3"
+            strokeLinejoin="round"
+          />
         </>
       )}
       {emotion === 'rest' && (
