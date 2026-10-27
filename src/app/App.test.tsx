@@ -64,7 +64,7 @@ describe('каркас приложения (онбординг пройден)'
 
   it('открывает главную с нижней навигацией из 5 табов', async () => {
     renderAt('/');
-    expect(await screen.findByRole('heading', { name: 'Главная' })).toBeInTheDocument();
+    expect(await screen.findByRole('heading', { name: 'Привет, Тимур' })).toBeInTheDocument();
     const nav = screen.getByRole('navigation', { name: 'Основная навигация' });
     expect(nav.querySelectorAll('a')).toHaveLength(5);
   });
@@ -77,13 +77,13 @@ describe('каркас приложения (онбординг пройден)'
 
   it('полноэкранные экраны открываются без таб-бара', async () => {
     renderAt('/exercise/skating-jumps');
-    expect(await screen.findByRole('heading', { name: 'Упражнение' })).toBeInTheDocument();
+    expect(await screen.findByRole('heading', { name: 'Прыжки конькобежца' })).toBeInTheDocument();
     expect(screen.queryByRole('navigation')).not.toBeInTheDocument();
   });
 
   it('пройденный онбординг не показывается снова', async () => {
     renderAt('/onboarding/2');
-    expect(await screen.findByRole('heading', { name: 'Главная' })).toBeInTheDocument();
+    expect(await screen.findByRole('heading', { name: 'Привет, Тимур' })).toBeInTheDocument();
   });
 });
 
@@ -200,7 +200,7 @@ describe('онбординг', () => {
     await screen.findByRole('heading', { name: 'Напоминания и код взрослого' });
     await userEvent.click(next());
 
-    expect(await screen.findByRole('heading', { name: 'Главная' })).toBeInTheDocument();
+    expect(await screen.findByRole('heading', { name: 'Привет, Тимур' })).toBeInTheDocument();
     const repos = createUserDataRepositories(env.db!);
     expect(await repos.profiles.list()).toMatchObject([{ name: 'Тимур', age: 8 }]);
     expect(await repos.schedules.list()).toMatchObject([{ weeks: 12, homeDays: [2, 4, 6], clubDays: [] }]);
@@ -218,6 +218,6 @@ describe('онбординг', () => {
     await userEvent.click(next());
     expect(await screen.findByRole('alert')).toHaveTextContent('Не удалось сохранить');
     await userEvent.click(next());
-    expect(await screen.findByRole('heading', { name: 'Главная' })).toBeInTheDocument();
+    expect(await screen.findByRole('heading', { name: 'Привет, Тимур' })).toBeInTheDocument();
   });
 });

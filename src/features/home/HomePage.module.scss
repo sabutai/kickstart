@@ -1,0 +1,84 @@
+@use '../../shared/styles/tokens' as *;
+
+.streak {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  min-height: 32px;
+  padding: 0 13px;
+  border-radius: $radius-pill;
+  background: $color-surface;
+  color: $color-volt;
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.sub {
+  margin: 0 0 16px;
+  font-size: 14px;
+  font-weight: 600;
+  color: $color-gray;
+}
+
+.label {
+  font-size: $font-size-min;
+  font-weight: 800;
+  color: $color-volt;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.cardTitle {
+  margin: 4px 0 0;
+  font-family: $font-display;
+  font-size: 22px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+}
+
+.meta {
+  margin: 6px 0 0;
+  font-size: 13px;
+  font-weight: 600;
+  color: $color-gray;
+}
+
+.cardAction {
+  margin-top: 16px;
+}
+
+.restRow {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.goal {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin: 18px 0;
+  padding: 14px 0;
+  border-top: 1px solid $color-line;
+  border-bottom: 1px solid $color-line;
+}
+
+.goalValue {
+  margin-top: 3px;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.chips {
+  display: flex;
+  gap: 9px;
+  margin-bottom: 18px;
+  padding-bottom: 2px;
+  overflow-x: auto;
+  scrollbar-width: none; // прокрутка пальцем остаётся, полоса не рисуется
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
