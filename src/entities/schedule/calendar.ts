@@ -1,17 +1,12 @@
-import { addDays, differenceInCalendarWeeks, format, parse, startOfISOWeek } from 'date-fns';
+import { addDays, differenceInCalendarWeeks, startOfISOWeek } from 'date-fns';
 import type { Schedule } from '../user-data/schema';
+import { isoWeekday, toDate, toKey } from './dates';
 import type { PlannedSessionInput } from './model';
 
 // Генератор календаря: чистая функция «расписание → занятия плана». Правила — docs/architecture.md.
 // Неделя программы — календарная Пн–Вс, неделя 1 — та, в которую попал старт (может быть неполной).
-// Работаем с датами yyyy-MM-dd без времени суток, поэтому переход на летнее время ничего не сдвигает.
 
-const DATE_FORMAT = 'yyyy-MM-dd';
 const TEST_EVERY_WEEKS = 4;
-
-const toDate = (date: string): Date => parse(date, DATE_FORMAT, new Date(2000, 0, 1));
-const toKey = (date: Date): string => format(date, DATE_FORMAT);
-const isoWeekday = (date: Date): number => ((date.getDay() + 6) % 7) + 1; // 1 = пн … 7 = вс
 
 /** Этап программы по номеру недели: 1–4 → 1, 5–8 → 2, 9 и дальше → 3. */
 export function stageOfWeek(week: number): 1 | 2 | 3 {

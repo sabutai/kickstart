@@ -1,6 +1,8 @@
-import { createEffect, createEvent, createStore, sample } from 'effector';
+import { createEffect, createEvent, createStore, sample, type EventCallable } from 'effector';
 import { newId } from '../../shared/lib/id';
 import { getRepositories } from '../user-data/repos';
+import { markDone, moveToSunday, resetStatus, skip, type ActionResult, type Rejection } from './actions';
+import { toKey } from './dates';
 import { PlannedSessionSchema, type PlannedSession, type Schedule } from '../user-data/schema';
 
 type Meta = 'id' | 'updatedAt' | 'deletedAt';
@@ -58,3 +60,50 @@ export const $plannedSessions = createStore<PlannedSession[]>([])
 
 sample({ clock: scheduleSaved, target: saveScheduleFx });
 sample({ clock: plannedSessionsSaved, target: savePlannedSessionsFx });
+
+// --- Действия над занятиями: решение принимают чистые функции из ./actions ---
+
+/** Отметить «выполнено» / «Был» (для секции). */
+export const sessionDone = createEvent<{ id: string }>();
+/** Пропустить занятие. */
+export const sessionSkipped = createEvent<{ id: string }>();
+/** Отменить отметку «выполнено»/«пропущено». */
+export const sessionStatusReset = createEvent<{ id: string }>();
+/** Перенести субботнее занятие на воскресенье. */
+export const sessionMovedToSunday = createEvent<{ id: string }>();
+/** Действие недоступно: UI показывает причину. */
+export const sessionActionRejected = createEvent<{ id: string; reason: Rejection }>();
+
+type Run = (session: PlannedSession, plan: PlannedSession[], today: string) => ActionResult;
+type Decision = { id: string; result: ActionResult };
+
+function wireAction(clock: EventCallable<{ id: string }>, run: Run) {
+  const decided = sample({
+    clock,
+    source: $plannedSessions,
+    fn: (plan, { id }): Decision => {
+      const session = plan.find((s) => s.id === id);
+      const result: ActionResult = session
+        ? run(session, plan, toKey(new Date()))
+        : { ok: false, reason: 'not-found' };
+      return { id, result };
+    },
+  });
+  sample({
+    clock: decided,
+    filter: ({ result }) => result.ok,
+    fn: ({ result }): PlannedSessionInput[] => [(result as { ok: true; session: PlannedSession }).session],
+    target: savePlannedSessionsFx,
+  });
+  sample({
+    clock: decided,
+    filter: ({ result }) => !result.ok,
+    fn: ({ id, result }) => ({ id, reason: (result as { ok: false; reason: Rejection }).reason }),
+    target: sessionActionRejected,
+  });
+}
+
+wireAction(sessionDone, (s, _plan, today) => markDone(s, today));
+wireAction(sessionSkipped, (s) => skip(s));
+wireAction(sessionStatusReset, (s) => resetStatus(s));
+wireAction(sessionMovedToSunday, (s, plan, today) => moveToSunday(s, plan, today));
