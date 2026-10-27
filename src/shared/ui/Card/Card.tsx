@@ -4,10 +4,16 @@ import styles from './Card.module.scss';
 type Props = {
   as?: 'div' | 'section' | 'article';
   padding?: 'md' | 'lg';
+  /** Доступное имя: нужно, чтобы <section> считался областью (region) для скринридера. */
+  label?: string;
   children?: ReactNode;
 };
 
 /** Карточка с полупрозрачной подложкой и размытием фона — читаема поверх любой картинки. */
-export function Card({ as: Tag = 'div', padding = 'md', children }: Props) {
-  return <Tag className={`${styles.card} ${styles[padding]}`}>{children}</Tag>;
+export function Card({ as: Tag = 'div', padding = 'md', label, children }: Props) {
+  return (
+    <Tag className={`${styles.card} ${styles[padding]}`} aria-label={label}>
+      {children}
+    </Tag>
+  );
 }

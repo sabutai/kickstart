@@ -1,13 +1,9 @@
 import { z } from 'zod';
+import { SyncMetaSchema, type SyncMeta } from '../../shared/lib/db/sync-meta';
 
 // Пользовательские данные (docs/architecture.md → «Модель данных»). Все записи — со SyncMeta.
 
-export const SyncMetaSchema = z.object({
-  id: z.string().min(1),
-  updatedAt: z.iso.datetime(),
-  deletedAt: z.iso.datetime().optional(),
-});
-export type SyncMeta = z.infer<typeof SyncMetaSchema>;
+export { SyncMetaSchema, type SyncMeta };
 
 /** День недели по ISO: 1 = понедельник … 7 = воскресенье (неделя с понедельника). */
 export const WeekdaySchema = z.int().min(1).max(7);

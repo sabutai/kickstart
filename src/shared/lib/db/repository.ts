@@ -1,5 +1,5 @@
 import type { z } from 'zod';
-import type { SyncMeta } from '../../../entities/user-data/schema';
+import type { SyncMeta } from './sync-meta';
 import type { DataTable } from './migrations';
 import type { Database } from './types';
 

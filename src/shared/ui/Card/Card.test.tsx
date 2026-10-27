@@ -8,6 +8,15 @@ describe('Card', () => {
     expect(screen.getByText('текст').tagName).toBe('DIV');
   });
 
+  it('секция с label становится областью (region) с именем', () => {
+    render(
+      <Card as="section" label="Сегодня">
+        текст
+      </Card>,
+    );
+    expect(screen.getByRole('region', { name: 'Сегодня' })).toBeInTheDocument();
+  });
+
   it('поддерживает семантический тег', () => {
     render(
       <Card as="section" padding="lg">
