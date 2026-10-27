@@ -42,6 +42,13 @@ describe('ExerciseSchema', () => {
     expect(r.success).toBe(true);
   });
 
+  it('why и lookFor необязательны (в блоках Б–Г «Зачем» нет)', () => {
+    const { why: _why, ...withoutWhy } = exercise();
+    expect(ExerciseSchema.safeParse(withoutWhy).success).toBe(true);
+    expect(ExerciseSchema.safeParse(exercise({ lookFor: { ru: 'Колени пружинят' } })).success).toBe(true);
+    expect(ExerciseSchema.safeParse(exercise({ lookFor: { ru: '' } })).success).toBe(false);
+  });
+
   it('en необязателен, но не может быть пустым', () => {
     expect(ExerciseSchema.safeParse(exercise({ title: { ru: 'А', en: 'A' } })).success).toBe(true);
     expect(ExerciseSchema.safeParse(exercise({ title: { ru: 'А', en: '' } })).success).toBe(false);

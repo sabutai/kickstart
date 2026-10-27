@@ -25,6 +25,7 @@ const VolumeSchema = z
   .object({
     sets: positiveInt,
     reps: positiveInt.optional(), // на повторы — фаза work по кнопке «Готово»
+    // Каждый подход делается на обе стороны; reps/workSec — на одну сторону.
     perSide: z.boolean().optional(),
     workSec: positiveInt.optional(), // на время; нижняя граница диапазона
     workSecMax: positiveInt.optional(), // верхняя граница, если в методике дан диапазон
@@ -59,10 +60,11 @@ export const ExerciseSchema = z
     /** В каких частях занятия упражнение может встретиться. */
     partKinds: z.array(SessionPartKindSchema).min(1),
     title: Localized,
-    why: Localized,
+    why: Localized.optional(), // в блоках Б–Г источник «Зачем» не задаёт
     setup: Localized.optional(), // исходное положение
     steps: LocalizedList.optional(), // общее выполнение для всех уровней
-    mistakes: LocalizedList.optional(), // ошибки — для взрослого
+    mistakes: LocalizedList.optional(), // ошибки — для взрослого (блок А)
+    lookFor: Localized.optional(), // на что смотреть взрослому (блоки Б–Г)
     cue: Localized.optional(), // команда ребёнку
     fromWeek: z.int().min(1).max(12).optional(), // с какой недели программы
     levels: z.array(ExerciseLevelSchema).min(1).max(5),
