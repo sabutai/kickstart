@@ -1,0 +1,72 @@
+@use '../../styles/tokens' as *;
+
+.grid {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+}
+
+.weekday {
+  padding-bottom: 8px;
+  font-size: $font-size-min;
+  font-weight: 700;
+  color: $color-gray;
+  text-transform: uppercase;
+}
+
+.cell {
+  padding: 2px 0;
+  text-align: center;
+}
+
+.day {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: $tap-min;
+  height: $tap-min;
+  border: 2px solid transparent;
+  border-radius: 50%;
+  color: $color-white;
+  font-size: 14px;
+  font-weight: 700;
+
+  &:focus-visible {
+    outline: 2px solid $color-volt;
+    outline-offset: 2px;
+  }
+
+  &:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+  }
+}
+
+.outside {
+  opacity: 0.3;
+}
+
+.planned {
+  border-color: var(--accent);
+}
+
+.done {
+  background: $color-volt;
+  color: $color-ink;
+}
+
+// Пропущенное не теряется: зачёркнутая цифра, плюс подпись в aria-label.
+.skipped {
+  color: $color-gray;
+  text-decoration: line-through;
+}
+
+.today {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--accent-text);
+}
+
+.selected {
+  box-shadow: 0 0 0 2px $color-white;
+}
