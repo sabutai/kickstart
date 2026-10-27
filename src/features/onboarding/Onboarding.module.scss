@@ -12,32 +12,31 @@
 
 .top {
   position: relative;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  padding: calc(16px + env(safe-area-inset-top)) $space-screen-x 0;
-}
-
-// Кнопки «Назад»/«Пропустить» — отдельный ряд, а полоска шагов — своя строка на всю ширину:
-// так её ширина одинакова на всех шагах и не зависит от того, есть ли «Пропустить».
-.topRow {
-  display: flex;
+  // Одна строка: «Назад» | полоска шагов | «Пропустить». Боковые колонки одинаковой фиксированной ширины
+  // зарезервированы всегда, поэтому полоска стоит по центру и не двигается между шагами.
+  display: grid;
+  grid-template-columns: 88px 1fr 88px;
   align-items: center;
-  justify-content: space-between;
+  gap: 12px;
   min-height: $tap-min;
+  padding: calc(16px + env(safe-area-inset-top)) $space-screen-x 0;
+  box-sizing: content-box;
 }
 
 .topSlot {
   display: flex;
   align-items: center;
-  min-width: $tap-min;
   min-height: $tap-min;
+}
+
+.topSlotEnd {
+  justify-content: flex-end;
 }
 
 .skip {
   min-height: $tap-min;
-  padding: 0 8px;
-  font-size: 14px;
+  padding: 0 4px;
+  font-size: 13px;
   font-weight: 700;
   color: $color-gray;
 

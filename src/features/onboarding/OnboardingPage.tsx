@@ -57,31 +57,29 @@ export function OnboardingPage() {
     <main className={styles.shell}>
       <Backdrop background="onboarding" pitchLines />
       <div className={styles.top}>
-        <div className={styles.topRow}>
-          <span className={styles.topSlot}>
-            {step > 1 && (
-              <IconButton label={t('onboarding.back')} onClick={() => void navigate(-1)}>
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                  <path
-                    d="M15 6L8 12L15 18"
-                    stroke="currentColor"
-                    strokeWidth="2.2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                </svg>
-              </IconButton>
-            )}
-          </span>
-          <span className={styles.topSlot}>
-            {(step === 2 || step === 3) && (
-              <button type="button" className={styles.skip} onClick={skip}>
-                {t('onboarding.skip')}
-              </button>
-            )}
-          </span>
-        </div>
+        <span className={styles.topSlot}>
+          {step > 1 && (
+            <IconButton label={t('onboarding.back')} onClick={() => void navigate(-1)}>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path
+                  d="M15 6L8 12L15 18"
+                  stroke="currentColor"
+                  strokeWidth="2.2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+            </IconButton>
+          )}
+        </span>
         <StepProgress current={step} total={STEPS} />
+        <span className={`${styles.topSlot} ${styles.topSlotEnd}`}>
+          {(step === 2 || step === 3) && (
+            <button type="button" className={styles.skip} onClick={skip}>
+              {t('onboarding.skip')}
+            </button>
+          )}
+        </span>
       </div>
 
       <div className={styles.body}>
