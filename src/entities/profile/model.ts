@@ -12,7 +12,7 @@ export const loadProfileFx = createEffect(async (): Promise<Profile | null> => {
   return (await repos.profiles.list())[0] ?? null;
 });
 
-const saveProfileFx = createEffect(async (input: ProfileInput): Promise<Profile> => {
+export const saveProfileFx = createEffect(async (input: ProfileInput): Promise<Profile> => {
   const repos = await getRepositories();
   const existing = (await repos.profiles.list())[0];
   return repos.profiles.save({ ...input, id: existing?.id ?? newId() });

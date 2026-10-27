@@ -23,7 +23,7 @@ export const loadSettingsFx = createEffect(async (): Promise<Settings> => {
   }
 });
 
-const saveSettingsFx = createEffect(async (settings: Settings): Promise<Settings> => {
+export const saveSettingsFx = createEffect(async (settings: Settings): Promise<Settings> => {
   await preferences.set(SETTINGS_KEY, JSON.stringify(settings));
   return settings;
 });

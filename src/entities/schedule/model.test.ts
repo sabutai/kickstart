@@ -17,6 +17,7 @@ import {
   loadPlannedSessionsFx,
   loadScheduleFx,
   plannedSessionsSaved,
+  replacePlannedSessionsFx,
   scheduleSaved,
 } from './model';
 
@@ -176,5 +177,34 @@ describe('действия над занятиями', () => {
     const log = rejections(scope);
     await allSettled(sessionSkipped, { scope, params: { id: 'нет-такого' } });
     expect(log).toEqual([{ id: 'нет-такого', reason: 'not-found' }]);
+  });
+});
+
+describe('замена плана', () => {
+  it('лишние занятия удаляются, общие обновляются, новые добавляются', async () => {
+    const scope = fork();
+    await allSettled(plannedSessionsSaved, {
+      scope,
+      params: [session('2026-11-03'), session('2026-11-06'), session('2026-11-09')],
+    });
+    await allSettled(replacePlannedSessionsFx, {
+      scope,
+      params: [session('2026-11-06', { status: 'done' }), session('2026-11-10')],
+    });
+    expect(scope.getState($plannedSessions).map((s) => [s.date, s.status])).toEqual([
+      ['2026-11-06', 'done'],
+      ['2026-11-10', 'planned'],
+    ]);
+
+    const fresh = fork();
+    await allSettled(loadPlannedSessionsFx, { scope: fresh });
+    expect(fresh.getState($plannedSessions).map((s) => s.date)).toEqual(['2026-11-06', '2026-11-10']);
+  });
+
+  it('невалидный новый план ничего не стирает', async () => {
+    const scope = fork();
+    await allSettled(plannedSessionsSaved, { scope, params: [session('2026-11-03')] });
+    await allSettled(replacePlannedSessionsFx, { scope, params: [session('не дата')] });
+    expect(scope.getState($plannedSessions).map((s) => s.date)).toEqual(['2026-11-03']);
   });
 });

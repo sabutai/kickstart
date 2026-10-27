@@ -20,7 +20,7 @@ export const loadPlannedSessionsFx = createEffect(async (): Promise<PlannedSessi
   return repos.plannedSessions.list();
 });
 
-const saveScheduleFx = createEffect(async (input: ScheduleInput): Promise<Schedule> => {
+export const saveScheduleFx = createEffect(async (input: ScheduleInput): Promise<Schedule> => {
   const repos = await getRepositories();
   const existing = (await repos.schedules.list())[0];
   return repos.schedules.save({ ...input, id: existing?.id ?? newId() });
@@ -32,6 +32,25 @@ const savePlannedSessionsFx = createEffect(
     const stamp = new Date().toISOString();
     for (const input of inputs) PlannedSessionSchema.parse({ ...input, updatedAt: stamp });
     const repos = await getRepositories();
+    const saved: PlannedSession[] = [];
+    for (const input of inputs) saved.push(await repos.plannedSessions.save(input));
+    return saved;
+  },
+);
+
+/**
+ * Заменить весь план: занятия, которых нет в новом списке, удаляются (мягко), остальные — upsert.
+ * Нужна при генерации календаря заново (онбординг, смена расписания).
+ */
+export const replacePlannedSessionsFx = createEffect(
+  async (inputs: PlannedSessionInput[]): Promise<PlannedSession[]> => {
+    const stamp = new Date().toISOString();
+    for (const input of inputs) PlannedSessionSchema.parse({ ...input, updatedAt: stamp });
+    const repos = await getRepositories();
+    const keep = new Set(inputs.map((i) => i.id));
+    for (const old of await repos.plannedSessions.list()) {
+      if (!keep.has(old.id)) await repos.plannedSessions.remove(old.id);
+    }
     const saved: PlannedSession[] = [];
     for (const input of inputs) saved.push(await repos.plannedSessions.save(input));
     return saved;
@@ -52,6 +71,7 @@ const byDate = (a: PlannedSession, b: PlannedSession) =>
 
 export const $plannedSessions = createStore<PlannedSession[]>([])
   .on(loadPlannedSessionsFx.doneData, (_, list) => [...list].sort(byDate))
+  .on(replacePlannedSessionsFx.doneData, (_, saved) => [...saved].sort(byDate))
   .on(savePlannedSessionsFx.doneData, (state, saved) => {
     const byId = new Map(state.map((s) => [s.id, s]));
     for (const s of saved) byId.set(s.id, s);

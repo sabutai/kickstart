@@ -8,6 +8,9 @@ import type { PlannedSessionInput } from './model';
 
 const TEST_EVERY_WEEKS = 4;
 
+/** Длина программы в неделях (MVP — фиксированные 12). */
+export const PROGRAM_WEEKS = 12;
+
 /** Этап программы по номеру недели: 1–4 → 1, 5–8 → 2, 9 и дальше → 3. */
 export function stageOfWeek(week: number): 1 | 2 | 3 {
   return Math.min(3, Math.max(1, Math.ceil(week / 4))) as 1 | 2 | 3;
