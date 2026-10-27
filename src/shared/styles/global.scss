@@ -54,3 +54,20 @@ button {
   background: none;
   cursor: pointer;
 }
+
+// Только `npm run dev` (класс ставит app/devFrame.ts): на широком экране показываем приложение
+// в рамке телефона по центру. В APK и в продакшен-сборке этих стилей не срабатывает ничего.
+:root.dev-frame {
+  background: #000;
+
+  body {
+    background: #000;
+  }
+
+  #root {
+    max-width: 430px;
+    margin: 0 auto;
+    background: var(--ink);
+    box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.12);
+  }
+}
