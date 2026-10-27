@@ -51,7 +51,7 @@
 
 ### 1. UI-кит и тема (16 ч)
 
-- [ ] Шрифты Oswald и Manrope локально (без Google Fonts — приложение офлайн) (2)
+- [x] Шрифты Oswald и Manrope локально (без Google Fonts — приложение офлайн) (2)
 - [ ] Компонент фона экрана: картинка + градиенты сверху и снизу; карточка с полупрозрачной подложкой `rgba(11,42,27,0.75)` и `backdrop-filter: blur` (3)
 - [ ] Button, Chip, LevelPips, ProgressRing, StatRow, ExerciseCard, EmptyState с Киком (8)
 - [ ] RTL-тесты компонентов, контраст ≥ 4.5:1, зоны нажатия ≥ 44 px (3)
