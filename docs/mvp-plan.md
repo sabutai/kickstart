@@ -58,7 +58,7 @@
 
 ### 2. Контент и данные (16 ч)
 
-- [ ] Zod-схемы `Exercise`, `ExerciseLevel`, `SessionTemplate` (2)
+- [x] Zod-схемы `Exercise`, `ExerciseLevel`, `SessionTemplate` (2)
 - [ ] JSON программы: 7 упражнений × 5 уровней + блоки Б–Г и игры (тексты — `docs/program.md`) (6)
 - [ ] Хранилище: Preferences для настроек, SQLite/IndexedDB для журнала; слой репозиториев, `SyncMeta`, версия схемы (5)
 - [ ] Сторы Effector: профиль, расписание, прогресс, настройки (3)
