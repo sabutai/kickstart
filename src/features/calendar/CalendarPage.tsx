@@ -5,7 +5,7 @@ import { Screen } from '../../shared/ui/Screen/Screen';
 export function CalendarPage() {
   const { t } = useTranslation();
   return (
-    <Screen title={t('screens.calendar')}>
+    <Screen title={t('screens.calendar')} background="calendar">
       <p>{t('common.comingSoon', { stage: 3 })}</p>
     </Screen>
   );

@@ -32,3 +32,9 @@ $radius-card: 16px;
 
 $space-screen-x: 20px;
 $tap-min: 44px;
+
+// Карточка поверх фона-картинки: полупрозрачная подложка + размытие.
+$color-card-overlay: rgba(11, 42, 27, 0.75);
+$color-card-overlay-solid: rgba(11, 42, 27, 0.94); // если backdrop-filter не поддерживается
+$blur-card: 12px;
+$font-size-min: 11px; // минимум для подписей

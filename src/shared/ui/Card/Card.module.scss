@@ -1,0 +1,20 @@
+@use '../../styles/tokens' as *;
+
+.card {
+  border-radius: $radius-card;
+  background: $color-card-overlay-solid;
+
+  @supports (backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px)) {
+    background: $color-card-overlay;
+    -webkit-backdrop-filter: blur($blur-card);
+    backdrop-filter: blur($blur-card);
+  }
+}
+
+.md {
+  padding: 14px;
+}
+
+.lg {
+  padding: 20px;
+}
