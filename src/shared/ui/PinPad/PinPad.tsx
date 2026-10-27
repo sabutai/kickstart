@@ -25,8 +25,8 @@ export function PinPad({ value, onChange, length = 4, error = false }: Props) {
         ))}
       </div>
       <div className={styles.keys}>
-        {KEYS.map((key, i) => {
-          if (key === '') return <span key={i} />;
+        {KEYS.map((key) => {
+          if (key === '') return <span key="gap" />;
           if (key === 'erase') {
             return (
               <button

@@ -1,5 +1,6 @@
-import type { RouteObject } from 'react-router';
+import { Navigate, type RouteObject } from 'react-router';
 import { TabLayout, FullscreenLayout } from './layouts';
+import { AppGate } from './AppGate';
 import { HomePage } from '../features/home/HomePage';
 import { LibraryPage } from '../features/library/LibraryPage';
 import { TimerPage } from '../features/timer/TimerPage';
@@ -14,20 +15,27 @@ import { OnboardingPage } from '../features/onboarding/OnboardingPage';
  */
 export const routes: RouteObject[] = [
   {
-    element: <TabLayout />,
+    // Ворота: загрузка данных и перенаправление в онбординг/на главную.
+    element: <AppGate />,
     children: [
-      { index: true, element: <HomePage /> },
-      { path: 'library', element: <LibraryPage /> },
-      { path: 'timer', element: <TimerPage /> },
-      { path: 'calendar', element: <CalendarPage /> },
-      { path: 'profile', element: <ProfilePage /> },
-    ],
-  },
-  {
-    element: <FullscreenLayout />,
-    children: [
-      { path: 'exercise/:exerciseId', element: <ExercisePage /> },
-      { path: 'onboarding', element: <OnboardingPage /> },
+      {
+        element: <TabLayout />,
+        children: [
+          { index: true, element: <HomePage /> },
+          { path: 'library', element: <LibraryPage /> },
+          { path: 'timer', element: <TimerPage /> },
+          { path: 'calendar', element: <CalendarPage /> },
+          { path: 'profile', element: <ProfilePage /> },
+        ],
+      },
+      {
+        element: <FullscreenLayout />,
+        children: [
+          { path: 'exercise/:exerciseId', element: <ExercisePage /> },
+          { path: 'onboarding', element: <Navigate to="/onboarding/1" replace /> },
+          { path: 'onboarding/:step', element: <OnboardingPage /> },
+        ],
+      },
     ],
   },
 ];

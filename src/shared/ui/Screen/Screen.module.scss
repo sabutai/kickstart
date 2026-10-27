@@ -18,6 +18,16 @@
   pointer-events: none;
 }
 
+.pitch {
+  position: absolute;
+  top: 0;
+  left: 0;
+  max-width: 100%;
+  color: $color-white;
+  opacity: 0.12;
+  pointer-events: none;
+}
+
 .shade {
   position: absolute;
   left: 0;
