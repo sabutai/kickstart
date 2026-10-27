@@ -1,0 +1,217 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<title>Упражнения</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&amp;family=Manrope:wght@400;500;600;700;800&amp;display=swap">
+<style>
+html,body{margin:0;overflow:hidden}
+*{box-sizing:border-box}
+a{text-decoration:none;color:inherit}
+input{font-family:inherit}
+</style>
+</helmet>
+
+<div style="width:390px;height:844px;background:{{stripeTexture}};font-family:{{bodyFont}};display:flex;flex-direction:column;overflow:hidden;position:relative;color:#FFFFFF">
+
+  <svg width="390" height="300" viewBox="0 0 390 300" style="position:absolute;top:-40px;left:0;opacity:0.12;pointer-events:none">
+    <circle cx="195" cy="40" r="90" fill="none" stroke="#FFFFFF" stroke-width="2"></circle>
+    <line x1="0" y1="40" x2="390" y2="40" stroke="#FFFFFF" stroke-width="2"></line>
+  </svg>
+
+  <div style="padding:24px 20px 14px 20px;display:flex;flex-direction:column;gap:13px;flex:0 0 auto;position:relative;z-index:2">
+    <div style="font-family:{{displayFont}};font-size:24px;font-weight:700;text-transform:uppercase;letter-spacing:0.6px">{{headerTitle}}</div>
+    <div style="display:flex;align-items:center;gap:8px;background:{{surface}};border-radius:12px;padding:10px 13px">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="7" stroke="{{gray}}" stroke-width="1.8"></circle><path d="M21 21L16.5 16.5" stroke="{{gray}}" stroke-width="1.8" stroke-linecap="round"></path></svg>
+      <label style="flex:1">
+        <span style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)">{{searchLabel}}</span>
+        <input type="text" placeholder="{{searchPlaceholder}}" style="width:100%;border:none;outline:none;background:transparent;font-size:12.5px;color:#FFFFFF;font-weight:600">
+      </label>
+    </div>
+    <div style="display:flex;gap:8px;overflow-x:auto;padding-bottom:1px">
+      <sc-for list="{{cats}}" as="cat" hint-placeholder-count="5">
+        <a href="Library.dc.html" style="flex:0 0 auto;display:flex;align-items:center;gap:6px;padding:8px 14px;border-radius:999px;background:{{cat.bgStyle}}">
+          <span style="width:7px;height:7px;border-radius:999px;background:{{cat.dot}}"></span>
+          <span style="font-size:11px;font-weight:700;color:{{cat.textStyle}};text-transform:uppercase;letter-spacing:0.2px">{{cat.label}}</span>
+        </a>
+      </sc-for>
+    </div>
+  </div>
+
+  <div style="flex:1;display:flex;flex-direction:column;gap:3px;overflow:hidden;position:relative;z-index:2">
+    <div style="font-size:10.5px;font-weight:800;color:{{gray}};text-transform:uppercase;letter-spacing:0.6px;padding:6px 20px 10px 20px">{{sectionLabel}}</div>
+
+    <a href="ExerciseDetail.dc.html" style="display:flex;flex-direction:column">
+      <div style="position:relative;height:122px;background:{{catGlow}};display:flex;align-items:center;justify-content:center;overflow:hidden">
+        <svg viewBox="0 0 100 100" width="62" height="62" fill="none">
+          <path d="M52 27 L49 56 M49 34 L33 42 M49 34 L66 45 M49 56 L36 80 M49 56 L62 82" stroke="#000000" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"></path>
+          <path d="M52 27 L49 56 M49 34 L33 42 M49 34 L66 45 M49 56 L36 80 M49 56 L62 82" stroke="{{mannequinYellow}}" stroke-width="7.5" stroke-linecap="round" stroke-linejoin="round"></path>
+          <circle cx="52" cy="18" r="9.5" fill="{{mannequinYellow}}" stroke="#000000" stroke-width="3.5"></circle>
+        </svg>
+        <div style="position:absolute;top:10px;right:16px;font-size:10.5px;font-weight:800;color:#FFFFFF;background:rgba(0,0,0,0.4);border-radius:999px;padding:3px 10px">{{ex1.duration}}</div>
+        <div style="position:absolute;bottom:10px;left:16px;width:30px;height:30px;border-radius:999px;background:rgba(255,255,255,0.92);display:flex;align-items:center;justify-content:center">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="{{catColor}}"><path d="M8 5V19L19 12Z"></path></svg>
+        </div>
+      </div>
+      <div style="padding:13px 20px 16px 20px;display:flex;flex-direction:column;gap:5px;border-bottom:1px solid {{line}}">
+        <div style="font-family:{{displayFont}};font-weight:700;font-size:15.5px;text-transform:uppercase;letter-spacing:0.3px">{{ex1.title}}</div>
+        <div style="font-size:11.5px;color:{{gray}};font-weight:600">{{ex1.desc}}</div>
+        <div style="display:flex;align-items:center;gap:8px;margin-top:2px">
+          <div style="display:flex;gap:3px">
+            <sc-for list="{{ex1.pips}}" as="p" hint-placeholder-count="5">
+              <span style="width:12px;height:4px;border-radius:2px;background:{{p.color}}"></span>
+            </sc-for>
+          </div>
+          <span style="font-size:10px;font-weight:700;color:{{gray}};text-transform:uppercase">{{ex1.level}}</span>
+        </div>
+      </div>
+    </a>
+
+    <div style="display:flex;flex-direction:column">
+      <div style="position:relative;height:122px;background:{{catGlow}};display:flex;align-items:center;justify-content:center;overflow:hidden">
+        <svg viewBox="0 0 100 100" width="62" height="62" fill="none">
+          <path d="M52 27 L49 56 M49 34 L33 42 M49 34 L66 45 M49 56 L36 80 M49 56 L62 82" stroke="#000000" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"></path>
+          <path d="M52 27 L49 56 M49 34 L33 42 M49 34 L66 45 M49 56 L36 80 M49 56 L62 82" stroke="{{mannequinYellow}}" stroke-width="7.5" stroke-linecap="round" stroke-linejoin="round"></path>
+          <circle cx="52" cy="18" r="9.5" fill="{{mannequinYellow}}" stroke="#000000" stroke-width="3.5"></circle>
+        </svg>
+        <div style="position:absolute;top:10px;right:16px;font-size:10.5px;font-weight:800;color:#FFFFFF;background:rgba(0,0,0,0.4);border-radius:999px;padding:3px 10px">{{ex2.duration}}</div>
+        <div style="position:absolute;bottom:10px;left:16px;width:30px;height:30px;border-radius:999px;background:rgba(255,255,255,0.92);display:flex;align-items:center;justify-content:center">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="{{catColor}}"><path d="M8 5V19L19 12Z"></path></svg>
+        </div>
+      </div>
+      <div style="padding:13px 20px 16px 20px;display:flex;flex-direction:column;gap:5px;border-bottom:1px solid {{line}}">
+        <div style="font-family:{{displayFont}};font-weight:700;font-size:15.5px;text-transform:uppercase;letter-spacing:0.3px">{{ex2.title}}</div>
+        <div style="font-size:11.5px;color:{{gray}};font-weight:600">{{ex2.desc}}</div>
+        <div style="display:flex;align-items:center;gap:8px;margin-top:2px">
+          <div style="display:flex;gap:3px">
+            <sc-for list="{{ex2.pips}}" as="p" hint-placeholder-count="5">
+              <span style="width:12px;height:4px;border-radius:2px;background:{{p.color}}"></span>
+            </sc-for>
+          </div>
+          <span style="font-size:10px;font-weight:700;color:{{gray}};text-transform:uppercase">{{ex2.level}}</span>
+        </div>
+      </div>
+    </div>
+
+    <div style="display:flex;flex-direction:column">
+      <div style="position:relative;height:122px;background:{{catGlow}};display:flex;align-items:center;justify-content:center;overflow:hidden">
+        <svg viewBox="0 0 100 100" width="62" height="62" fill="none">
+          <path d="M52 27 L49 56 M49 34 L33 42 M49 34 L66 45 M49 56 L36 80 M49 56 L62 82" stroke="#000000" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"></path>
+          <path d="M52 27 L49 56 M49 34 L33 42 M49 34 L66 45 M49 56 L36 80 M49 56 L62 82" stroke="{{mannequinYellow}}" stroke-width="7.5" stroke-linecap="round" stroke-linejoin="round"></path>
+          <circle cx="52" cy="18" r="9.5" fill="{{mannequinYellow}}" stroke="#000000" stroke-width="3.5"></circle>
+        </svg>
+        <div style="position:absolute;top:10px;right:16px;font-size:10.5px;font-weight:800;color:#FFFFFF;background:rgba(0,0,0,0.4);border-radius:999px;padding:3px 10px">{{ex3.duration}}</div>
+        <div style="position:absolute;bottom:10px;left:16px;width:30px;height:30px;border-radius:999px;background:rgba(255,255,255,0.92);display:flex;align-items:center;justify-content:center">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="{{catColor}}"><path d="M8 5V19L19 12Z"></path></svg>
+        </div>
+      </div>
+      <div style="padding:13px 20px 16px 20px;display:flex;flex-direction:column;gap:5px">
+        <div style="font-family:{{displayFont}};font-weight:700;font-size:15.5px;text-transform:uppercase;letter-spacing:0.3px">{{ex3.title}}</div>
+        <div style="font-size:11.5px;color:{{gray}};font-weight:600">{{ex3.desc}}</div>
+        <div style="display:flex;align-items:center;gap:8px;margin-top:2px">
+          <div style="display:flex;gap:3px">
+            <sc-for list="{{ex3.pips}}" as="p" hint-placeholder-count="5">
+              <span style="width:12px;height:4px;border-radius:2px;background:{{p.color}}"></span>
+            </sc-for>
+          </div>
+          <span style="font-size:10px;font-weight:700;color:{{gray}};text-transform:uppercase">{{ex3.level}}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div style="display:flex;align-items:stretch;justify-content:space-around;background:{{ink}};border-top:1px solid {{line}};padding:9px 6px 14px 6px;position:relative;z-index:2">
+    <a href="Main.dc.html" style="display:flex;flex-direction:column;align-items:center;gap:3px;padding:4px 11px;color:{{gray}}">
+      <svg width="19" height="19" viewBox="0 0 24 24" fill="none"><path d="M4 11L12 4L20 11V19A1 1 0 0 1 19 20H14V14H10V20H5A1 1 0 0 1 4 19Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"></path></svg>
+      <span style="font-size:9px;font-weight:600;text-transform:uppercase">{{nav.home}}</span>
+    </a>
+    <a href="Library.dc.html" style="display:flex;flex-direction:column;align-items:center;gap:3px;padding:4px 11px;color:{{volt}}">
+      <svg width="19" height="19" viewBox="0 0 24 24" fill="none"><path d="M5 4H12V20H5A1 1 0 0 1 4 19V5A1 1 0 0 1 5 4Z" stroke="currentColor" stroke-width="2"></path><path d="M12 4H19A1 1 0 0 1 20 5V19A1 1 0 0 1 19 20H12" stroke="currentColor" stroke-width="2"></path></svg>
+      <span style="font-size:9px;font-weight:700;text-transform:uppercase">{{nav.library}}</span>
+    </a>
+    <a href="Timer.dc.html" style="display:flex;flex-direction:column;align-items:center;gap:3px;padding:4px 11px;color:{{gray}}">
+      <svg width="19" height="19" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="13" r="8" stroke="currentColor" stroke-width="1.8"></circle><path d="M12 9V13L15 15" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"></path><path d="M9 3H15" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"></path></svg>
+      <span style="font-size:9px;font-weight:600;text-transform:uppercase">{{nav.timer}}</span>
+    </a>
+    <a href="Calendar.dc.html" style="display:flex;flex-direction:column;align-items:center;gap:3px;padding:4px 11px;color:{{gray}}">
+      <svg width="19" height="19" viewBox="0 0 24 24" fill="none"><rect x="4" y="5" width="16" height="16" rx="2" stroke="currentColor" stroke-width="1.8"></rect><path d="M8 3V7M16 3V7M4 10H20" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"></path></svg>
+      <span style="font-size:9px;font-weight:600;text-transform:uppercase">{{nav.calendar}}</span>
+    </a>
+    <a href="Profile.dc.html" style="display:flex;flex-direction:column;align-items:center;gap:3px;padding:4px 11px;color:{{gray}}">
+      <svg width="19" height="19" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="4" stroke="currentColor" stroke-width="1.8"></circle><path d="M4 20C4 16 7.5 14 12 14C16.5 14 20 16 20 20" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"></path></svg>
+      <span style="font-size:9px;font-weight:600;text-transform:uppercase">{{nav.profile}}</span>
+    </a>
+  </div>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"lang":{"editor":"enum","default":"ru","options":["ru","en"],"section":"Язык / Language"},"mode":{"editor":"enum","default":"child","options":["child","coach"],"section":"Режим / Mode"},"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const lang = this.props.lang ?? 'ru';
+    const mode = this.props.mode ?? 'child';
+    const isChild = mode === 'child';
+    const isRu = lang === 'ru';
+
+    const ink = '#0B2A1B';
+    const inkDeep = '#071C11';
+    const surface = '#153B27';
+    const gray = '#9FC2AC';
+    const volt = '#D7FE3B';
+    const mannequinYellow = '#FFD400';
+    const line = 'rgba(255,255,255,0.1)';
+    const catColor = '#39E075';
+
+    const catColors = ['#39E075', '#4D8CFF', '#FF7A3D', '#C79BFF', '#F2C230'];
+    const catsRu = ['Разминка', 'Баланс', 'Сила', 'Техника', 'Игры'];
+    const catsEn = ['Warm-up', 'Balance', 'Strength', 'Technique', 'Games'];
+    const cats = (isRu ? catsRu : catsEn).map((label, i) => ({
+      label, dot: catColors[i],
+      bgStyle: i === 0 ? '#FFFFFF' : surface,
+      textStyle: i === 0 ? ink : '#FFFFFF'
+    }));
+
+    const pipsFor = (lvl) => [0, 1, 2, 3, 4].map(i => ({ color: i < lvl ? volt : 'rgba(255,255,255,0.16)' }));
+
+    const exRu = [
+      { title: 'Игра на внимание', desc: 'Беги и замри по сигналу тренера', level: 'Ур. 1', duration: '5 мин', pips: pipsFor(1) },
+      { title: 'Бег с остановками', desc: 'Бег вперёд, быстрая остановка, рывок назад', level: 'Ур. 1', duration: '4 мин', pips: pipsFor(1) },
+      { title: 'Смена направления', desc: 'Резкая смена направления бега с мячом', level: 'Ур. 2', duration: '4 мин', pips: pipsFor(2) }
+    ];
+    const exEn = [
+      { title: 'Alertness Game', desc: 'Run and freeze on the coach’s signal', level: 'Lvl 1', duration: '5 min', pips: pipsFor(1) },
+      { title: 'Stop & Go Running', desc: 'Run forward, stop sharply, sprint back', level: 'Lvl 1', duration: '4 min', pips: pipsFor(1) },
+      { title: 'Change of Direction', desc: 'Sharp direction changes while running', level: 'Lvl 2', duration: '4 min', pips: pipsFor(2) }
+    ];
+    const ex = isRu ? exRu : exEn;
+
+    return {
+      ink, surface, gray, volt, line, catColor, mannequinYellow,
+      stripeTexture: `repeating-linear-gradient(135deg, ${ink} 0px 46px, ${inkDeep} 46px 92px)`,
+      catGlow: `radial-gradient(circle at 50% 45%, rgba(57,224,117,0.3) 0%, rgba(11,42,27,0) 70%), ${ink}`,
+      displayFont: "'Oswald', system-ui, sans-serif",
+      bodyFont: "'Manrope', system-ui, sans-serif",
+      headerTitle: isRu ? 'Упражнения' : 'Exercises',
+      searchLabel: isRu ? 'Поиск упражнений' : 'Search exercises',
+      searchPlaceholder: isRu ? 'Поиск упражнений' : 'Search exercises',
+      sectionLabel: isRu ? 'Разминка · методика grassroots-футбола' : 'Warm-up · grassroots football method',
+      cats,
+      ex1: ex[0], ex2: ex[1], ex3: ex[2],
+      nav: {
+        home: isRu ? 'Главная' : 'Home',
+        library: isRu ? 'Упражнения' : 'Exercises',
+        timer: isRu ? 'Таймер' : 'Timer',
+        calendar: isRu ? 'Календарь' : 'Calendar',
+        profile: isRu ? 'Профиль' : 'Profile'
+      }
+    };
+  }
+}
+</script>
+</body>
+</html>

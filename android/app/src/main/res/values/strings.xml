@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">KickStart Kids</string>
+    <string name="title_activity_main">KickStart Kids</string>
+    <string name="package_name">ru.kickstart.kids</string>
+    <string name="custom_url_scheme">ru.kickstart.kids</string>
+</resources>

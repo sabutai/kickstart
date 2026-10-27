@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<title>Таймер тренировки</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&amp;family=Manrope:wght@400;500;600;700;800&amp;display=swap">
+<style>
+html,body{margin:0;overflow:hidden}
+*{box-sizing:border-box}
+a{text-decoration:none;color:inherit}
+button{font-family:inherit;border:none;background:none;cursor:pointer}
+</style>
+</helmet>
+
+<div style="width:390px;height:844px;background:{{ink}};font-family:{{bodyFont}};display:flex;flex-direction:column;overflow:hidden;position:relative;color:#FFFFFF">
+
+  <svg viewBox="0 0 100 130" width="330" height="430" fill="none" style="position:absolute;left:30px;top:150px;z-index:0">
+    <path d="M22 70 L38 62 M24 80 L40 76 M26 90 L41 88" stroke="#FFFFFF" stroke-width="2.4" stroke-linecap="round" opacity="0.14"></path>
+    <path d="M50 30 L53 62 M53 36 L31 25 M53 36 L74 45 M53 62 L49 102 L45 111 M53 62 L72 76 L79 58" stroke="#000000" stroke-width="15" stroke-linecap="round" stroke-linejoin="round"></path>
+    <path d="M50 30 L53 62 M53 36 L31 25 M53 36 L74 45 M53 62 L49 102 L45 111 M53 62 L72 76 L79 58" stroke="{{mannequinYellow}}" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"></path>
+    <circle cx="50" cy="19" r="12" fill="{{mannequinYellow}}" stroke="#000000" stroke-width="4.5"></circle>
+    <path d="M78 52 L94 46 M80 60 L96 56 M82 68 L96 66" stroke="#FFFFFF" stroke-width="2.4" stroke-linecap="round" opacity="0.14"></path>
+  </svg>
+
+  <div style="position:relative;z-index:1;display:flex;flex-direction:column;height:100%">
+
+  <div style="display:flex;align-items:center;justify-content:space-between;padding:24px 20px 4px 20px">
+    <div style="font-size:10.5px;font-weight:800;background:{{surface}};border-radius:999px;padding:6px 13px;text-transform:uppercase;letter-spacing:0.4px;color:{{gray}}">{{category}}</div>
+    <div style="display:flex;align-items:center;gap:8px">
+      <a href="TimerLandscape.dc.html" aria-label="{{rotateToLandscape}}" style="width:32px;height:32px;border-radius:999px;background:{{surface}};display:flex;align-items:center;justify-content:center">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><rect x="7" y="2" width="10" height="20" rx="2.5" stroke="#FFFFFF" stroke-width="1.8"></rect><path d="M3 19L1 16.5L3 14" stroke="#FFFFFF" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+      </a>
+      <a href="ExerciseDetail.dc.html" aria-label="{{close}}" style="width:32px;height:32px;border-radius:999px;background:{{surface}};display:flex;align-items:center;justify-content:center">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M6 6L18 18M18 6L6 18" stroke="#FFFFFF" stroke-width="2.2" stroke-linecap="round"></path></svg>
+      </a>
+    </div>
+  </div>
+
+  <div style="padding:10px 20px 0 20px;font-family:{{displayFont}};font-size:21px;font-weight:700;text-transform:uppercase;letter-spacing:0.4px;text-shadow:0 2px 10px rgba(0,0,0,0.6)">{{exerciseName}}</div>
+
+  <div style="display:flex;justify-content:center;gap:8px;padding:16px 20px 4px 20px">
+    <sc-for list="{{sets}}" as="s" hint-placeholder-count="3">
+      <span style="width:{{s.size}};height:5px;border-radius:999px;background:{{s.color}}"></span>
+    </sc-for>
+  </div>
+  <div style="text-align:center;font-size:11px;font-weight:700;color:{{gray}};text-transform:uppercase;letter-spacing:0.4px;text-shadow:0 1px 6px rgba(0,0,0,0.6)">{{setLabel}}</div>
+
+  <div style="flex:1;display:flex;align-items:center;justify-content:center;padding:4px 20px">
+    <div style="position:relative;width:228px;height:228px;display:flex;align-items:center;justify-content:center">
+      <svg width="228" height="228" viewBox="0 0 228 228" style="position:absolute;inset:0">
+        <circle cx="114" cy="114" r="100" fill="none" stroke="rgba(255,255,255,0.14)" stroke-width="12"></circle>
+        <circle cx="114" cy="114" r="100" fill="none" stroke="{{volt}}" stroke-width="12" stroke-linecap="round" stroke-dasharray="628" stroke-dashoffset="155" transform="rotate(-90 114 114)"></circle>
+      </svg>
+      <div style="font-family:{{displayFont}};font-size:52px;font-weight:700;line-height:1;text-shadow:0 3px 14px rgba(0,0,0,0.75)">{{timeLabel}}</div>
+    </div>
+  </div>
+
+  <div style="display:flex;align-items:center;justify-content:center;gap:28px;padding:4px 20px 16px 20px">
+    <button aria-label="{{replay}}" style="width:46px;height:46px;border-radius:999px;background:{{surface}};display:flex;align-items:center;justify-content:center">
+      <svg width="19" height="19" viewBox="0 0 24 24" fill="none"><path d="M4 12A8 8 0 0 1 19 8.5M20 12A8 8 0 0 1 5 15.5" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round"></path><path d="M16 5L19 8.5L15.5 9.5M8 19L5 15.5L8.5 14.5" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+    </button>
+    <button aria-label="{{pause}}" style="width:74px;height:74px;border-radius:999px;background:{{volt}};display:flex;align-items:center;justify-content:center">
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="{{ink}}"><rect x="6" y="5" width="4" height="14" rx="1.2"></rect><rect x="14" y="5" width="4" height="14" rx="1.2"></rect></svg>
+    </button>
+    <button aria-label="{{skip}}" style="width:46px;height:46px;border-radius:999px;background:{{surface}};display:flex;align-items:center;justify-content:center">
+      <svg width="19" height="19" viewBox="0 0 24 24" fill="none"><path d="M6 5L16 12L6 19Z" fill="#FFFFFF"></path><rect x="17" y="5" width="2.6" height="14" fill="#FFFFFF"></rect></svg>
+    </button>
+  </div>
+
+  <div style="padding:10px 20px 10px 20px;border-top:1px solid rgba(255,255,255,0.12)">
+    <a href="RestTimer.dc.html" style="display:flex;align-items:center;gap:11px" aria-label="{{upNextLabel}} {{upNextValue}}">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M5 12H19M19 12L13 6M19 12L13 18" stroke="{{volt}}" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+      <div style="font-size:12px;text-shadow:0 1px 6px rgba(0,0,0,0.6);flex:1"><span style="color:{{gray}};font-weight:600">{{upNextLabel}} </span><span style="font-weight:700">{{upNextValue}}</span></div>
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" style="flex:0 0 auto"><path d="M9 6L16 12L9 18" stroke="{{gray}}" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+    </a>
+  </div>
+
+  <sc-if value="{{isChild}}">
+    <div style="padding:0 20px 14px 20px;display:flex;align-items:center;gap:9px;justify-content:center">
+      <span style="font-size:16px">⭐</span>
+      <div style="font-size:12.5px;font-weight:800;color:{{accent}};text-transform:uppercase;letter-spacing:0.3px;text-shadow:0 1px 8px rgba(0,0,0,0.6)">{{encourage}}</div>
+    </div>
+  </sc-if>
+  <sc-if value="{{!isChild}}">
+    <div style="padding:0 20px 14px 20px;display:flex;flex-direction:column;gap:8px">
+      <div style="font-size:10.5px;font-weight:800;color:{{gray}};text-transform:uppercase;letter-spacing:0.4px">{{rateLabel}}</div>
+      <div style="display:flex;gap:6px">
+        <sc-for list="{{stars}}" as="st" hint-placeholder-count="5">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="{{st.fill}}" stroke="{{ink}}" stroke-width="1"><path d="M12 3L15 9L21 10L16.5 14.5L17.7 21L12 17.8L6.3 21L7.5 14.5L3 10L9 9Z"></path></svg>
+        </sc-for>
+      </div>
+    </div>
+  </sc-if>
+
+  <div style="text-align:center;padding-bottom:18px">
+    <a href="Main.dc.html" style="font-size:12px;font-weight:700;color:{{gray}};text-decoration:underline;text-transform:uppercase;letter-spacing:0.3px">{{endBtn}}</a>
+  </div>
+
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"lang":{"editor":"enum","default":"ru","options":["ru","en"],"section":"Язык / Language"},"mode":{"editor":"enum","default":"child","options":["child","coach"],"section":"Режим / Mode"},"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const lang = this.props.lang ?? 'ru';
+    const mode = this.props.mode ?? 'child';
+    const isChild = mode === 'child';
+    const isRu = lang === 'ru';
+
+    const ink = '#0B2A1B';
+    const surface = '#153B27';
+    const gray = '#9FC2AC';
+    const volt = '#D7FE3B';
+    const mannequinYellow = '#FFD400';
+
+    const theme = isChild ? { accent: '#FF5A1F' } : { accent: '#2A2A2A' };
+
+    const sets = [
+      { size: '36px', color: volt },
+      { size: '36px', color: volt },
+      { size: '36px', color: 'rgba(255,255,255,0.14)' }
+    ];
+    const stars = [
+      { fill: volt }, { fill: volt }, { fill: volt },
+      { fill: 'rgba(255,255,255,0.14)' }, { fill: 'rgba(255,255,255,0.14)' }
+    ];
+
+    return {
+      isChild, ink, surface, gray, volt, mannequinYellow,
+      accent: theme.accent,
+      displayFont: "'Oswald', system-ui, sans-serif",
+      bodyFont: "'Manrope', system-ui, sans-serif",
+      category: isRu ? 'Баланс и координация' : 'Balance & Coordination',
+      close: isRu ? 'Закрыть' : 'Close',
+      rotateToLandscape: isRu ? 'Повернуть в альбомный режим' : 'Rotate to landscape',
+      exerciseName: isRu ? 'Прыжки фигуриста' : 'Skating Jumps',
+      sets,
+      setLabel: isRu ? 'Подход 2 из 3' : 'Set 2 of 3',
+      timeLabel: '00:20',
+      replay: isRu ? 'Повторить демонстрацию' : 'Replay demo',
+      pause: isRu ? 'Пауза' : 'Pause',
+      skip: isRu ? 'Дальше' : 'Skip',
+      upNextLabel: isRu ? 'Далее:' : 'Up next:',
+      upNextValue: isRu ? 'Отдых 20 сек' : 'Rest 20 sec',
+      encourage: isRu ? 'Отлично! Ещё немного!' : 'Great job! Almost there!',
+      rateLabel: isRu ? 'Оценка техники' : 'Rate technique',
+      stars,
+      endBtn: isRu ? 'Завершить тренировку' : 'End session'
+    };
+  }
+}
+</script>
+</body>
+</html>

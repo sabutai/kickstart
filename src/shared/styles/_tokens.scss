@@ -1,0 +1,34 @@
+// Токены из дизайна KickStart Kids (канвас «KickStart Kids — приложение для юных футболистов»).
+// Используются как SASS-переменные и как CSS-переменные (см. global.scss).
+
+$color-ink: #0b2a1b;
+$color-ink-deep: #071c11;
+$color-surface: #153b27;
+$color-gray: #9fc2ac;
+$color-gray-dim: #6e8b78;
+$color-volt: #d7fe3b;
+$color-mannequin: #ffd400;
+$color-white: #ffffff;
+$color-line: rgba(255, 255, 255, 0.1);
+
+// Акцент зависит от режима: ребёнок — оранжевый, взрослый — белый.
+$color-accent-child: #ff5a1f;
+$color-accent-child-text: #ffffff;
+$color-accent-coach: #ffffff;
+$color-accent-coach-text: #0b2a1b;
+
+// Цвета категорий упражнений.
+$color-cat-warmup: #39e075;
+$color-cat-balance: #4d8cff;
+$color-cat-strength: #ff7a3d;
+$color-cat-technique: #c79bff;
+$color-cat-games: #f2c230;
+
+$font-display: 'Oswald', system-ui, sans-serif;
+$font-body: 'Manrope', system-ui, sans-serif;
+
+$radius-pill: 999px;
+$radius-card: 16px;
+
+$space-screen-x: 20px;
+$tap-min: 44px;

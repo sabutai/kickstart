@@ -1,0 +1,17 @@
+@use '../../styles/tokens' as *;
+
+.screen {
+  flex: 1;
+  overflow-y: auto;
+  padding: calc(24px + env(safe-area-inset-top)) $space-screen-x 16px;
+  background: repeating-linear-gradient(135deg, $color-ink 0 46px, $color-ink-deep 46px 92px);
+}
+
+.title {
+  margin: 0 0 12px;
+  font-family: $font-display;
+  font-size: 24px;
+  font-weight: 700;
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+}

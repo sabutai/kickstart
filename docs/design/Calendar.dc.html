@@ -1,0 +1,214 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<title>Календарь</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&amp;family=Manrope:wght@400;500;600;700;800&amp;display=swap">
+<style>
+html,body{margin:0;overflow:hidden}
+*{box-sizing:border-box}
+a{text-decoration:none;color:inherit}
+button{font-family:inherit;border:none;background:none;cursor:pointer}
+.statRow>div+div{border-left:1px solid rgba(255,255,255,0.1)}
+</style>
+</helmet>
+
+<div style="width:390px;height:844px;background:{{stripeTexture}};font-family:{{bodyFont}};display:flex;flex-direction:column;overflow:hidden;position:relative;color:#FFFFFF">
+
+  <svg width="390" height="300" viewBox="0 0 390 300" style="position:absolute;top:-40px;left:0;opacity:0.1;pointer-events:none">
+    <circle cx="195" cy="40" r="90" fill="none" stroke="#FFFFFF" stroke-width="2"></circle>
+    <line x1="0" y1="40" x2="390" y2="40" stroke="#FFFFFF" stroke-width="2"></line>
+  </svg>
+
+  <div style="padding:24px 20px 10px 20px;display:flex;flex-direction:column;gap:14px;flex:0 0 auto;position:relative;z-index:2">
+    <div style="display:flex;align-items:center;justify-content:space-between">
+      <div style="font-family:{{displayFont}};font-size:24px;font-weight:700;text-transform:uppercase;letter-spacing:0.6px">{{headerTitle}}</div>
+      <button aria-label="{{addLabel}}" style="width:32px;height:32px;border-radius:999px;background:{{accent}};display:flex;align-items:center;justify-content:center">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M12 5V19M5 12H19" stroke="{{accentText}}" stroke-width="2.4" stroke-linecap="round"></path></svg>
+      </button>
+    </div>
+    <div style="display:flex;align-items:center;justify-content:space-between">
+      <button aria-label="{{prevMonth}}" style="width:26px;height:26px;display:flex;align-items:center;justify-content:center">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M15 6L8 12L15 18" stroke="#FFFFFF" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+      </button>
+      <div style="font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:0.3px;color:{{gray}}">{{monthLabel}}</div>
+      <button aria-label="{{nextMonth}}" style="width:26px;height:26px;display:flex;align-items:center;justify-content:center">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M9 6L16 12L9 18" stroke="#FFFFFF" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+      </button>
+    </div>
+    <div style="display:flex;background:{{surface}};border-radius:999px;padding:3px">
+      <div style="flex:1;text-align:center;padding:7px 0;border-radius:999px;font-size:11.5px;font-weight:700;color:{{gray}};text-transform:uppercase">{{viewWeek}}</div>
+      <div style="flex:1;text-align:center;padding:7px 0;border-radius:999px;font-size:11.5px;font-weight:800;background:{{volt}};color:{{ink}};text-transform:uppercase">{{viewMonth}}</div>
+    </div>
+  </div>
+
+  <div style="flex:1;display:flex;flex-direction:column;gap:12px;padding:12px 20px 10px 20px;overflow:hidden;position:relative;z-index:2">
+
+    <div style="display:flex;flex-direction:column;gap:10px;padding-top:4px;border-top:1px solid {{line}}">
+      <div style="display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:2px">
+        <sc-for list="{{weekdayLabels}}" as="wd" hint-placeholder-count="7">
+          <div style="text-align:center;font-size:9.5px;font-weight:800;color:{{gray}}">{{wd}}</div>
+        </sc-for>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:2px">
+        <sc-for list="{{days}}" as="d" hint-placeholder-count="35">
+          <div style="aspect-ratio:1;display:flex;align-items:center;justify-content:center;position:relative">
+            <div style="width:29px;height:29px;border-radius:999px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;background:{{d.bg}};color:{{d.color}};border:{{d.border}}">
+              <sc-if value="{{d.showCheck}}" hint-placeholder-val="{{false}}">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M5 13L9.5 17.5L19 7" stroke="{{ink}}" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+              </sc-if>
+              <sc-if value="{{!d.showCheck}}" hint-placeholder-val="{{true}}">{{d.num}}</sc-if>
+            </div>
+          </div>
+        </sc-for>
+      </div>
+      <div style="display:flex;gap:14px;padding:4px 2px 0 2px">
+        <div style="display:flex;align-items:center;gap:5px;font-size:10px;color:{{gray}};font-weight:700">
+          <span style="width:9px;height:9px;border-radius:999px;background:{{volt}}"></span>{{legendDone}}
+        </div>
+        <div style="display:flex;align-items:center;gap:5px;font-size:10px;color:{{gray}};font-weight:700">
+          <span style="width:9px;height:9px;border-radius:999px;border:2px solid {{accent}}"></span>{{legendPlanned}}
+        </div>
+      </div>
+    </div>
+
+    <a href="ExerciseDetail.dc.html" style="position:relative;padding:14px 0;display:flex;align-items:center;justify-content:space-between;gap:10px;color:#FFFFFF;overflow:hidden;border-top:1px solid {{line}}">
+      <div style="position:absolute;right:-6px;top:-6px;font-family:{{displayFont}};font-size:92px;font-weight:700;color:rgba(255,255,255,0.06);line-height:1">15</div>
+      <div style="display:flex;flex-direction:column;gap:4px;position:relative">
+        <div style="font-size:10px;font-weight:800;color:{{volt}};text-transform:uppercase;letter-spacing:0.5px">{{todayCardLabel}}</div>
+        <div style="font-family:{{displayFont}};font-size:16px;font-weight:700;text-transform:uppercase;letter-spacing:0.3px">{{sessionTitle}}</div>
+        <div style="font-size:11px;color:{{gray}};font-weight:600">{{duration}}</div>
+      </div>
+      <div style="background:{{accent}};color:{{accentText}};border-radius:999px;padding:10px 17px;font-weight:800;font-size:12px;white-space:nowrap;position:relative;text-transform:uppercase;letter-spacing:0.4px;font-family:{{displayFont}}">{{startBtn}}</div>
+    </a>
+
+    <sc-if value="{{isChild}}">
+      <div style="text-align:center;padding-top:12px;border-top:1px solid {{line}};font-size:13px;font-weight:800;color:{{volt}};text-transform:uppercase;letter-spacing:0.3px">{{streakChild}}</div>
+    </sc-if>
+    <sc-if value="{{!isChild}}">
+      <div class="statRow" style="display:flex;padding-top:12px;border-top:1px solid {{line}}">
+        <sc-for list="{{coachStats}}" as="s" hint-placeholder-count="2">
+          <div style="flex:1;text-align:center">
+            <div style="font-family:{{displayFont}};font-size:17px;font-weight:700">{{s.value}}</div>
+            <div style="font-size:9px;color:{{gray}};font-weight:700;margin-top:3px;text-transform:uppercase">{{s.label}}</div>
+          </div>
+        </sc-for>
+      </div>
+    </sc-if>
+  </div>
+
+  <div style="display:flex;align-items:stretch;justify-content:space-around;background:{{ink}};border-top:1px solid {{line}};padding:9px 6px 14px 6px;position:relative;z-index:2">
+    <a href="Main.dc.html" style="display:flex;flex-direction:column;align-items:center;gap:3px;padding:4px 11px;color:{{gray}}">
+      <svg width="19" height="19" viewBox="0 0 24 24" fill="none"><path d="M4 11L12 4L20 11V19A1 1 0 0 1 19 20H14V14H10V20H5A1 1 0 0 1 4 19Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"></path></svg>
+      <span style="font-size:9px;font-weight:600;text-transform:uppercase">{{nav.home}}</span>
+    </a>
+    <a href="Library.dc.html" style="display:flex;flex-direction:column;align-items:center;gap:3px;padding:4px 11px;color:{{gray}}">
+      <svg width="19" height="19" viewBox="0 0 24 24" fill="none"><path d="M5 4H12V20H5A1 1 0 0 1 4 19V5A1 1 0 0 1 5 4Z" stroke="currentColor" stroke-width="1.8"></path><path d="M12 4H19A1 1 0 0 1 20 5V19A1 1 0 0 1 19 20H12" stroke="currentColor" stroke-width="1.8"></path></svg>
+      <span style="font-size:9px;font-weight:600;text-transform:uppercase">{{nav.library}}</span>
+    </a>
+    <a href="Timer.dc.html" style="display:flex;flex-direction:column;align-items:center;gap:3px;padding:4px 11px;color:{{gray}}">
+      <svg width="19" height="19" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="13" r="8" stroke="currentColor" stroke-width="1.8"></circle><path d="M12 9V13L15 15" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"></path><path d="M9 3H15" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"></path></svg>
+      <span style="font-size:9px;font-weight:600;text-transform:uppercase">{{nav.timer}}</span>
+    </a>
+    <a href="Calendar.dc.html" style="display:flex;flex-direction:column;align-items:center;gap:3px;padding:4px 11px;color:{{volt}}">
+      <svg width="19" height="19" viewBox="0 0 24 24" fill="none"><rect x="4" y="5" width="16" height="16" rx="2" stroke="currentColor" stroke-width="2"></rect><path d="M8 3V7M16 3V7M4 10H20" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path></svg>
+      <span style="font-size:9px;font-weight:700;text-transform:uppercase">{{nav.calendar}}</span>
+    </a>
+    <a href="Profile.dc.html" style="display:flex;flex-direction:column;align-items:center;gap:3px;padding:4px 11px;color:{{gray}}">
+      <svg width="19" height="19" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="4" stroke="currentColor" stroke-width="1.8"></circle><path d="M4 20C4 16 7.5 14 12 14C16.5 14 20 16 20 20" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"></path></svg>
+      <span style="font-size:9px;font-weight:600;text-transform:uppercase">{{nav.profile}}</span>
+    </a>
+  </div>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"lang":{"editor":"enum","default":"ru","options":["ru","en"],"section":"Язык / Language"},"mode":{"editor":"enum","default":"child","options":["child","coach"],"section":"Режим / Mode"},"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const lang = this.props.lang ?? 'ru';
+    const mode = this.props.mode ?? 'child';
+    const isChild = mode === 'child';
+    const isRu = lang === 'ru';
+
+    const theme = isChild
+      ? { accent: '#FF5A1F', accentText: '#FFFFFF' }
+      : { accent: '#FFFFFF', accentText: '#0B2A1B' };
+
+    const ink = '#0B2A1B';
+    const inkDeep = '#071C11';
+    const surface = '#153B27';
+    const gray = '#9FC2AC';
+    const volt = '#D7FE3B';
+    const line = 'rgba(255,255,255,0.1)';
+
+    // 28 Sep - 1 Nov 2026, Mon-first week; Oct 1 2026 = Thursday.
+    const cells = [
+      [28, true], [29, true], [30, true], [1, false], [2, false], [3, false], [4, false],
+      [5, false], [6, false], [7, false], [8, false], [9, false], [10, false], [11, false],
+      [12, false], [13, false], [14, false], [15, false], [16, false], [17, false], [18, false],
+      [19, false], [20, false], [21, false], [22, false], [23, false], [24, false], [25, false],
+      [26, false], [27, false], [28, false], [29, false], [30, false], [31, false], [1, true]
+    ];
+    const completedIdx = [0, 2, 4, 7, 9];
+    const todayIdx = 11;
+    const plannedIdx = [14, 16, 18, 21, 23, 25, 28, 30, 32];
+
+    const days = cells.map(([num, otherMonth], i) => {
+      const isCompleted = completedIdx.includes(i);
+      const isToday = i === todayIdx;
+      const isPlanned = plannedIdx.includes(i) || isToday;
+      let bgC = 'transparent', color = otherMonth ? 'rgba(255,255,255,0.3)' : '#FFFFFF', border = '1px solid transparent';
+      let showCheck = false;
+      if (isCompleted) { bgC = volt; color = ink; showCheck = true; }
+      else if (isToday) { bgC = theme.accent; color = theme.accentText; }
+      else if (isPlanned) { border = `2px solid ${theme.accent}`; }
+      return { num, bg: bgC, color, border, showCheck };
+    });
+
+    const weekdayLabelsRu = ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'];
+    const weekdayLabelsEn = ['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su'];
+
+    const coachStatsRu = [{ label: 'В этом месяце', value: '8' }, { label: 'Выполнено', value: '100%' }];
+    const coachStatsEn = [{ label: 'This month', value: '8' }, { label: 'Completed', value: '100%' }];
+
+    return {
+      isChild, ink, surface, gray, volt, line,
+      stripeTexture: `repeating-linear-gradient(135deg, ${ink} 0px 46px, ${inkDeep} 46px 92px)`,
+      accent: theme.accent, accentText: theme.accentText,
+      displayFont: "'Oswald', system-ui, sans-serif",
+      bodyFont: "'Manrope', system-ui, sans-serif",
+      headerTitle: isRu ? 'Календарь' : 'Calendar',
+      addLabel: isRu ? 'Добавить тренировку' : 'Add session',
+      prevMonth: isRu ? 'Предыдущий месяц' : 'Previous month',
+      nextMonth: isRu ? 'Следующий месяц' : 'Next month',
+      monthLabel: isRu ? 'Октябрь 2026' : 'October 2026',
+      viewWeek: isRu ? 'Неделя' : 'Week',
+      viewMonth: isRu ? 'Месяц' : 'Month',
+      weekdayLabels: isRu ? weekdayLabelsRu : weekdayLabelsEn,
+      days,
+      legendDone: isRu ? 'Выполнено' : 'Done',
+      legendPlanned: isRu ? 'Запланировано' : 'Planned',
+      todayCardLabel: isRu ? 'Сегодня' : 'Today',
+      sessionTitle: isRu ? 'Баланс и трюки' : 'Balance & Tricks',
+      duration: isRu ? '15 мин' : '15 min',
+      startBtn: isRu ? 'Начать' : 'Start',
+      streakChild: isRu ? '🔥 5 тренировок подряд' : '🔥 5-session streak',
+      coachStats: isRu ? coachStatsRu : coachStatsEn,
+      nav: {
+        home: isRu ? 'Главная' : 'Home',
+        library: isRu ? 'Упражнения' : 'Exercises',
+        timer: isRu ? 'Таймер' : 'Timer',
+        calendar: isRu ? 'Календарь' : 'Calendar',
+        profile: isRu ? 'Профиль' : 'Profile'
+      }
+    };
+  }
+}
+</script>
+</body>
+</html>
