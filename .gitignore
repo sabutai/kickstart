@@ -22,3 +22,6 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# копия wasm sql.js (scripts/copy-sql-wasm.mjs)
+public/wasm
