@@ -18,6 +18,7 @@
   },
   "dependencies": {
     "@capacitor-community/keep-awake": "^8.0.1",
+    "@capacitor-community/sqlite": "^8.1.1",
     "@capacitor/app": "^8.1.2",
     "@capacitor/core": "^8.5.3",
     "@capacitor/haptics": "^8.0.2",
@@ -31,10 +32,12 @@
     "effector": "^23.4.4",
     "effector-react": "^23.3.0",
     "i18next": "^26.5.11",
+    "jeep-sqlite": "^2.8.0",
     "react": "^19.3.1",
     "react-dom": "^19.3.1",
     "react-i18next": "^17.1.9",
     "react-router": "^8.5.0",
+    "sql.js": "^1.15.2",
     "zod": "^4.6.7"
   },
   "devDependencies": {
@@ -46,6 +49,7 @@
     "@types/node": "^24.19.2",
     "@types/react": "^19.3.0",
     "@types/react-dom": "^19.3.0",
+    "@types/sql.js": "^1.4.11",
     "@vitejs/plugin-react": "^6.1.2",
     "jsdom": "^29.1.1",
     "oxlint": "^1.88.0",
