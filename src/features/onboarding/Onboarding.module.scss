@@ -13,15 +13,23 @@
 .top {
   position: relative;
   display: flex;
-  align-items: center;
-  gap: 12px;
+  flex-direction: column;
+  gap: 8px;
   padding: calc(16px + env(safe-area-inset-top)) $space-screen-x 0;
+}
+
+// Кнопки «Назад»/«Пропустить» — отдельный ряд, а полоска шагов — своя строка на всю ширину:
+// так её ширина одинакова на всех шагах и не зависит от того, есть ли «Пропустить».
+.topRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: $tap-min;
 }
 
 .topSlot {
   display: flex;
   align-items: center;
-  justify-content: center;
   min-width: $tap-min;
   min-height: $tap-min;
 }
