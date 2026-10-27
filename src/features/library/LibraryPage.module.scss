@@ -1,0 +1,44 @@
+@use '../../shared/styles/tokens' as *;
+
+.chips {
+  display: flex;
+  gap: 9px;
+  margin-bottom: 14px;
+  padding-bottom: 2px;
+  overflow-x: auto;
+  scrollbar-width: none; // прокрутка пальцем остаётся, полоса не рисуется
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+.count {
+  margin: 0 0 10px;
+  font-size: $font-size-min;
+  font-weight: 800;
+  color: $color-gray;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.thumb {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  color: var(--cat);
+  background:
+    radial-gradient(circle at 50% 45%, color-mix(in srgb, var(--cat) 30%, transparent) 0%, transparent 70%),
+    $color-ink;
+}
