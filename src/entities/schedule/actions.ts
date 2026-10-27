@@ -1,6 +1,6 @@
 import { addDays } from 'date-fns';
 import type { PlannedSession } from '../user-data/schema';
-import { isoWeekday, toDate, toKey } from './dates';
+import { isoWeekday, toDate, toKey } from '../../shared/lib/dates';
 
 // Действия над занятием плана — чистые функции, ничего не мутируют и возвращают результат.
 // Календарь не сдвигается: пропуск и перенос трогают только само занятие («долга» нет).

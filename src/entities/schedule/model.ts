@@ -2,7 +2,7 @@ import { createEffect, createEvent, createStore, sample, type EventCallable } fr
 import { newId } from '../../shared/lib/id';
 import { getRepositories } from '../user-data/repos';
 import { markDone, moveToSunday, resetStatus, skip, type ActionResult, type Rejection } from './actions';
-import { toKey } from './dates';
+import { toKey } from '../../shared/lib/dates';
 import { PlannedSessionSchema, type PlannedSession, type Schedule } from '../user-data/schema';
 
 type Meta = 'id' | 'updatedAt' | 'deletedAt';

@@ -1,6 +1,6 @@
 import { addDays, differenceInCalendarWeeks, startOfISOWeek } from 'date-fns';
 import type { Schedule } from '../user-data/schema';
-import { isoWeekday, toDate, toKey } from './dates';
+import { isoWeekday, toDate, toKey } from '../../shared/lib/dates';
 import type { PlannedSessionInput } from './model';
 
 // Генератор календаря: чистая функция «расписание → занятия плана». Правила — docs/architecture.md.
