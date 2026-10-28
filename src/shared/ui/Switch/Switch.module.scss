@@ -22,20 +22,21 @@
 }
 
 .label {
-  font-size: 15px;
+  font-size: 13px;
   font-weight: 700;
 }
 
 .desc {
-  font-size: 12px;
+  font-size: $font-size-min;
+  font-weight: 600;
   color: $color-gray;
 }
 
 .track {
   position: relative;
   flex: 0 0 auto;
-  width: 52px;
-  height: 30px;
+  width: 46px;
+  height: 26px;
   border-radius: $radius-pill;
   background: $color-track;
   transition: background 0.15s ease;
@@ -49,15 +50,15 @@
   position: absolute;
   top: 3px;
   left: 3px;
-  width: 24px;
-  height: 24px;
+  width: 20px;
+  height: 20px;
   border-radius: 50%;
   background: $color-white;
   transition: transform 0.15s ease;
 
   .on & {
     background: $color-ink;
-    transform: translateX(22px);
+    transform: translateX(20px);
   }
 }
 

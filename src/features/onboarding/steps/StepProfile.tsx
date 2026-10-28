@@ -1,5 +1,6 @@
 import { useTranslation } from 'react-i18next';
 import { useUnit } from 'effector-react';
+import { Brand } from '../../../shared/ui/Brand/Brand';
 import { Stepper } from '../../../shared/ui/Stepper/Stepper';
 import { TextField } from '../../../shared/ui/TextField/TextField';
 import { $draft, ageChanged, nameChanged } from '../model';
@@ -11,6 +12,7 @@ export function StepProfile() {
   const [draft, setName, setAge] = useUnit([$draft, nameChanged, ageChanged]);
   return (
     <>
+      <Brand />
       <div>
         <h1 className={styles.headline}>{t('onboarding.step1.headline')}</h1>
         <p className={styles.subcopy}>{t('onboarding.step1.subcopy')}</p>
@@ -31,7 +33,7 @@ export function StepProfile() {
           onChange={setAge}
           decreaseLabel={t('onboarding.step1.ageDecrease')}
           increaseLabel={t('onboarding.step1.ageIncrease')}
-          format={(age) => t('ui.years', { count: age })}
+          unit={t('ui.yearsUnit', { count: draft.age })}
           label={t('onboarding.step1.ageLabel')}
         />
       </div>

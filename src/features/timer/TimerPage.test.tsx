@@ -197,6 +197,21 @@ describe('вступление и работа на время', () => {
   });
 });
 
+describe('повтор демонстрации на экране работы', () => {
+  it('кнопка слева от паузы перезапускает видео', async () => {
+    const playMock = vi.fn(() => Promise.resolve());
+    Object.defineProperty(HTMLMediaElement.prototype, 'play', { configurable: true, value: playMock });
+    const p = play(createPlayer(tiny(item('press-up-plank', 'program', { workSec: 15 })), Date.now()), {
+      type: 'begin',
+    });
+    await renderTimer({ player: p });
+    await userEvent.click(screen.getByRole('button', { name: 'Повторить демонстрацию' }));
+    expect(playMock).toHaveBeenCalledTimes(1);
+    // собственной кнопки плеера на экране работы нет — только эта
+    expect(screen.getAllByRole('button', { name: 'Повторить демонстрацию' })).toHaveLength(1);
+  });
+});
+
 describe('упражнения на повторы и на две стороны', () => {
   it('повторы: число и «Готово», таймера нет', async () => {
     const reps = createPlayer(

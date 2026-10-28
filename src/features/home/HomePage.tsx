@@ -10,6 +10,7 @@ import { $plannedSessions, sessionDone } from '../../entities/schedule/model';
 import type { PlannedSession } from '../../entities/user-data/schema';
 import { toDate } from '../../shared/lib/dates';
 import { useToday } from '../../shared/lib/useToday';
+import { Brand } from '../../shared/ui/Brand/Brand';
 import { Button } from '../../shared/ui/Button/Button';
 import { Card } from '../../shared/ui/Card/Card';
 import { Chip } from '../../shared/ui/Chip/Chip';
@@ -57,24 +58,27 @@ function TodayCard({ state }: { state: HomeState }) {
     const { session } = state;
     const title = t(`calendar.kind.${session.kind}`);
     return (
-      <Card as="section" padding="lg" label={t('home.today')}>
-        <div className={styles.label}>{t('home.today')}</div>
-        <h2 className={styles.cardTitle}>{title}</h2>
-        {session.kind === 'home' && (
-          <p className={styles.meta}>{t('calendar.minutes', { count: SESSION_MINUTES })}</p>
-        )}
-        <div className={styles.cardAction}>
-          {state.kind === 'club' ? (
-            <Button fullWidth onClick={() => markDone({ id: session.id })}>
-              {t('home.was')}
-            </Button>
-          ) : (
-            <Button to="/timer" fullWidth iconRight={ARROW}>
-              {t('home.start')}
-            </Button>
+      <section className={styles.hero} aria-label={t('home.today')}>
+        <div className={styles.heroArt}>
+          <Mascot emotion="joy" size={120} />
+          <span className={`${styles.badge} ${styles.badgeLeft}`}>{t('home.today')}</span>
+          {session.kind === 'home' && (
+            <span className={`${styles.badge} ${styles.badgeRight}`}>
+              {t('calendar.minutes', { count: SESSION_MINUTES })}
+            </span>
           )}
         </div>
-      </Card>
+        <h2 className={styles.heroTitle}>{title}</h2>
+        {state.kind === 'club' ? (
+          <Button fullWidth onClick={() => markDone({ id: session.id })}>
+            {t('home.was')}
+          </Button>
+        ) : (
+          <Button to="/timer" fullWidth iconRight={ARROW}>
+            {t('home.start')}
+          </Button>
+        )}
+      </section>
     );
   }
 
@@ -112,13 +116,17 @@ export function HomePage() {
   return (
     <Screen
       title={t('home.greeting', { name: profile?.name ?? '' })}
+      titleSize="lg"
       background="home"
       pitchLines
-      header={
-        <span className={styles.streak} aria-label={t('home.streak', { count: streak })}>
-          <span aria-hidden="true">🔥</span>
-          <span aria-hidden="true">{streak}</span>
-        </span>
+      eyebrow={
+        <>
+          <Brand />
+          <span className={styles.streak} aria-label={t('home.streak', { count: streak })}>
+            <span aria-hidden="true">🔥</span>
+            <span aria-hidden="true">{streak}</span>
+          </span>
+        </>
       }
     >
       <p className={styles.sub}>{t(SUB_KEYS[state.kind])}</p>

@@ -49,6 +49,11 @@ describe('DemoPlayer', () => {
     expect(render(<DemoPlayer demo={video} title="Прыжки" />).container.querySelector('.compact')).toBeNull();
   });
 
+  it('fill занимает весь блок (шапка экрана упражнения)', () => {
+    const { container } = render(<DemoPlayer demo={video} title="Прыжки" fill />);
+    expect(container.querySelector('.fill')).not.toBeNull();
+  });
+
   it('«Повторить демонстрацию» перематывает на начало и запускает', async () => {
     const { container } = render(<DemoPlayer demo={video} title="Прыжки" />);
     const el = container.querySelector('video')!;

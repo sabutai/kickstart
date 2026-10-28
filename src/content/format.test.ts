@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import i18n from '../app/i18n';
 import { getExercise } from './index';
-import { cardMeta, formatDuration, volumeStats } from './format';
+import { cardBadge, cardLevelText, formatDuration, volumeStats } from './format';
 
 const t = i18n.t.bind(i18n);
 const level = (id: string, n: number) => getExercise(id)!.levels[n - 1]!;
@@ -57,21 +57,31 @@ describe('volumeStats', () => {
   });
 });
 
-describe('cardMeta', () => {
-  it('многоуровневое: уровень и подходы', () => {
-    expect(cardMeta(t, getExercise('skating-jumps')!, 2)).toBe('Ур. 2 · 2 подхода');
+describe('cardBadge', () => {
+  it('многоуровневое: число подходов', () => {
+    expect(cardBadge(t, getExercise('skating-jumps')!, 2)).toBe('2 подхода');
+    expect(cardBadge(t, getExercise('single-leg-stance')!, 1)).toBe('1 подход');
   });
 
   it('одноуровневое: время работы; игры — в минутах', () => {
-    expect(cardMeta(t, getExercise('toe-taps')!, 1)).toBe('30–45 с');
-    expect(cardMeta(t, getExercise('traffic-light')!, 1)).toBe('3–4 мин');
+    expect(cardBadge(t, getExercise('toe-taps')!, 1)).toBe('30–45 с');
+    expect(cardBadge(t, getExercise('traffic-light')!, 1)).toBe('3–4 мин');
   });
 
-  it('упражнения с 5-й недели получают пометку', () => {
-    expect(cardMeta(t, getExercise('snail')!, 1)).toBe('30–45 с · с 5-й недели');
+  it('уровень вне диапазона не ломает значок', () => {
+    expect(cardBadge(t, getExercise('skating-jumps')!, 9)).toBe('2 подхода');
+  });
+});
+
+describe('cardLevelText', () => {
+  it('многоуровневое: «Ур. N» с учётом границ', () => {
+    expect(cardLevelText(t, getExercise('skating-jumps')!, 2)).toBe('Ур. 2');
+    expect(cardLevelText(t, getExercise('skating-jumps')!, 9)).toBe('Ур. 5');
   });
 
-  it('уровень вне диапазона не ломает подпись', () => {
-    expect(cardMeta(t, getExercise('skating-jumps')!, 9)).toBe('Ур. 5 · 2 подхода');
+  it('одноуровневое: пометка только если упражнение открывается позже', () => {
+    expect(cardLevelText(t, getExercise('snail')!, 1)).toBe('с 5-й недели');
+    expect(cardLevelText(t, getExercise('wall-pass')!, 1)).toBe('с 9-й недели');
+    expect(cardLevelText(t, getExercise('toe-taps')!, 1)).toBeUndefined();
   });
 });

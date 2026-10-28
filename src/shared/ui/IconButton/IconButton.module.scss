@@ -1,22 +1,41 @@
 @use '../../styles/tokens' as *;
 
+// Зона нажатия 44×44; видимый кружок (.disc) может быть меньше — как в макетах.
 .button {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: $tap-min;
-  height: $tap-min;
-  border-radius: $radius-pill;
-  background: $color-surface;
+  min-width: $tap-min;
+  min-height: $tap-min;
   color: $color-white;
 
   &:focus-visible {
     outline: 2px solid $color-volt;
     outline-offset: 2px;
+    border-radius: $radius-pill;
   }
 
   &:disabled {
     opacity: 0.4;
     cursor: not-allowed;
   }
+}
+
+.disc {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: $radius-pill;
+}
+
+.surface {
+  background: $color-surface;
+}
+
+.glass {
+  background: rgba(255, 255, 255, 0.14);
+}
+
+.plain {
+  background: transparent;
 }

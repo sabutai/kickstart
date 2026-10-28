@@ -79,7 +79,8 @@ describe('библиотека', () => {
     const card = screen.getByRole('link', { name: /Прыжки конькобежца/ });
     expect(card).toHaveAttribute('href', '/exercise/skating-jumps');
     expect(within(card).getByText(/голеностоп/)).toBeInTheDocument();
-    expect(within(card).getByText('Ур. 1 · 2 подхода')).toBeInTheDocument();
+    expect(within(card).getByText('Ур. 1')).toBeInTheDocument();
+    expect(within(card).getByText('2 подхода')).toBeInTheDocument();
     expect(within(card).getByRole('img', { name: 'Уровень 1 из 5' })).toBeInTheDocument();
   });
 
@@ -87,7 +88,8 @@ describe('библиотека', () => {
     renderLibrary('/library?category=technique');
     const snail = screen.getByRole('link', { name: /Улитка/ });
     expect(within(snail).queryByRole('img', { name: /Уровень/ })).toBeNull();
-    expect(within(snail).getByText('30–45 с · с 5-й недели')).toBeInTheDocument();
+    expect(within(snail).getByText('30–45 с')).toBeInTheDocument();
+    expect(within(snail).getByText('с 5-й недели')).toBeInTheDocument();
   });
 
   it('все карточки — настоящие ссылки на существующие упражнения', () => {

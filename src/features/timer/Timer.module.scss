@@ -22,9 +22,9 @@
   display: inline-flex;
   align-items: center;
   min-height: 32px;
-  padding: 0 12px;
+  padding: 0 13px;
   border-radius: $radius-pill;
-  background: rgba(0, 0, 0, 0.6);
+  background: $color-surface;
 }
 
 .partNo {
@@ -210,9 +210,23 @@
 
 .bigTime {
   font-family: $font-display;
-  font-size: 56px;
+  font-size: 52px;
   font-weight: 700;
   line-height: 1;
+}
+
+.bigTimeRest {
+  font-size: 48px;
+}
+
+.restLabel {
+  margin: 0;
+  font-size: 12px;
+  font-weight: 800;
+  color: $color-gray;
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 2px;
 }
 
 .repsBox {
@@ -239,8 +253,8 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 64px;
-  height: 64px;
+  width: 74px;
+  height: 74px;
   border-radius: 50%;
   background: $color-volt;
   color: $color-ink;
@@ -272,9 +286,24 @@
 
 .nextCard {
   display: flex;
+  gap: 14px;
+  align-items: center;
   padding: 14px;
   border-radius: $radius-card;
   background: $color-surface;
+}
+
+.nextThumb {
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  width: 72px;
+  height: 72px;
+  border-radius: 14px;
+  background:
+    radial-gradient(circle at 50% 45%, color-mix(in srgb, var(--cat) 30%, transparent) 0%, transparent 70%),
+    $color-ink;
 }
 
 .nextBody {

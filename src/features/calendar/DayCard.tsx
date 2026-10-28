@@ -57,13 +57,14 @@ export function DayCard({ date, today, session, onMoveRequested }: Props) {
   const canMarkWas = isClub && planned && date <= today;
   const canReset = (isClub && session.status !== 'planned') || (isHome && session.status === 'skipped');
   const canMove = isHome && planned && isoWeekday(day) === 6;
+  const hasPrimary = canStart || canMarkWas;
 
   return (
     <Card as="section" padding="lg" label={title}>
+      <div className={styles.numeral} aria-hidden="true">
+        {day.getDate()}
+      </div>
       <div className={styles.cardHead}>
-        <div className={styles.dayBadge} aria-hidden="true">
-          {day.getDate()}
-        </div>
         <div className={styles.cardInfo}>
           <div className={styles.cardLabel}>{title}</div>
           <div className={styles.cardTitle}>{t(`calendar.kind.${session.kind}`)}</div>
@@ -77,19 +78,19 @@ export function DayCard({ date, today, session, onMoveRequested }: Props) {
             </div>
           )}
         </div>
+        {hasPrimary &&
+          (canStart ? (
+            <Button to="/timer" size="sm">
+              {t('calendar.actions.start')}
+            </Button>
+          ) : (
+            <Button size="sm" onClick={() => markDone({ id })}>
+              {t('calendar.actions.was')}
+            </Button>
+          ))}
       </div>
 
       <div className={styles.actions}>
-        {canStart && (
-          <Button to="/timer" fullWidth>
-            {t('calendar.actions.start')}
-          </Button>
-        )}
-        {canMarkWas && (
-          <Button fullWidth onClick={() => markDone({ id })}>
-            {t('calendar.actions.was')}
-          </Button>
-        )}
         {canMove && (
           <Button
             variant="secondary"

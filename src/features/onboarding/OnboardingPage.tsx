@@ -54,12 +54,12 @@ export function OnboardingPage() {
   };
 
   return (
-    <main className={styles.shell}>
+    <main className={styles.shell} data-step={step}>
       <Backdrop background="onboarding" pitchLines />
       <div className={styles.top}>
         <span className={styles.topSlot}>
           {step > 1 && (
-            <IconButton label={t('onboarding.back')} onClick={() => void navigate(-1)}>
+            <IconButton label={t('onboarding.back')} size={30} onClick={() => void navigate(-1)}>
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
                 <path
                   d="M15 6L8 12L15 18"

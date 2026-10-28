@@ -42,6 +42,7 @@ export function StepStart() {
           <Chip
             key={preset}
             label={t(`onboarding.step3.${preset}`)}
+            grow
             selected={draft.startDate === presetDate(preset, today)}
             onClick={() => pick(presetDate(preset, today))}
           />
@@ -50,6 +51,8 @@ export function StepStart() {
       <div className={styles.section}>
         <div className={styles.monthRow}>
           <IconButton
+            size={26}
+            variant="plain"
             label={t('onboarding.step3.prevMonth')}
             disabled={month <= minMonth}
             onClick={() => setMonth(shiftMonth(month, -1))}
@@ -68,6 +71,8 @@ export function StepStart() {
             {monthTitle(month)}
           </span>
           <IconButton
+            size={26}
+            variant="plain"
             label={t('onboarding.step3.nextMonth')}
             disabled={month >= maxMonth}
             onClick={() => setMonth(shiftMonth(month, 1))}

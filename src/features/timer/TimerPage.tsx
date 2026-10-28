@@ -90,7 +90,7 @@ function PlayerScreen({ player }: { player: PlayerState }) {
               {t('timer.partProgress', { n: partIndex, total: player.session.parts.length })}
             </span>
           </span>
-          <IconButton label={t('timer.close')} onClick={() => openDialog()}>
+          <IconButton label={t('timer.close')} size={32} onClick={() => openDialog()}>
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden="true">
               <path d="M6 6L18 18M18 6L6 18" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" />
             </svg>

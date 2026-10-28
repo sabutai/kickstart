@@ -53,6 +53,8 @@ export function CalendarPage() {
     <Screen title={t('screens.calendar')} background="calendar" pitchLines>
       <div className={styles.monthRow}>
         <IconButton
+          size={26}
+          variant="plain"
           label={t('calendar.prevMonth')}
           disabled={month <= range.first}
           onClick={() => setMonth(shiftMonth(month, -1))}
@@ -71,6 +73,8 @@ export function CalendarPage() {
           {monthTitle(month)}
         </h2>
         <IconButton
+          size={26}
+          variant="plain"
           label={t('calendar.nextMonth')}
           disabled={month >= range.last}
           onClick={() => setMonth(shiftMonth(month, 1))}

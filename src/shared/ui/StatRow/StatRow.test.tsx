@@ -21,4 +21,9 @@ describe('StatRow', () => {
     const { container } = render(<StatRow items={[]} />);
     expect(container.querySelectorAll('dt')).toHaveLength(0);
   });
+
+  it('compact — компактные значения', () => {
+    const { container } = render(<StatRow compact items={[{ label: 'Подходов', value: '2' }]} />);
+    expect(container.querySelector('dl')).toHaveClass('compact');
+  });
 });

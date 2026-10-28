@@ -4,7 +4,7 @@ import styles from './Button.module.scss';
 
 type Common = {
   variant?: 'primary' | 'secondary' | 'ghost';
-  size?: 'md' | 'lg';
+  size?: 'sm' | 'md' | 'lg';
   fullWidth?: boolean;
   iconRight?: ReactNode;
   children: ReactNode;

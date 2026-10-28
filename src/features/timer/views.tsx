@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useUnit } from 'effector-react';
 import { volumeStats } from '../../content/format';
@@ -37,7 +38,15 @@ const ARROW = (
 );
 
 /** Название, уровень и демонстрация текущего упражнения. */
-function ExerciseHeader({ player, compact = false }: { player: PlayerState; compact?: boolean }) {
+function ExerciseHeader({
+  player,
+  compact = false,
+  replaySignal = 0,
+}: {
+  player: PlayerState;
+  compact?: boolean;
+  replaySignal?: number;
+}) {
   const { t } = useTranslation();
   const item = currentItem(player);
   const level = item.exercise.levels[item.level - 1]!;
@@ -48,6 +57,8 @@ function ExerciseHeader({ player, compact = false }: { player: PlayerState; comp
         demo={level.demo}
         title={item.exercise.title.ru}
         compact={compact}
+        replaySignal={replaySignal}
+        hideReplay={compact}
       />
       <header className={styles.exerciseHead}>
         <h1 className={styles.title}>{item.exercise.title.ru}</h1>
@@ -133,10 +144,11 @@ export function WorkView({ player, now }: ViewProps) {
   const remaining = remainingMs(player, now);
   const timed = remaining !== null;
   const setsDone = player.results[player.itemIndex]!.setsDone;
+  const [replaySignal, setReplaySignal] = useState(0);
 
   return (
     <>
-      <ExerciseHeader player={player} compact />
+      <ExerciseHeader player={player} compact replaySignal={replaySignal} />
       <div className={styles.setPips} aria-hidden="true">
         {Array.from({ length: turn.sets }, (_, i) => (
           <span
@@ -178,6 +190,23 @@ export function WorkView({ player, now }: ViewProps) {
       )}
 
       <div className={styles.controls}>
+        <IconButton label={t('exercise.demo.replay')} size={46} onClick={() => setReplaySignal((n) => n + 1)}>
+          <svg width="19" height="19" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path
+              d="M4 12A8 8 0 0 1 19 8.5M20 12A8 8 0 0 1 5 15.5"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+            />
+            <path
+              d="M19 4V9H14M5 20V15H10"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+          </svg>
+        </IconButton>
         {timed ? (
           <button
             type="button"
@@ -195,7 +224,7 @@ export function WorkView({ player, now }: ViewProps) {
             {t('timer.work.done')}
           </Button>
         )}
-        <IconButton label={t('timer.work.skip')} onClick={() => send({ type: 'skip' })}>
+        <IconButton label={t('timer.work.skip')} size={46} onClick={() => send({ type: 'skip' })}>
           <svg width="19" height="19" viewBox="0 0 24 24" fill="none" aria-hidden="true">
             <path d="M6 5L16 12L6 19Z" fill="currentColor" />
             <rect x="17" y="5" width="2.6" height="14" fill="currentColor" />
@@ -230,7 +259,7 @@ export function RestView({ player, now }: ViewProps) {
 
   return (
     <>
-      <h1 className={styles.title}>
+      <h1 className={styles.restLabel}>
         {rest.kind === 'side' ? t('timer.rest.sideTitle') : t('timer.rest.title')}
       </h1>
       <div className={styles.ringBox}>
@@ -240,7 +269,7 @@ export function RestView({ player, now }: ViewProps) {
           size={236}
           strokeWidth={11}
         >
-          <span className={styles.bigTime} role="timer">
+          <span className={`${styles.bigTime} ${styles.bigTimeRest}`} role="timer">
             {formatClock(remaining)}
           </span>
         </ProgressRing>
@@ -249,6 +278,13 @@ export function RestView({ player, now }: ViewProps) {
 
       {next && (
         <section className={styles.nextCard} aria-label={t('timer.rest.nextExercise')}>
+          <span
+            className={styles.nextThumb}
+            aria-hidden="true"
+            style={{ ['--cat' as string]: `var(--cat-${next.exercise.category})` }}
+          >
+            <Mascot emotion="joy" size={44} />
+          </span>
           <div className={styles.nextBody}>
             <span className={styles.sectionTitle}>{t('timer.rest.nextExercise')}</span>
             <span className={styles.nextTitle}>{next.exercise.title.ru}</span>

@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Mascot } from '../Mascot/Mascot';
 import styles from './DemoPlayer.module.scss';
@@ -11,6 +11,12 @@ type Props = {
   title: string;
   /** Низкий вариант для экрана работы: оставляет место кольцу и кнопкам. */
   compact?: boolean;
+  /** Занять весь родительский блок (шапка экрана упражнения). */
+  fill?: boolean;
+  /** Каждое новое значение перезапускает демонстрацию (кнопка «повторить» вне плеера). */
+  replaySignal?: number;
+  /** Не рисовать собственную кнопку повтора (когда она есть снаружи). */
+  hideReplay?: boolean;
 };
 
 const prefersReducedMotion = (): boolean =>
@@ -22,23 +28,34 @@ const asset = (path: string) => `${import.meta.env.BASE_URL}${path}`;
  * Демонстрация упражнения: зацикленное видео без звука либо картинка-превью.
  * Нет файла или он не загрузился — заглушка с Киком (на сегодня основной путь: медиа ещё нет).
  */
-export function DemoPlayer({ demo, title, compact = false }: Props) {
+export function DemoPlayer({
+  demo,
+  title,
+  compact = false,
+  fill = false,
+  replaySignal = 0,
+  hideReplay = false,
+}: Props) {
   const { t } = useTranslation();
   const videoRef = useRef<HTMLVideoElement>(null);
   const [failed, setFailed] = useState(false);
   // При «уменьшении движения» ничего не запускаем сами — только по кнопке.
   const [reducedMotion] = useState(prefersReducedMotion);
 
-  const play = () => {
+  const play = useCallback(() => {
     const video = videoRef.current;
     if (!video) return;
     video.currentTime = 0;
     void video.play()?.catch(() => setFailed(true));
-  };
+  }, []);
+
+  useEffect(() => {
+    if (replaySignal > 0) play();
+  }, [replaySignal, play]);
 
   return (
     <div
-      className={compact ? `${styles.root} ${styles.compact}` : styles.root}
+      className={[styles.root, compact && styles.compact, fill && styles.fill].filter(Boolean).join(' ')}
       role="group"
       aria-label={t('exercise.demo.label', { title })}
     >
@@ -60,9 +77,11 @@ export function DemoPlayer({ demo, title, compact = false }: Props) {
             playsInline
             onError={() => setFailed(true)}
           />
-          <button type="button" className={styles.replay} onClick={play}>
-            {t(reducedMotion ? 'exercise.demo.play' : 'exercise.demo.replay')}
-          </button>
+          {!hideReplay && (
+            <button type="button" className={styles.replay} onClick={play}>
+              {t(reducedMotion ? 'exercise.demo.play' : 'exercise.demo.replay')}
+            </button>
+          )}
         </>
       ) : (
         <img className={styles.media} src={asset(demo.src)} alt="" onError={() => setFailed(true)} />

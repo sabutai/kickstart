@@ -44,7 +44,7 @@ export function MonthGrid({ month, label, today, selected, minDate, maxDate, get
                 return (
                   <td key={cell.date} className={styles.cell}>
                     <span className={`${styles.day} ${styles.outside}`} aria-hidden="true">
-                      {cell.day}
+                      <span className={styles.disc}>{cell.day}</span>
                     </span>
                   </td>
                 );
@@ -80,19 +80,21 @@ export function MonthGrid({ month, label, today, selected, minDate, maxDate, get
                     disabled={outOfRange}
                     onClick={() => onSelect(cell.date)}
                   >
-                    {status === 'done' ? (
-                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                        <path
-                          d="M5 13L9.5 17.5L19 7"
-                          stroke="currentColor"
-                          strokeWidth="2.8"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        />
-                      </svg>
-                    ) : (
-                      cell.day
-                    )}
+                    <span className={styles.disc}>
+                      {status === 'done' ? (
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                          <path
+                            d="M5 13L9.5 17.5L19 7"
+                            stroke="currentColor"
+                            strokeWidth="2.8"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          />
+                        </svg>
+                      ) : (
+                        cell.day
+                      )}
+                    </span>
                   </button>
                 </td>
               );

@@ -11,8 +11,13 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 52px;
-  height: 52px;
+  width: 42px;
+  height: 42px;
+  // Зона нажатия 44 px при видимом кружке 42 (макет).
+  min-width: $tap-min;
+  min-height: $tap-min;
+  box-sizing: border-box;
+  padding: 1px;
   border-radius: $radius-pill;
   background: $color-surface;
   color: $color-white;
@@ -29,9 +34,22 @@
 }
 
 .value {
+  display: flex;
   flex: 1;
-  text-align: center;
+  align-items: baseline;
+  justify-content: center;
+  gap: 6px;
+}
+
+.number {
   font-family: $font-display;
-  font-size: 28px;
+  font-size: 42px;
   font-weight: 700;
+  line-height: 1;
+}
+
+.unit {
+  font-size: 12px;
+  font-weight: 700;
+  color: $color-gray;
 }
