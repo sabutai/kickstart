@@ -62,10 +62,15 @@ describe('программа (docs/program.md)', () => {
     expect(exercises).toHaveLength(33);
   });
 
-  it('упражнения, открывающиеся с 5-й недели', () => {
-    const later = exercises.filter((e) => e.fromWeek !== undefined).map((e) => e.id);
-    expect(later.sort()).toEqual(['fake-burst', 'ladder-ball', 'roll-stop', 'snail', 'stop-turn']);
-    for (const e of exercises.filter((x) => x.fromWeek)) expect(e.fromWeek).toBe(5);
+  it('упражнения, открывающиеся позже: с 5-й недели — 5 штук, с 9-й — wall-pass (прогрессия из program.md)', () => {
+    const week = (w: number) =>
+      exercises
+        .filter((e) => e.fromWeek === w)
+        .map((e) => e.id)
+        .sort();
+    expect(week(5)).toEqual(['fake-burst', 'ladder-ball', 'roll-stop', 'snail', 'stop-turn']);
+    expect(week(9)).toEqual(['wall-pass']);
+    expect(exercises.filter((e) => e.fromWeek !== undefined)).toHaveLength(6);
   });
 
   it('диапазоны времени сохранены: Б 30–45 с, В 10–15 с, мобильность 20–30 с', () => {

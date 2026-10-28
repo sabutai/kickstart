@@ -1,0 +1,359 @@
+@use '../../shared/styles/tokens' as *;
+
+.screen {
+  position: relative;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-height: 0;
+  overflow: hidden;
+  background: repeating-linear-gradient(135deg, $color-ink 0 46px, $color-ink-deep 46px 92px);
+}
+
+.top {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: calc(12px + env(safe-area-inset-top)) $space-screen-x 0;
+}
+
+.category {
+  display: inline-flex;
+  align-items: center;
+  min-height: 32px;
+  padding: 0 12px;
+  border-radius: $radius-pill;
+  background: rgba(0, 0, 0, 0.6);
+}
+
+.partNo {
+  font-size: $font-size-min;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+}
+
+.content {
+  position: relative;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 14px;
+  padding: 14px $space-screen-x;
+  overflow-y: auto;
+}
+
+.bottom {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  padding: 0 $space-screen-x calc(10px + env(safe-area-inset-bottom));
+}
+
+.endLink {
+  min-height: $tap-min;
+  padding: 0 16px;
+  font-size: 13px;
+  font-weight: 700;
+  color: $color-gray;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+
+  &:focus-visible {
+    outline: 2px solid $color-volt;
+    outline-offset: 2px;
+  }
+}
+
+.title {
+  margin: 0;
+  font-family: $font-display;
+  font-size: 26px;
+  font-weight: 700;
+  line-height: 1.05;
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+}
+
+.exerciseHead {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.sectionTitle {
+  margin: 0;
+  font-size: $font-size-min;
+  font-weight: 800;
+  color: $color-gray;
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.subtitle {
+  margin: 0 0 14px;
+  font-size: 14px;
+  font-weight: 600;
+  color: $color-gray;
+}
+
+.text {
+  margin: 0;
+  font-size: 15px;
+  line-height: 1.45;
+}
+
+.hint {
+  margin: 0;
+  font-size: 12px;
+  color: $color-gray;
+  text-align: center;
+}
+
+.center {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 700;
+  color: $color-gray;
+  text-align: center;
+}
+
+.centerBlock {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  text-align: center;
+}
+
+.safety {
+  margin: 14px 0;
+  padding: 12px 14px;
+  border-left: 3px solid $color-mannequin;
+  border-radius: 0 $radius-card $radius-card 0;
+  background: $color-surface;
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+.parts {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin: 10px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.partRow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.partNumber {
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: $color-surface;
+  color: $color-volt;
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.partName {
+  flex: 1;
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.partMinutes {
+  font-size: 13px;
+  font-weight: 700;
+  color: $color-gray;
+}
+
+.setPips {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+}
+
+.pip {
+  width: 36px;
+  height: 6px;
+  border-radius: 3px;
+  background: $color-track;
+}
+
+.pipDone {
+  background: $color-volt;
+}
+
+.pipNow {
+  background: $color-white;
+}
+
+.ringBox {
+  display: flex;
+  justify-content: center;
+}
+
+.bigTime {
+  font-family: $font-display;
+  font-size: 56px;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.repsBox {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 18px 0;
+}
+
+.repsLabel {
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 22px;
+}
+
+.pauseButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: $color-volt;
+  color: $color-ink;
+
+  &:focus-visible {
+    outline: 2px solid $color-white;
+    outline-offset: 2px;
+  }
+}
+
+.upNext {
+  margin: 0;
+  font-size: 13px;
+  font-weight: 700;
+  text-align: center;
+}
+
+.upNextLabel {
+  color: $color-gray;
+}
+
+.encourage {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 700;
+  color: $color-volt;
+  text-align: center;
+}
+
+.nextCard {
+  display: flex;
+  padding: 14px;
+  border-radius: $radius-card;
+  background: $color-surface;
+}
+
+.nextBody {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.nextTitle {
+  font-family: $font-display;
+  font-size: 18px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.stars {
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+}
+
+.star {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 58px;
+  min-height: 70px;
+  border-radius: $radius-card;
+  background: $color-surface;
+  color: $color-volt;
+
+  &:focus-visible {
+    outline: 2px solid $color-white;
+    outline-offset: 2px;
+  }
+}
+
+.starNumber {
+  font-size: 13px;
+  font-weight: 800;
+  color: $color-white;
+}
+
+.overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: $space-screen-x;
+  background: rgba(0, 0, 0, 0.72);
+}
+
+.dialog {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+  max-width: 340px;
+  padding: 20px;
+  border-radius: $radius-card;
+  background: $color-surface;
+}
+
+.keep {
+  min-height: 52px;
+  border-radius: $radius-pill;
+  background: var(--accent);
+  color: var(--accent-text);
+  font-family: $font-display;
+  font-size: 15px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+
+  &:focus-visible {
+    outline: 2px solid $color-white;
+    outline-offset: 2px;
+  }
+}

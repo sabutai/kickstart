@@ -23,7 +23,6 @@ export const routes: RouteObject[] = [
         children: [
           { index: true, element: <HomePage /> },
           { path: 'library', element: <LibraryPage /> },
-          { path: 'timer', element: <TimerPage /> },
           { path: 'calendar', element: <CalendarPage /> },
           { path: 'profile', element: <ProfilePage /> },
         ],
@@ -31,6 +30,8 @@ export const routes: RouteObject[] = [
       {
         element: <FullscreenLayout />,
         children: [
+          // Таймер — без таб-бара, как в макете: во время занятия ничто не должно отвлекать.
+          { path: 'timer', element: <TimerPage /> },
           { path: 'exercise/:exerciseId', element: <ExercisePage /> },
           { path: 'onboarding', element: <Navigate to="/onboarding/1" replace /> },
           { path: 'onboarding/:step', element: <OnboardingPage /> },
