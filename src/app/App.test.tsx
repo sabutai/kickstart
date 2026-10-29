@@ -124,10 +124,10 @@ describe('онбординг', () => {
 
   it('возраст: по умолчанию 8, границы 7–13', async () => {
     renderAt('/onboarding/1');
-    expect(await screen.findByText('8 лет')).toBeInTheDocument();
+    expect(await screen.findByRole('status', { name: '' })).toHaveTextContent('8лет');
     for (let i = 0; i < 3; i++)
       await userEvent.click(screen.getByRole('button', { name: 'Уменьшить возраст' }));
-    expect(screen.getByText('7 лет')).toBeInTheDocument();
+    expect(screen.getAllByRole('status')[0]).toHaveTextContent('7лет');
     expect(screen.getByRole('button', { name: 'Уменьшить возраст' })).toBeDisabled();
   });
 

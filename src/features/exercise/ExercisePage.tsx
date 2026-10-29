@@ -67,19 +67,13 @@ export function ExercisePage() {
   return (
     <main className={styles.page}>
       <div className={styles.hero}>
-        <DemoPlayer key={`${exercise.id}-${level}`} demo={data.demo} title={exercise.title.ru} />
+        <DemoPlayer key={`${exercise.id}-${level}`} demo={data.demo} title={exercise.title.ru} fill />
+        <div className={styles.heroShade} aria-hidden="true" />
         <div className={styles.heroTop}>
-          <IconButton label={t('exercise.back')} onClick={goBack}>
+          <IconButton label={t('exercise.back')} onClick={goBack} size={38} variant="glass">
             {BACK_ICON}
           </IconButton>
-          <span className={styles.category}>
-            <span
-              className={styles.dot}
-              style={{ background: `var(--cat-${exercise.category})` }}
-              aria-hidden="true"
-            />
-            {t(`categories.${exercise.category}`)}
-          </span>
+          <span className={styles.category}>{t(`categories.${exercise.category}`)}</span>
         </div>
       </div>
 
@@ -106,7 +100,7 @@ export function ExercisePage() {
           </div>
         )}
 
-        <StatRow items={volumeStats(t, data.volume)} />
+        <StatRow compact items={volumeStats(t, data.volume)} />
 
         {exercise.safety?.needsMat && (
           <p className={styles.safety} role="note">

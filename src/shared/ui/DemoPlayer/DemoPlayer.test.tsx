@@ -43,6 +43,17 @@ describe('DemoPlayer', () => {
     expect(screen.getByRole('group', { name: 'Демонстрация: Прыжки' })).toBeInTheDocument();
   });
 
+  it('compact — низкий вариант для экрана работы', () => {
+    const { container } = render(<DemoPlayer demo={video} title="Прыжки" compact />);
+    expect(container.querySelector('.compact')).not.toBeNull();
+    expect(render(<DemoPlayer demo={video} title="Прыжки" />).container.querySelector('.compact')).toBeNull();
+  });
+
+  it('fill занимает весь блок (шапка экрана упражнения)', () => {
+    const { container } = render(<DemoPlayer demo={video} title="Прыжки" fill />);
+    expect(container.querySelector('.fill')).not.toBeNull();
+  });
+
   it('«Повторить демонстрацию» перематывает на начало и запускает', async () => {
     const { container } = render(<DemoPlayer demo={video} title="Прыжки" />);
     const el = container.querySelector('video')!;

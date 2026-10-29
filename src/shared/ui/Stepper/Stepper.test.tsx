@@ -14,7 +14,7 @@ function Harness({ start, min = 7, max = 13 }: { start: number; min?: number; ma
       onChange={setV}
       decreaseLabel="Уменьшить возраст"
       increaseLabel="Увеличить возраст"
-      format={(n) => `${n} лет`}
+      unit="лет"
     />
   );
 }
@@ -22,12 +22,13 @@ function Harness({ start, min = 7, max = 13 }: { start: number; min?: number; ma
 describe('Stepper', () => {
   it('меняет значение кнопками и форматирует его', async () => {
     render(<Harness start={8} />);
-    expect(screen.getByText('8 лет')).toBeInTheDocument();
+    expect(screen.getByText('8')).toBeInTheDocument();
+    expect(screen.getByText('лет')).toBeInTheDocument();
     await userEvent.click(screen.getByRole('button', { name: 'Увеличить возраст' }));
-    expect(screen.getByText('9 лет')).toBeInTheDocument();
+    expect(screen.getByRole('status')).toHaveTextContent('9лет');
     await userEvent.click(screen.getByRole('button', { name: 'Уменьшить возраст' }));
     await userEvent.click(screen.getByRole('button', { name: 'Уменьшить возраст' }));
-    expect(screen.getByText('7 лет')).toBeInTheDocument();
+    expect(screen.getByRole('status')).toHaveTextContent('7лет');
   });
 
   it('на нижней границе «−» заблокирована, на верхней «+»', async () => {
@@ -42,6 +43,6 @@ describe('Stepper', () => {
   it('значение не выходит за границы', async () => {
     render(<Harness start={13} />);
     await userEvent.click(screen.getByRole('button', { name: 'Увеличить возраст' }));
-    expect(screen.getByText('13 лет')).toBeInTheDocument();
+    expect(screen.getByRole('status')).toHaveTextContent('13лет');
   });
 });

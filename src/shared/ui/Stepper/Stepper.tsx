@@ -7,13 +7,13 @@ type Props = {
   onChange: (value: number) => void;
   decreaseLabel: string;
   increaseLabel: string;
-  /** Как показать значение («8 лет»); по умолчанию просто число. */
-  format?: (value: number) => string;
+  /** Мелкая единица рядом с числом («лет»). */
+  unit?: string;
   label?: string;
 };
 
 /** Счётчик с кнопками «−» и «+»; на границах кнопка блокируется, значение не выходит за min/max. */
-export function Stepper({ value, min, max, onChange, decreaseLabel, increaseLabel, format, label }: Props) {
+export function Stepper({ value, min, max, onChange, decreaseLabel, increaseLabel, unit, label }: Props) {
   const clamp = (v: number) => Math.min(max, Math.max(min, v));
   return (
     <div className={styles.stepper} role="group" aria-label={label}>
@@ -29,7 +29,8 @@ export function Stepper({ value, min, max, onChange, decreaseLabel, increaseLabe
         </svg>
       </button>
       <output className={styles.value} aria-live="polite">
-        {format ? format(value) : value}
+        <span className={styles.number}>{value}</span>
+        {unit && <span className={styles.unit}>{unit}</span>}
       </output>
       <button
         type="button"

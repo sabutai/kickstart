@@ -34,15 +34,16 @@ export function volumeStats(t: TFunction, volume: ExerciseLevel['volume']): Stat
   return stats;
 }
 
-/** Подпись под названием в списке: «Ур. 2 · 2 подхода» или время; плюс «с 5-й недели». */
-export function cardMeta(t: TFunction, exercise: Exercise, level: number): string {
-  const current = clampLevel(exercise, level);
-  const volume = exercise.levels[current - 1]!.volume;
-  const base =
-    exercise.levels.length > 1
-      ? `${t('ui.levelShort', { level: current })} · ${t('library.sets', { count: volume.sets })}`
-      : volume.workSec !== undefined
-        ? formatDuration(t, volume.workSec, volume.workSecMax)
-        : t('library.sets', { count: volume.sets });
-  return exercise.fromWeek ? `${base} · ${t('library.fromWeek', { week: exercise.fromWeek })}` : base;
+/** Значок в углу превью: время работы или число подходов («30–45 с», «2 подхода»). */
+export function cardBadge(t: TFunction, exercise: Exercise, level: number): string {
+  const volume = exercise.levels[clampLevel(exercise, level) - 1]!.volume;
+  return exercise.levels.length === 1 && volume.workSec !== undefined
+    ? formatDuration(t, volume.workSec, volume.workSecMax)
+    : t('library.sets', { count: volume.sets });
+}
+
+/** Текст рядом с пипсами: «Ур. 2»; у упражнений с одним уровнем — «с 5-й недели», если они открываются позже. */
+export function cardLevelText(t: TFunction, exercise: Exercise, level: number): string | undefined {
+  if (exercise.levels.length > 1) return t('ui.levelShort', { level: clampLevel(exercise, level) });
+  return exercise.fromWeek ? t('library.fromWeek', { week: exercise.fromWeek }) : undefined;
 }

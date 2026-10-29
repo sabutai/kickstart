@@ -1,8 +1,7 @@
-import type { CSSProperties } from 'react';
 import { useSearchParams } from 'react-router';
 import { useTranslation } from 'react-i18next';
 import { useUnit } from 'effector-react';
-import { cardMeta } from '../../content/format';
+import { cardBadge, cardLevelText } from '../../content/format';
 import { CATEGORY_ORDER, describeExercise, exercisesIn, isCategory } from '../../content/selectors';
 import type { Category } from '../../content/schema';
 import { $exerciseLevels } from '../../entities/progress/model';
@@ -13,17 +12,6 @@ import { Screen } from '../../shared/ui/Screen/Screen';
 import styles from './LibraryPage.module.scss';
 
 const colorOf = (category: Category) => `var(--cat-${category})`;
-
-/** Превью-заглушка: свечение цвета категории и значок «играть» (пока нет видео и картинок). */
-function Thumb({ category }: { category: Category }) {
-  return (
-    <span className={styles.thumb} style={{ '--cat': colorOf(category) } as CSSProperties}>
-      <svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true">
-        <path d="M8 5V19L19 12Z" fill="currentColor" />
-      </svg>
-    </span>
-  );
-}
 
 export function LibraryPage() {
   const { t } = useTranslation();
@@ -69,10 +57,10 @@ export function LibraryPage() {
                     title={exercise.title.ru}
                     description={describeExercise(exercise)}
                     level={exercise.levels.length > 1 ? Math.min(level, exercise.levels.length) : undefined}
-                    meta={cardMeta(t, exercise, level)}
+                    levelText={cardLevelText(t, exercise, level)}
+                    badge={cardBadge(t, exercise, level)}
                     categoryColor={colorOf(exercise.category)}
                     to={`/exercise/${exercise.id}`}
-                    thumb={<Thumb category={exercise.category} />}
                   />
                 </li>
               );

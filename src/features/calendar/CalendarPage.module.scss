@@ -9,9 +9,9 @@
 
 .month {
   margin: 0;
-  font-family: $font-display;
-  font-size: 20px;
+  font-size: 13px;
   font-weight: 700;
+  letter-spacing: 0.3px;
   text-transform: capitalize;
 }
 
@@ -51,24 +51,24 @@
 }
 
 .cardHead {
+  position: relative;
   display: flex;
   gap: 14px;
   align-items: center;
+  justify-content: space-between;
 }
 
-.dayBadge {
-  display: flex;
-  flex: 0 0 auto;
-  align-items: center;
-  justify-content: center;
-  width: 52px;
-  height: 52px;
-  border-radius: $radius-card;
-  background: var(--accent);
-  color: var(--accent-text);
+// Огромная блёклая цифра дня на фоне карточки (макет Calendar).
+.numeral {
+  position: absolute;
+  top: -6px;
+  right: -6px;
   font-family: $font-display;
-  font-size: 22px;
+  font-size: 92px;
   font-weight: 700;
+  line-height: 1;
+  color: rgba($color-white, 0.06);
+  pointer-events: none;
 }
 
 .cardInfo {

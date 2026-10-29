@@ -13,9 +13,9 @@
 }
 
 .dot {
-  width: 16px;
-  height: 16px;
-  border: 2px solid $color-gray;
+  width: 13px;
+  height: 13px;
+  border: 2px solid $color-volt;
   border-radius: 50%;
 }
 
@@ -47,9 +47,8 @@
   border-radius: $radius-card;
   background: $color-surface;
   color: $color-white;
-  font-family: $font-display;
-  font-size: 22px;
-  font-weight: 700;
+  font-size: 19px;
+  font-weight: 600;
 
   &:active:not(:disabled) {
     background: $color-track;

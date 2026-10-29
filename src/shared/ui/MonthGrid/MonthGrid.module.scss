@@ -20,20 +20,20 @@
 }
 
 .day {
+  // Зона нажатия 44×44; сам кружок дня (.disc) — 29 px, как в макете.
   display: inline-flex;
   align-items: center;
   justify-content: center;
   width: $tap-min;
   height: $tap-min;
-  border: 2px solid transparent;
   border-radius: 50%;
   color: $color-white;
-  font-size: 14px;
-  font-weight: 700;
+  font-size: 11px;
+  font-weight: 800;
 
   &:focus-visible {
     outline: 2px solid $color-volt;
-    outline-offset: 2px;
+    outline-offset: -2px;
   }
 
   &:disabled {
@@ -42,16 +42,27 @@
   }
 }
 
+.disc {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 29px;
+  height: 29px;
+  border: 2px solid transparent;
+  border-radius: 50%;
+}
+
 .outside {
   opacity: 0.3;
 }
 
-.planned {
+.planned .disc {
   border-color: var(--accent);
 }
 
-.done {
+.done .disc {
   background: $color-volt;
+  border-color: $color-volt;
   color: $color-ink;
 }
 
@@ -61,12 +72,12 @@
   text-decoration: line-through;
 }
 
-.today {
+.today .disc {
   background: var(--accent);
   border-color: var(--accent);
   color: var(--accent-text);
 }
 
-.selected {
+.selected .disc {
   box-shadow: 0 0 0 2px $color-white;
 }

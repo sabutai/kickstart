@@ -36,8 +36,9 @@
 .skip {
   min-height: $tap-min;
   padding: 0 4px;
-  font-size: 13px;
+  font-size: 11px;
   font-weight: 700;
+  letter-spacing: 0.3px;
   color: $color-gray;
 
   &:focus-visible {
@@ -59,16 +60,26 @@
 .headline {
   margin: 0;
   font-family: $font-display;
-  font-size: 30px;
+  font-size: 28px;
   font-weight: 700;
   line-height: 1.05;
   text-transform: uppercase;
-  letter-spacing: 0.5px;
+  letter-spacing: 0.4px;
+}
+
+// Размер заголовка по макетам: шаг 1 — 28, шаги 2–3 — 27, шаг 4 — 25.
+.shell[data-step='2'] .headline,
+.shell[data-step='3'] .headline {
+  font-size: 27px;
+}
+
+.shell[data-step='4'] .headline {
+  font-size: 25px;
 }
 
 .subcopy {
   margin: 6px 0 0;
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 600;
   color: $color-gray;
 }
@@ -96,7 +107,6 @@
 .presets {
   display: flex;
   gap: 9px;
-  flex-wrap: wrap;
 }
 
 .monthRow {
@@ -106,9 +116,9 @@
 }
 
 .month {
-  font-family: $font-display;
-  font-size: 18px;
+  font-size: 12px;
   font-weight: 700;
+  letter-spacing: 0.3px;
   text-transform: capitalize;
 }
 

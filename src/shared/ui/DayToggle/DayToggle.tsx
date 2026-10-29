@@ -28,7 +28,7 @@ export function DayToggle({ selected, onToggle, disabledDays = [], label }: Prop
           disabled={disabledDays.includes(day)}
           onClick={() => onToggle(day)}
         >
-          {t(`ui.weekday.${day}.letter`)}
+          <span className={styles.disc}>{t(`ui.weekday.${day}.letter`)}</span>
         </button>
       ))}
     </div>

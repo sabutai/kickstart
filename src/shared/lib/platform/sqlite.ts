@@ -1,5 +1,6 @@
 import { Capacitor } from '@capacitor/core';
 import type { SQLiteDBConnection } from '@capacitor-community/sqlite';
+import { serialized } from '../db/serialized';
 import type { Database, SqlValue, Statement } from '../db/types';
 
 const DB_NAME = 'kickstart';
@@ -40,23 +41,25 @@ let opening: Promise<Database> | undefined;
 
 /** Открывает БД один раз на приложение (повторные вызовы возвращают тот же объект). */
 export function openDatabase(): Promise<Database> {
-  opening ??= connect().then(({ conn, persist }): Database => ({
-    async run(sql, params = []) {
-      await conn.run(sql, params, true);
-      await persist();
-    },
-    async query<T extends Record<string, SqlValue>>(sql: string, params: SqlValue[] = []) {
-      const { values } = await conn.query(sql, params);
-      return (values ?? []) as T[];
-    },
-    async batch(statements: Statement[]) {
-      await conn.executeSet(
-        statements.map((s) => ({ statement: s.sql, values: s.params ?? [] })),
-        true,
-      );
-      await persist();
-    },
-  }));
+  opening ??= connect().then(({ conn, persist }): Database =>
+    serialized({
+      async run(sql, params = []) {
+        await conn.run(sql, params, true);
+        await persist();
+      },
+      async query<T extends Record<string, SqlValue>>(sql: string, params: SqlValue[] = []) {
+        const { values } = await conn.query(sql, params);
+        return (values ?? []) as T[];
+      },
+      async batch(statements: Statement[]) {
+        await conn.executeSet(
+          statements.map((s) => ({ statement: s.sql, values: s.params ?? [] })),
+          true,
+        );
+        await persist();
+      },
+    }),
+  );
   // Неудачное открытие не должно залипнуть навсегда.
   opening.catch(() => {
     opening = undefined;

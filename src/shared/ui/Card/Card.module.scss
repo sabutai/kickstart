@@ -1,6 +1,8 @@
 @use '../../styles/tokens' as *;
 
 .card {
+  position: relative;
+  overflow: hidden; // декоративные элементы (блёклая цифра в календаре) не вылезают за углы
   border-radius: $radius-card;
   background: $color-card-overlay-solid;
 
