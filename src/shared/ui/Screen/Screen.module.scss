@@ -10,6 +10,7 @@
 
 .scroll {
   height: 100%;
+  padding-bottom: $nav-overlap; // последний элемент не прячется под плашкой меню
   overflow-y: auto;
   scrollbar-width: none;
 

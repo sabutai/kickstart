@@ -38,6 +38,7 @@ $radius-card: 18px;
 $radius-button: 18px;
 $radius-sheet: 32px;
 $radius-nav: 28px;
+$nav-overlap: $radius-nav; // плашка меню наезжает на экран на высоту скругления: в углах видно экран, а не фон страницы
 
 $shadow-sheet: 0 -10px 30px rgba(8, 55, 28, 0.1);
 

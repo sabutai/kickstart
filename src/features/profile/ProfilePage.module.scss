@@ -6,7 +6,7 @@
   flex-direction: column;
   gap: 12px;
   min-height: 0;
-  padding: calc(30px + env(safe-area-inset-top)) $space-screen-x 14px;
+  padding: calc(30px + env(safe-area-inset-top)) $space-screen-x calc(14px + $nav-overlap);
   overflow-y: auto;
   background: $color-bg;
   scrollbar-width: none;
