@@ -5,81 +5,30 @@
   flex: 1;
   min-height: 0;
   overflow: hidden;
-  // Фолбэк, пока нет картинки или она не загрузилась.
-  background: repeating-linear-gradient(135deg, $color-ink 0 46px, $color-ink-deep 46px 92px);
-}
-
-.image {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  pointer-events: none;
-}
-
-.pitch {
-  position: absolute;
-  top: 0;
-  left: 0;
-  max-width: 100%;
-  color: $color-white;
-  opacity: 0.12;
-  pointer-events: none;
-}
-
-.shade {
-  position: absolute;
-  left: 0;
-  right: 0;
-  pointer-events: none;
-}
-
-.shadeTop {
-  top: 0;
-  height: 40%;
-  background: linear-gradient(180deg, rgba(0, 0, 0, 0.35) 0%, rgba(0, 0, 0, 0) 100%);
-}
-
-.shadeBottom {
-  bottom: 0;
-  height: 45%;
-  background: linear-gradient(180deg, rgba(11, 42, 27, 0) 0%, $color-ink 100%);
+  background: $color-bg;
 }
 
 .scroll {
-  position: relative;
   height: 100%;
   overflow-y: auto;
-  padding: calc(24px + env(safe-area-inset-top)) $space-screen-x 16px;
+  scrollbar-width: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
 }
 
 .header {
   display: flex;
-  align-items: center;
+  align-items: baseline;
   justify-content: space-between;
   gap: 12px;
-  margin-bottom: 12px;
-}
-
-.eyebrow {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 18px;
+  padding: calc(30px + env(safe-area-inset-top)) $space-screen-x 12px;
 }
 
 .title {
   margin: 0;
-  font-family: $font-display;
-  font-size: 24px;
-  font-weight: 700;
-  letter-spacing: 0.6px;
-  text-transform: uppercase;
-}
-
-.titleLg {
   font-size: 30px;
-  line-height: 1.05;
-  letter-spacing: 0.5px;
+  font-weight: 800;
+  letter-spacing: -1px;
 }

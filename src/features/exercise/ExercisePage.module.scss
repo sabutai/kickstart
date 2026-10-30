@@ -1,129 +1,108 @@
 @use '../../shared/styles/tokens' as *;
 
+// Макет «Упражнение»: градиент с Киком сверху, белая панель с шагами снизу.
 .page {
+  position: relative;
   flex: 1;
   min-height: 0;
-  overflow-y: auto;
-  background: $color-ink;
+  overflow: hidden;
+  background: linear-gradient(180deg, $color-grad-from, $color-grad-to);
+}
+
+.empty {
+  flex: 1;
+  background: $color-bg;
 }
 
 .hero {
-  position: relative;
-  flex: 0 0 auto;
-  height: min(468px, 56vh);
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  height: 500px;
+  overflow: hidden;
 }
 
-// Затемнение сверху (читаемость кнопок) и плавный переход картинки в фон экрана снизу.
-.heroShade {
+.kik {
   position: absolute;
-  inset: 0;
-  pointer-events: none;
-  background: linear-gradient(
-    180deg,
-    rgba(0, 0, 0, 0.25) 0%,
-    rgba(0, 0, 0, 0) 32%,
-    rgba(11, 42, 27, 0) 62%,
-    $color-ink 100%
-  );
+  top: 60px;
+  left: 50%;
+  width: auto;
+  height: 520px;
+  transform: translateX(-50%);
 }
 
-.heroTop {
+.note {
+  bottom: 200px;
+}
+
+.back {
   position: absolute;
-  top: calc(8px + env(safe-area-inset-top));
-  right: calc($space-screen-x - 3px);
-  left: calc($space-screen-x - 3px);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+  top: calc(26px + env(safe-area-inset-top));
+  left: calc($space-screen-x - 1px);
 }
 
 .category {
-  display: inline-flex;
-  align-items: center;
-  min-height: 32px;
-  padding: 0 14px;
+  position: absolute;
+  top: calc(36px + env(safe-area-inset-top));
+  right: $space-screen-x;
+  padding: 7px 14px;
   border-radius: $radius-pill;
-  background: rgba(255, 255, 255, 0.14);
-  font-size: $font-size-min;
-  font-weight: 800;
-  text-transform: uppercase;
-  letter-spacing: 0.4px;
+  background: $color-white;
+  font-size: 12px;
+  font-weight: 700;
 }
 
-.body {
+.sheet {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
   display: flex;
   flex-direction: column;
-  gap: 18px;
-  padding: 18px $space-screen-x 24px;
+  height: min(420px, 62%);
+  border-radius: $radius-sheet $radius-sheet 0 0;
+  background: $color-white;
+  box-shadow: $shadow-sheet;
 }
 
-.title {
-  margin: 0 0 8px;
-  font-family: $font-display;
-  font-size: 22px;
-  font-weight: 700;
-  line-height: 1.05;
-  text-transform: uppercase;
-  letter-spacing: 0.4px;
-}
-
-.levels {
+.scroll {
   display: flex;
-  gap: 8px;
-  padding-bottom: 2px;
-  overflow-x: auto;
-  scrollbar-width: none; // прокрутка пальцем остаётся, полоса не рисуется
+  flex: 1;
+  flex-direction: column;
+  gap: 14px;
+  padding: 22px 22px 8px;
+  overflow-y: auto;
+  scrollbar-width: none;
 
   &::-webkit-scrollbar {
     display: none;
   }
 }
 
-.safety {
+.title {
   margin: 0;
-  padding: 12px 14px;
-  border-left: 3px solid $color-mannequin;
-  border-radius: 0 $radius-card $radius-card 0;
-  background: $color-surface;
-  font-size: 13px;
-  font-weight: 600;
-  line-height: 1.4;
-}
-
-.section {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-.sectionTitle {
-  margin: 0;
-  font-size: $font-size-min;
+  font-size: 26px;
   font-weight: 800;
-  color: $color-gray;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
+  letter-spacing: -0.5px;
+}
+
+.meta {
+  margin: 4px 0 0;
+  font-size: 12.5px;
+  color: $color-muted;
 }
 
 .text {
   margin: 0;
-  font-size: 12px;
-  font-weight: 600;
-  line-height: 1.45;
-}
-
-.cue {
-  margin: 0;
-  font-family: $font-display;
-  font-size: 18px;
-  font-weight: 600;
-  color: $color-volt;
+  font-size: 13.5px;
+  line-height: 1.4;
 }
 
 .steps {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 14px;
   margin: 0;
   padding: 0;
   list-style: none;
@@ -131,32 +110,87 @@
 
 .step {
   display: flex;
-  gap: 10px;
-  align-items: flex-start;
+  gap: 12px;
+  font-size: 13.5px;
+  line-height: 1.4;
 }
 
 .stepNumber {
-  display: inline-flex;
-  flex: 0 0 auto;
+  display: flex;
+  flex: none;
   align-items: center;
   justify-content: center;
-  width: 20px;
-  height: 20px;
-  border-radius: 50%;
-  background: $color-volt;
-  color: $color-ink;
-  font-size: $font-size-min;
+  width: 24px;
+  height: 24px;
+  border-radius: $radius-pill;
+  background: $color-mint;
+  font-size: 12px;
   font-weight: 800;
+}
+
+.note2 {
+  margin: 0;
+  padding: 12px 14px;
+  border-radius: $radius-field;
+  background: $color-mint;
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.45;
+}
+
+.why {
+  margin: 0;
+  padding: 12px 14px;
+  border-radius: $radius-field;
+  background: $color-field;
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+.coach {
+  padding: 12px 14px;
+  border-radius: $radius-field;
+  background: $color-mint;
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+.coachTitle {
+  margin: 0 0 8px;
+}
+
+.levels {
+  display: flex;
+  gap: 8px;
+  padding-bottom: 8px;
+  overflow-x: auto;
+  scrollbar-width: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+.coachLabel {
+  margin: 8px 0 2px;
+  font-size: $font-size-min;
+  font-weight: 700;
+  color: $color-ink-soft;
+  text-transform: uppercase;
+}
+
+.coachText {
+  margin: 0;
 }
 
 .mistakes {
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 4px;
   margin: 0;
-  padding-left: 20px;
+  padding-left: 18px;
 }
 
 .cta {
-  margin-top: 6px;
+  padding: 12px 22px calc(26px + env(safe-area-inset-bottom));
 }

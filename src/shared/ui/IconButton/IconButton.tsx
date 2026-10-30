@@ -11,8 +11,8 @@ type Props = {
   disabled?: boolean;
   /** Видимый диаметр кружка; зона нажатия всё равно не меньше 44 px. */
   size?: number;
-  /** `surface` — тёмный кружок, `glass` — полупрозрачный поверх картинки, `plain` — без фона. */
-  variant?: 'surface' | 'glass' | 'plain';
+  /** `white` — белый кружок, `ink` — тёмно-зелёный, `glass` — полупрозрачный белый, `plain` — без фона. */
+  variant?: 'white' | 'ink' | 'glass' | 'plain';
 };
 
 /** Иконочная кнопка (или ссылка, если задан `to`) с зоной нажатия 44 px. */
@@ -23,7 +23,7 @@ export function IconButton({
   to,
   disabled = false,
   size = 44,
-  variant = 'surface',
+  variant = 'white',
 }: Props) {
   const disc = (
     <span className={`${styles.disc} ${styles[variant]}`} style={{ width: size, height: size }}>

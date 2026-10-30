@@ -1,88 +1,88 @@
 @use '../../styles/tokens' as *;
 
 .card {
-  display: flex;
-  flex-direction: column;
-  min-height: $tap-min;
+  position: relative;
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 9;
   overflow: hidden;
-  border-radius: $radius-card;
-  background: $color-surface;
 
   &:focus-visible {
-    outline: 2px solid $color-volt;
-    outline-offset: 2px;
+    outline: 3px solid $color-ink-soft;
+    outline-offset: -3px;
   }
 }
 
-.preview {
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 122px;
-  color: var(--cat);
-  background:
-    radial-gradient(circle at 50% 45%, color-mix(in srgb, var(--cat) 30%, transparent) 0%, transparent 70%),
-    $color-ink;
+// Фоны по очереди, как в макете.
+.green {
+  background: linear-gradient(180deg, $color-grad-from, $color-grad-to);
+}
+
+.lilac {
+  background: linear-gradient(180deg, #eeeaf3, #d8d2e6);
+}
+
+.sand {
+  background: linear-gradient(180deg, #f3eee6, #e6d9c6);
+}
+
+.sky {
+  background: linear-gradient(180deg, #e7eef4, #cbdce9);
+}
+
+.kik {
+  position: absolute;
+  top: 10px;
+  height: 340px;
+  width: auto;
+  pointer-events: none;
+}
+
+.kikGreen {
+  right: 20px;
+}
+
+.kikLilac {
+  right: 10px;
+}
+
+.kikSand {
+  right: 30px;
+}
+
+.kikSky {
+  right: 20px;
+}
+
+.text {
+  position: absolute;
+  right: 150px;
+  bottom: 18px;
+  left: 20px;
 }
 
 .badge {
-  position: absolute;
-  top: 10px;
-  right: 16px;
-  padding: 3px 10px;
-  border-radius: $radius-pill;
-  background: rgba(0, 0, 0, 0.4);
-  color: $color-white;
-  font-size: $font-size-min;
-  font-weight: 800;
-}
-
-.play {
-  position: absolute;
-  bottom: 10px;
-  left: 16px;
-  display: flex;
+  display: inline-flex;
   align-items: center;
-  justify-content: center;
-  width: 30px;
-  height: 30px;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.92);
-  color: var(--cat);
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: $radius-pill;
+  background: rgba(255, 255, 255, 0.8);
+  font-size: $font-size-min;
+  font-weight: 700;
 }
 
-.body {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  padding: 12px 16px 14px;
+.dot {
+  width: 7px;
+  height: 7px;
+  border-radius: $radius-pill;
 }
 
 .title {
-  font-family: $font-display;
-  font-size: 15.5px;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.3px;
-}
-
-.desc {
-  font-size: 11.5px;
-  font-weight: 600;
-  line-height: 1.4;
-  color: $color-gray;
-}
-
-.meta {
-  display: flex;
-  gap: 8px;
-  align-items: center;
-  margin-top: 4px;
-}
-
-.metaText {
-  font-size: $font-size-min;
-  font-weight: 700;
-  color: $color-gray;
+  display: block;
+  margin-top: 8px;
+  font-size: 22px;
+  font-weight: 800;
+  line-height: 1.1;
+  letter-spacing: -0.5px;
 }

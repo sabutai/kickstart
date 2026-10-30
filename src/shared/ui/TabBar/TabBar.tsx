@@ -4,63 +4,24 @@ import styles from './TabBar.module.scss';
 
 type TabKey = 'home' | 'library' | 'timer' | 'calendar' | 'profile';
 
-const TABS: { key: TabKey; to: string; icon: React.ReactNode }[] = [
-  {
-    key: 'home',
-    to: '/',
-    icon: (
-      <path
-        d="M4 11L12 4L20 11V19A1 1 0 0 1 19 20H14V14H10V20H5A1 1 0 0 1 4 19Z"
-        stroke="currentColor"
-        strokeWidth="1.8"
-        strokeLinejoin="round"
-      />
-    ),
-  },
+// Контуры иконок — из макета (docs/design/KickStart Phone.dc.html).
+const TABS: { key: TabKey; to: string; path: string }[] = [
+  { key: 'home', to: '/', path: 'M4 11L12 4L20 11V19A1 1 0 0 1 19 20H14V14H10V20H5A1 1 0 0 1 4 19Z' },
   {
     key: 'library',
     to: '/library',
-    icon: (
-      <>
-        <path d="M5 4H12V20H5A1 1 0 0 1 4 19V5A1 1 0 0 1 5 4Z" stroke="currentColor" strokeWidth="1.8" />
-        <path d="M12 4H19A1 1 0 0 1 20 5V19A1 1 0 0 1 19 20H12" stroke="currentColor" strokeWidth="1.8" />
-      </>
-    ),
+    path: 'M5 4H12V20H5A1 1 0 0 1 4 19V5A1 1 0 0 1 5 4ZM12 4H19A1 1 0 0 1 20 5V19A1 1 0 0 1 19 20H12',
   },
-  {
-    key: 'timer',
-    to: '/timer',
-    icon: (
-      <>
-        <circle cx="12" cy="13" r="8" stroke="currentColor" strokeWidth="1.8" />
-        <path d="M12 9V13L15 15M9 3H15" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
-      </>
-    ),
-  },
+  { key: 'timer', to: '/timer', path: 'M12 21A8 8 0 1 0 12 5A8 8 0 0 0 12 21ZM12 9V13L15 15M9 2H15' },
   {
     key: 'calendar',
     to: '/calendar',
-    icon: (
-      <>
-        <rect x="4" y="5" width="16" height="16" rx="2" stroke="currentColor" strokeWidth="1.8" />
-        <path d="M8 3V7M16 3V7M4 10H20" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
-      </>
-    ),
+    path: 'M5 5H19A1 1 0 0 1 20 6V20H4V6A1 1 0 0 1 5 5ZM8 3V7M16 3V7M4 10H20',
   },
   {
     key: 'profile',
     to: '/profile',
-    icon: (
-      <>
-        <circle cx="12" cy="8" r="4" stroke="currentColor" strokeWidth="1.8" />
-        <path
-          d="M4 20C4 16 7.5 14 12 14C16.5 14 20 16 20 20"
-          stroke="currentColor"
-          strokeWidth="1.8"
-          strokeLinecap="round"
-        />
-      </>
-    ),
+    path: 'M12 12A4 4 0 1 0 12 4A4 4 0 0 0 12 12ZM4 20C4 16 7.5 14 12 14C16.5 14 20 16 20 20',
   },
 ];
 
@@ -75,8 +36,18 @@ export function TabBar() {
           end={tab.to === '/'}
           className={({ isActive }) => (isActive ? `${styles.tab} ${styles.active}` : styles.tab)}
         >
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-            {tab.icon}
+          <svg
+            width="21"
+            height="21"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="1.8"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            aria-hidden="true"
+          >
+            <path d={tab.path} />
           </svg>
           <span className={styles.label}>{t(`nav.${tab.key}`)}</span>
         </NavLink>

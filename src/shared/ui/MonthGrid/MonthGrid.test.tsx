@@ -7,7 +7,7 @@ import { MonthGrid, type DayStatus } from './MonthGrid';
 const baseProps = { month: '2026-11', label: 'Ноябрь 2026', onSelect: () => {} };
 
 describe('MonthGrid', () => {
-  it('заголовки Пн–Вс и все дни месяца кнопками; дни соседних месяцев не нажимаются', () => {
+  it('заголовки дней недели и все дни месяца кнопками; дни соседних месяцев не нажимаются', () => {
     renderUi(<MonthGrid {...baseProps} />);
     const headers = screen.getAllByRole('columnheader').map((h) => h.textContent);
     expect(headers).toEqual(['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс']);
@@ -53,10 +53,14 @@ describe('MonthGrid', () => {
     expect(onSelect).not.toHaveBeenCalled();
   });
 
-  it('у выполненного дня вместо цифры галочка (имя всё равно содержит дату)', () => {
+  it('у выполненного дня число остаётся, а статус виден в подписи', () => {
     renderUi(<MonthGrid {...baseProps} getStatus={(d) => (d === '2026-11-03' ? 'done' : 'none')} />);
     const done = screen.getByRole('button', { name: '3 ноября, выполнено' });
-    expect(within(done).queryByText('3')).toBeNull();
-    expect(done.querySelector('svg')).not.toBeNull();
+    expect(within(done).getByText('3')).toBeInTheDocument();
+  });
+
+  it('дни соседних месяцев не рисуются кнопками', () => {
+    renderUi(<MonthGrid {...baseProps} />);
+    expect(screen.queryByRole('button', { name: /октября|декабря/ })).toBeNull();
   });
 });

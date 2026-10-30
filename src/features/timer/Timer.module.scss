@@ -1,5 +1,6 @@
 @use '../../shared/styles/tokens' as *;
 
+// Экраны проигрывателя (макеты «Таймер», «Отдых», «Ура»): всё на весь экран, без таб-бара.
 .screen {
   position: relative;
   display: flex;
@@ -7,145 +8,88 @@
   flex-direction: column;
   min-height: 0;
   overflow: hidden;
-  background: repeating-linear-gradient(135deg, $color-ink 0 46px, $color-ink-deep 46px 92px);
+  background: $color-bg;
 }
 
-.top {
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: calc(12px + env(safe-area-inset-top)) $space-screen-x 0;
-}
+// ---- обзор перед занятием ----
 
-.category {
-  display: inline-flex;
-  align-items: center;
-  min-height: 32px;
-  padding: 0 13px;
-  border-radius: $radius-pill;
-  background: $color-surface;
-}
-
-.partNo {
-  font-size: $font-size-min;
-  font-weight: 800;
-  text-transform: uppercase;
-  letter-spacing: 0.4px;
-}
-
-.content {
-  position: relative;
+.overview {
   display: flex;
   flex: 1;
   flex-direction: column;
-  gap: 14px;
-  padding: 14px $space-screen-x;
+  gap: 12px;
+  min-height: 0;
+  padding: 0 $space-screen-x calc(18px + env(safe-area-inset-bottom));
   overflow-y: auto;
-}
+  background: $color-bg;
+  scrollbar-width: none;
 
-.bottom {
-  position: relative;
-  display: flex;
-  justify-content: center;
-  padding: 0 $space-screen-x calc(10px + env(safe-area-inset-bottom));
-}
-
-.endLink {
-  min-height: $tap-min;
-  padding: 0 16px;
-  font-size: 13px;
-  font-weight: 700;
-  color: $color-gray;
-  text-transform: uppercase;
-  letter-spacing: 0.4px;
-
-  &:focus-visible {
-    outline: 2px solid $color-volt;
-    outline-offset: 2px;
+  &::-webkit-scrollbar {
+    display: none;
   }
 }
 
-.title {
-  margin: 0;
-  font-family: $font-display;
-  font-size: 26px;
-  font-weight: 700;
-  line-height: 1.05;
-  text-align: center;
-  text-transform: uppercase;
-  letter-spacing: 0.4px;
-}
-
-.exerciseHead {
+.overviewEmpty {
   display: flex;
-  flex-direction: column;
+  flex: 1;
   align-items: center;
-  gap: 8px;
+  justify-content: center;
+  background: $color-bg;
 }
 
-.sectionTitle {
+.overviewHero {
+  position: relative;
+  flex: none;
+  height: 200px;
+  margin: calc(30px + env(safe-area-inset-top)) 0 0;
+  overflow: hidden;
+  border-radius: 30px;
+  background: linear-gradient(180deg, $color-grad-from, $color-grad-to);
+}
+
+.overviewKik {
+  position: absolute;
+  right: 10px;
+  bottom: -60px;
+  width: auto;
+  height: 290px;
+}
+
+.overviewHeroText {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  max-width: 58%;
+}
+
+.overviewTitle {
   margin: 0;
-  font-size: $font-size-min;
+  font-size: 24px;
   font-weight: 800;
-  color: $color-gray;
-  text-align: center;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
+  line-height: 1.05;
+  letter-spacing: -0.5px;
 }
 
-.subtitle {
-  margin: 0 0 14px;
-  font-size: 14px;
-  font-weight: 600;
-  color: $color-gray;
-}
-
-.text {
-  margin: 0;
-  font-size: 15px;
-  line-height: 1.45;
-}
-
-.hint {
-  margin: 0;
-  font-size: 12px;
-  color: $color-gray;
-  text-align: center;
-}
-
-.center {
-  margin: 0;
-  font-size: 14px;
-  font-weight: 700;
-  color: $color-gray;
-  text-align: center;
-}
-
-.centerBlock {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 8px;
-  text-align: center;
-}
-
-.safety {
-  margin: 14px 0;
-  padding: 12px 14px;
-  border-left: 3px solid $color-mannequin;
-  border-radius: 0 $radius-card $radius-card 0;
-  background: $color-surface;
+.overviewSub {
+  margin: 6px 0 0;
   font-size: 13px;
   font-weight: 600;
-  line-height: 1.4;
+  color: $color-ink-soft;
+}
+
+.overviewLabel {
+  margin: 4px 0 0;
+  font-size: 12px;
+  font-weight: 700;
+  color: $color-muted;
+  text-transform: uppercase;
 }
 
 .parts {
   display: flex;
   flex-direction: column;
-  gap: 12px;
-  margin: 10px 0 0;
+  gap: 8px;
+  margin: 0;
   padding: 0;
   list-style: none;
 }
@@ -154,199 +98,461 @@
   display: flex;
   align-items: center;
   gap: 12px;
+  padding: 11px 14px;
+  border-radius: $radius-card;
+  background: $color-white;
 }
 
 .partNumber {
-  display: inline-flex;
-  flex: 0 0 auto;
+  display: flex;
+  flex: none;
   align-items: center;
   justify-content: center;
-  width: 26px;
-  height: 26px;
-  border-radius: 50%;
-  background: $color-surface;
-  color: $color-volt;
+  width: 28px;
+  height: 28px;
+  border-radius: $radius-pill;
+  background: $color-mint;
   font-size: 13px;
   font-weight: 800;
 }
 
 .partName {
   flex: 1;
-  font-size: 15px;
-  font-weight: 600;
+  font-size: 14px;
+  font-weight: 700;
 }
 
 .partMinutes {
+  font-size: 12px;
+  color: $color-muted;
+}
+
+.overviewNote {
+  margin: 0;
+  padding: 12px 14px;
+  border-radius: $radius-field;
+  background: $color-mint;
   font-size: 13px;
+  font-weight: 600;
+  line-height: 1.45;
+}
+
+// ---- кнопка «завершить» (крестик) ----
+
+.closeTopLeft {
+  position: absolute;
+  top: calc(26px + env(safe-area-inset-top));
+  left: calc($space-screen-x - 2px);
+}
+
+.closeTopRight {
+  position: absolute;
+  top: calc(26px + env(safe-area-inset-top));
+  right: calc($space-screen-x - 2px);
+}
+
+.closeUnderTiles {
+  position: absolute;
+  top: 100px;
+  left: 14px;
+}
+
+// ---- вступление и итоги: Кик на градиенте, белая панель снизу ----
+
+.readyScreen,
+.finishScreen {
+  position: relative;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  justify-content: flex-end;
+  min-height: 0;
+  overflow: hidden;
+  background: linear-gradient(180deg, $color-grad-from, $color-grad-to);
+}
+
+.readyHero {
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  height: 500px;
+  overflow: hidden;
+}
+
+.readyKik {
+  position: absolute;
+  top: 60px;
+  left: 50%;
+  width: auto;
+  height: 520px;
+  transform: translateX(-50%);
+}
+
+.readyNote {
+  bottom: 200px;
+}
+
+.finishKik {
+  position: absolute;
+  top: 30px;
+  left: 50%;
+  width: auto;
+  height: 560px;
+  transform: translateX(-50%);
+}
+
+.sheet {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 10px;
+  max-height: 60%;
+  padding: 22px 24px calc(26px + env(safe-area-inset-bottom));
+  overflow-y: auto;
+  border-radius: $radius-sheet $radius-sheet 0 0;
+  background: $color-white;
+  box-shadow: $shadow-sheet;
+}
+
+.sheetLabel {
+  margin: 0;
+  font-size: $font-size-min;
   font-weight: 700;
-  color: $color-gray;
+  color: $color-muted;
+  text-transform: uppercase;
+}
+
+.sheetTitle {
+  margin: 0;
+  font-size: 26px;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+}
+
+.sheetTitleCenter {
+  margin: 0;
+  font-size: 28px;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+  text-align: center;
+}
+
+.sheetMeta {
+  margin: 0;
+  font-size: 12.5px;
+  color: $color-muted;
+}
+
+.sheetMetaCenter {
+  margin: 0;
+  font-size: 13px;
+  color: $color-muted;
+  text-align: center;
+}
+
+.sheetHint {
+  margin: 0;
+  font-size: 12px;
+  color: $color-muted;
+  text-align: center;
+}
+
+.sheetText {
+  margin: 0;
+  font-size: 13.5px;
+  line-height: 1.4;
+}
+
+.sheetNote {
+  margin: 0;
+  padding: 12px 14px;
+  border-radius: $radius-field;
+  background: $color-mint;
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.45;
+}
+
+.stars,
+.starsRow {
+  display: flex;
+  justify-content: center;
+  gap: 4px;
+}
+
+.starButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: $tap-min;
+  height: $tap-min;
+
+  &:focus-visible {
+    outline: 3px solid $color-ink-soft;
+    outline-offset: 0;
+    border-radius: $radius-field;
+  }
+
+  &:hover svg path {
+    fill: $color-star;
+  }
+}
+
+.starFilled {
+  fill: $color-star;
+  stroke: $color-ink;
+}
+
+.starEmpty {
+  fill: $color-track;
+  stroke: $color-ink;
+}
+
+// ---- подход (макет «Таймер») ----
+
+.workScreen {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+  background: linear-gradient(180deg, $color-timer-from, $color-timer-to);
+}
+
+.workMedia {
+  position: absolute;
+  inset: 0;
+}
+
+.workKik {
+  position: absolute;
+  bottom: 90px;
+  left: 50%;
+  width: auto;
+  height: 700px;
+  transform: translateX(-50%);
+}
+
+.workNote {
+  // Ниже кнопки «завершить» и плашки стороны, чтобы они не перекрывались.
+  top: 168px;
+}
+
+.tiles {
+  position: absolute;
+  top: calc(28px + env(safe-area-inset-top));
+  right: 16px;
+  left: 16px;
+  display: flex;
+  gap: 8px;
+  align-items: stretch;
+}
+
+.tileSet {
+  padding: 10px 14px;
+  border-radius: $radius-card;
+  background: $color-ink;
+  color: $color-white;
+}
+
+.tileSetNumber {
+  font-size: 20px;
+  font-weight: 800;
+  line-height: 1;
+}
+
+.tileSetOf {
+  font-size: 13px;
+  font-weight: 600;
+  color: $color-track;
 }
 
 .setPips {
   display: flex;
-  justify-content: center;
-  gap: 8px;
+  gap: 3px;
+  margin-top: 7px;
 }
 
-.pip {
-  width: 36px;
-  height: 6px;
-  border-radius: 3px;
-  background: $color-track;
+.setPip {
+  flex: 1;
+  height: 4px;
+  border-radius: $radius-pill;
+  background: rgba(255, 255, 255, 0.35);
 }
 
-.pipDone {
-  background: $color-volt;
-}
-
-.pipNow {
+.setPipOn {
   background: $color-white;
 }
 
-.ringBox {
-  display: flex;
-  justify-content: center;
+.tileMain {
+  flex: 1;
+  padding: 10px 14px;
+  border-radius: $radius-card;
+  background: $color-mint;
+  text-align: center;
 }
 
-.bigTime {
-  font-family: $font-display;
-  font-size: 52px;
-  font-weight: 700;
+.tileMainNumber {
+  font-size: 26px;
+  font-weight: 800;
   line-height: 1;
 }
 
-.bigTimeRest {
-  font-size: 48px;
+.tileMainUnit {
+  margin-top: 3px;
+  font-size: 11px;
+  color: $color-ink-soft;
 }
 
-.restLabel {
-  margin: 0;
-  font-size: 12px;
+.tileTime {
+  min-width: 96px;
+  padding: 10px 14px;
+  border-radius: $radius-card;
+  background: $color-white;
+}
+
+.tileTimeValue {
+  font-size: 18px;
   font-weight: 800;
-  color: $color-gray;
-  text-align: center;
-  text-transform: uppercase;
-  letter-spacing: 2px;
+  line-height: 1;
 }
 
-.repsBox {
+.bar {
+  height: 6px;
+  margin-top: 8px;
+  overflow: hidden;
+  border-radius: $radius-pill;
+  background: $color-track;
+}
+
+.barFill {
+  height: 100%;
+  border-radius: $radius-pill;
+  background: $color-ink;
+}
+
+.sidePill {
+  position: absolute;
+  top: 112px;
+  right: 16px;
+  padding: 8px 14px;
+  border-radius: $radius-pill;
+  background: $color-white;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.workBottom {
+  position: absolute;
+  right: 16px;
+  bottom: calc(28px + env(safe-area-inset-bottom));
+  left: 16px;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  gap: 6px;
-  padding: 18px 0;
+  gap: 12px;
 }
 
-.repsLabel {
-  font-size: 16px;
+.encourage {
+  align-self: center;
+  padding: 8px 18px;
+  border-radius: $radius-pill;
+  background: $color-white;
+  font-size: 13px;
   font-weight: 700;
 }
 
 .controls {
   display: flex;
+  gap: 10px;
   align-items: center;
-  justify-content: center;
-  gap: 22px;
-}
-
-.pauseButton {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 74px;
-  height: 74px;
-  border-radius: 50%;
-  background: $color-volt;
-  color: $color-ink;
-
-  &:focus-visible {
-    outline: 2px solid $color-white;
-    outline-offset: 2px;
-  }
 }
 
 .upNext {
-  margin: 0;
+  display: flex;
+  flex: 1;
+  align-items: center;
+  justify-content: center;
+  min-height: 56px;
+  padding: 4px 10px;
+  border-radius: $radius-pill;
+  background: rgba(255, 255, 255, 0.75);
+  color: $color-ink-soft;
   font-size: 13px;
-  font-weight: 700;
+  font-weight: 600;
+  line-height: 1.2;
   text-align: center;
 }
 
-.upNextLabel {
-  color: $color-gray;
-}
-
-.encourage {
-  margin: 0;
-  font-size: 14px;
+.doneButton {
+  min-height: 56px;
+  padding: 0 22px;
+  border-radius: $radius-pill;
+  background: $color-ink;
+  color: $color-white;
+  font-size: 15px;
   font-weight: 700;
-  color: $color-volt;
-  text-align: center;
-}
-
-.nextCard {
-  display: flex;
-  gap: 14px;
-  align-items: center;
-  padding: 14px;
-  border-radius: $radius-card;
-  background: $color-surface;
-}
-
-.nextThumb {
-  display: flex;
-  flex: 0 0 auto;
-  align-items: center;
-  justify-content: center;
-  width: 72px;
-  height: 72px;
-  border-radius: 14px;
-  background:
-    radial-gradient(circle at 50% 45%, color-mix(in srgb, var(--cat) 30%, transparent) 0%, transparent 70%),
-    $color-ink;
-}
-
-.nextBody {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
-
-.nextTitle {
-  font-family: $font-display;
-  font-size: 18px;
-  font-weight: 700;
-  text-transform: uppercase;
-}
-
-.stars {
-  display: flex;
-  justify-content: center;
-  gap: 6px;
-}
-
-.star {
-  display: inline-flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  width: 58px;
-  min-height: 70px;
-  border-radius: $radius-card;
-  background: $color-surface;
-  color: $color-volt;
 
   &:focus-visible {
-    outline: 2px solid $color-white;
+    outline: 3px solid $color-white;
     outline-offset: 2px;
   }
 }
 
-.starNumber {
-  font-size: 13px;
-  font-weight: 800;
-  color: $color-white;
+// ---- «Приготовься» и отдых (макет «Отдых») ----
+
+.restScreen {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+  background: linear-gradient(180deg, $color-grad-alt-from, $color-grad-alt-to);
 }
+
+.restKik {
+  position: absolute;
+  right: -10px;
+  bottom: 0;
+  width: auto;
+  height: 560px;
+}
+
+.restText {
+  position: absolute;
+  top: calc(60px + env(safe-area-inset-top));
+  left: 24px;
+  max-width: 60%;
+}
+
+.restLabel {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 700;
+  color: $color-ink-soft;
+}
+
+.restNumber {
+  margin: 4px 0;
+  font-size: 130px;
+  font-weight: 800;
+  line-height: 1.1;
+  letter-spacing: -6px;
+}
+
+.restCaption {
+  margin: 0;
+  font-size: 13px;
+  font-weight: 600;
+  color: $color-ink-soft;
+}
+
+.restAction {
+  position: absolute;
+  bottom: calc(34px + env(safe-area-inset-bottom));
+  left: 24px;
+}
+
+// ---- пауза и диалог завершения ----
 
 .overlay {
   position: absolute;
@@ -356,7 +562,7 @@
   align-items: center;
   justify-content: center;
   padding: $space-screen-x;
-  background: rgba(0, 0, 0, 0.72);
+  background: rgba(10, 59, 32, 0.6);
 }
 
 .dialog {
@@ -365,24 +571,37 @@
   gap: 12px;
   width: 100%;
   max-width: 340px;
-  padding: 20px;
-  border-radius: $radius-card;
-  background: $color-surface;
+  padding: 22px;
+  border-radius: $radius-sheet;
+  background: $color-white;
+}
+
+.dialogTitle {
+  margin: 0;
+  font-size: 22px;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+  text-align: center;
+}
+
+.dialogText,
+.dialogHint {
+  margin: 0;
+  font-size: 13px;
+  color: $color-muted;
+  text-align: center;
 }
 
 .keep {
-  min-height: 52px;
-  border-radius: $radius-pill;
-  background: var(--accent);
-  color: var(--accent-text);
-  font-family: $font-display;
+  min-height: 54px;
+  border-radius: $radius-button;
+  background: $color-ink;
+  color: $color-white;
   font-size: 15px;
   font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.6px;
 
   &:focus-visible {
-    outline: 2px solid $color-white;
+    outline: 3px solid $color-ink-soft;
     outline-offset: 2px;
   }
 }

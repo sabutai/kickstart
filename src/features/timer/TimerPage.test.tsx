@@ -127,7 +127,7 @@ describe('до начала занятия', () => {
     await renderTimer();
     await userEvent.click(screen.getByRole('button', { name: 'Поехали' }));
     expect(await screen.findByRole('button', { name: 'Начать' })).toBeInTheDocument();
-    expect(screen.getByText('Часть 1 из 5')).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Завершить тренировку' })).toBeInTheDocument();
     expect(screen.queryByRole('button', { name: 'Поехали' })).toBeNull();
   });
 
@@ -151,19 +151,18 @@ describe('вступление и работа на время', () => {
     await renderTimer({ player: plank() });
     expect(screen.getByRole('heading', { level: 1, name: 'Упор лёжа' })).toBeInTheDocument();
     expect(screen.getByText(/Упор лёжа на прямых руках/)).toBeInTheDocument();
-    expect(screen.getAllByRole('definition').map((n) => n.textContent)).toEqual(['2', '15 с', '20 с']);
+    expect(screen.getByText('2 подхода по 15 сек · отдых 20 сек')).toBeInTheDocument();
     await userEvent.click(screen.getByRole('button', { name: 'Начать' }));
-    expect(await screen.findByText('Подход 1 из 2')).toBeInTheDocument();
+    expect(await screen.findByLabelText('Подход 1 из 2')).toBeInTheDocument();
   });
 
   it('идёт обратный отсчёт, внизу «Далее: Отдых 20 с», ребёнку — поддержка', async () => {
     await renderTimer({ player: play(plank(), { type: 'begin' }) });
     expect(screen.getByRole('timer')).toHaveTextContent('0:15');
-    expect(screen.getByText(/Отдых 20 с/)).toBeInTheDocument();
+    expect(screen.getByText('Далее: отдых 20 сек')).toBeInTheDocument();
     expect(screen.getByText(/Отлично! Ещё немного!/)).toBeInTheDocument();
     await advance(6_000);
     expect(screen.getByRole('timer')).toHaveTextContent('0:09');
-    expect(screen.getByRole('progressbar')).toBeInTheDocument();
   });
 
   it('взрослому поддерживающей строки не показываем', async () => {
@@ -175,10 +174,10 @@ describe('вступление и работа на время', () => {
     await renderTimer({ player: play(plank(), { type: 'begin' }) });
     await advance(15_500);
     expect(screen.getByRole('heading', { level: 1, name: 'Отдых' })).toBeInTheDocument();
-    expect(screen.getByText('Перед подходом 2 из 2')).toBeInTheDocument();
-    expect(screen.getByRole('timer')).toHaveTextContent('0:20');
+    expect(screen.getByText('Далее: подход 2 из 2')).toBeInTheDocument();
+    expect(screen.getByRole('timer')).toHaveTextContent('20');
     await advance(20_000);
-    expect(screen.getByText('Подход 2 из 2')).toBeInTheDocument();
+    expect(screen.getByLabelText('Подход 2 из 2')).toBeInTheDocument();
     await advance(15_000);
     expect(screen.getByRole('heading', { name: 'Оценка техники' })).toBeInTheDocument();
   });
@@ -186,8 +185,8 @@ describe('вступление и работа на время', () => {
   it('«Пропустить отдых» сразу возвращает к работе', async () => {
     await renderTimer({ player: play(plank(), { type: 'begin' }, { type: 'skip' }) });
     expect(screen.getByRole('heading', { name: 'Отдых' })).toBeInTheDocument();
-    await userEvent.click(screen.getByRole('button', { name: 'Пропустить отдых' }));
-    expect(await screen.findByText('Подход 2 из 2')).toBeInTheDocument();
+    await userEvent.click(screen.getByRole('button', { name: 'Пропустить' }));
+    expect(await screen.findByLabelText('Подход 2 из 2')).toBeInTheDocument();
   });
 
   it('«Дальше» пропускает подход', async () => {
@@ -219,7 +218,7 @@ describe('упражнения на повторы и на две стороны
       Date.now(),
     );
     await renderTimer({ player: play(reps, { type: 'begin' }) });
-    expect(screen.getByText('Повторов: 5')).toBeInTheDocument();
+    expect(screen.getByText('повторов')).toBeInTheDocument();
     expect(screen.queryByRole('timer')).toBeNull();
     expect(screen.queryByRole('button', { name: 'Пауза' })).toBeNull();
     await userEvent.click(screen.getByRole('button', { name: 'Готово' }));
@@ -240,12 +239,33 @@ describe('упражнения на повторы и на две стороны
       Date.now(),
     );
     await renderTimer({ player: play(both, { type: 'begin' }) });
-    expect(screen.getByText('Подход 1 из 1 · Первая сторона')).toBeInTheDocument();
-    expect(screen.getByText(/Смена стороны/)).toBeInTheDocument();
+    expect(screen.getByText('Первая сторона')).toBeInTheDocument();
+    expect(screen.getByText('Далее: смена стороны')).toBeInTheDocument();
     await userEvent.click(screen.getByRole('button', { name: 'Готово' }));
     expect(await screen.findByRole('heading', { name: 'Смени сторону' })).toBeInTheDocument();
     await advance(5_500);
-    expect(screen.getByText('Подход 1 из 1 · Вторая сторона')).toBeInTheDocument();
+    expect(screen.getByText('Вторая сторона')).toBeInTheDocument();
+  });
+});
+
+describe('плашка времени на экране подхода', () => {
+  it('короткий подход — секунды', async () => {
+    const short = play(createPlayer(tiny(item('press-up-plank', 'program', { workSec: 15 })), Date.now()), {
+      type: 'begin',
+    });
+    await renderTimer({ player: short });
+    expect(screen.getByText('сек')).toBeInTheDocument();
+    expect(screen.getByText('15')).toBeInTheDocument();
+  });
+
+  it('игра на 3 минуты показывается в минутах', async () => {
+    const game = play(createPlayer(tiny(item('traffic-light', 'game', { workSec: 180 })), Date.now()), {
+      type: 'begin',
+    });
+    await renderTimer({ player: game });
+    expect(screen.getByText('мин')).toBeInTheDocument();
+    expect(screen.getByText('3')).toBeInTheDocument();
+    expect(screen.getByRole('timer')).toHaveTextContent('3:00');
   });
 });
 
@@ -253,10 +273,10 @@ describe('«Приготовься»', () => {
   it('упражнения блока Б стартуют сами после отсчёта', async () => {
     const p = createPlayer(tiny(item('toe-taps', 'ball', { workSec: 30 })), Date.now());
     await renderTimer({ player: p });
-    expect(screen.getByRole('heading', { level: 1, name: 'Тычки' })).toBeInTheDocument();
-    expect(screen.getByText('Приготовься')).toBeInTheDocument();
+    expect(screen.getByText('Тычки')).toBeInTheDocument();
+    expect(screen.getByRole('heading', { level: 1, name: 'Приготовься' })).toBeInTheDocument();
     await advance(6_500); // 5 с «Приготовься» + 1,5 с работы: 28,5 с, округляем вверх
-    expect(screen.getByText('Подход 1 из 1')).toBeInTheDocument();
+    expect(screen.getByLabelText('Подход 1 из 1')).toBeInTheDocument();
     expect(screen.getByRole('timer')).toHaveTextContent('0:29');
   });
 
@@ -264,7 +284,7 @@ describe('«Приготовься»', () => {
     const p = createPlayer(tiny(item('toe-taps', 'ball', { workSec: 30 })), Date.now());
     await renderTimer({ player: p });
     await userEvent.click(screen.getByRole('button', { name: 'Старт' }));
-    expect(await screen.findByText('Подход 1 из 1')).toBeInTheDocument();
+    expect(await screen.findByLabelText('Подход 1 из 1')).toBeInTheDocument();
   });
 });
 
@@ -355,9 +375,9 @@ describe('завершение занятия', () => {
   const openDialog = async () =>
     userEvent.click(screen.getAllByRole('button', { name: 'Завершить тренировку' })[0]!);
 
-  it('и крестик, и нижняя ссылка открывают диалог; «Продолжить» возвращает к занятию', async () => {
+  it('крестик открывает диалог; «Продолжить» возвращает к занятию', async () => {
     await renderTimer({ player: midProgram() });
-    expect(screen.getAllByRole('button', { name: 'Завершить тренировку' })).toHaveLength(2);
+    expect(screen.getAllByRole('button', { name: 'Завершить тренировку' })).toHaveLength(1);
     await openDialog();
     const dialog = screen.getByRole('dialog', { name: 'Завершить тренировку?' });
     expect(within(dialog).getByRole('button', { name: 'Продолжить' })).toHaveFocus();
@@ -388,7 +408,7 @@ describe('завершение занятия', () => {
     expect(screen.getByRole('button', { name: 'Засчитать и выйти' })).toBeEnabled();
     expect(screen.queryByText(/Засчитать можно после/)).toBeNull();
     await userEvent.click(screen.getByRole('button', { name: 'Засчитать и выйти' }));
-    expect(await screen.findByRole('heading', { name: 'Тренировка завершена!' })).toBeInTheDocument();
+    expect(await screen.findByRole('heading', { name: 'Ура, Тимур!' })).toBeInTheDocument();
     expect(scope.getState($player)?.phase).toBe('done');
     await allSettled(scope);
     expect(await env.db!.query('SELECT id FROM session_log')).toHaveLength(1);
@@ -404,7 +424,7 @@ describe('завершение занятия', () => {
 });
 
 describe('итоги', () => {
-  it('время, число упражнений и средняя оценка; «На главную» — ссылка на главную', async () => {
+  it('время, средняя оценка звёздами; «На главную» — ссылка на главную', async () => {
     let p = createPlayer(
       tiny(
         item('spiderman', 'program', { workSec: 10 }),
@@ -427,17 +447,19 @@ describe('итоги', () => {
     document.body.innerHTML = '';
     expect(p.phase).toBe('done');
     await renderTimer({ player: p });
-    expect(screen.getByRole('heading', { name: 'Тренировка завершена!' })).toBeInTheDocument();
-    expect(screen.getAllByRole('definition').map((n) => n.textContent)).toEqual(['12 мин', '2', '4,5']);
+    expect(screen.getByRole('heading', { name: 'Ура, Тимур!' })).toBeInTheDocument();
+    expect(screen.getByText('12 мин')).toBeInTheDocument();
+    expect(screen.getByRole('img', { name: 'Средняя оценка техники: 4,5 из 5' })).toBeInTheDocument();
     expect(screen.getByRole('link', { name: 'На главную' })).toHaveAttribute('href', '/');
   });
 
-  it('без оценок — прочерк', async () => {
+  it('без оценок звёзд нет', async () => {
     const p = play(createPlayer(tiny(item('deep-squat', 'cooldown', { workSec: 10 })), Date.now()), {
       type: 'finish',
     });
     await renderTimer({ player: p });
-    expect(screen.getAllByRole('definition').map((n) => n.textContent)).toEqual(['1 мин', '0', '—']);
+    expect(screen.getByText('1 мин')).toBeInTheDocument();
+    expect(screen.queryByRole('img')).toBeNull(); // оценок не было — звёзд нет
   });
 
   it('на экране итогов нет кнопки завершения и крестика', async () => {

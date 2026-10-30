@@ -2,47 +2,32 @@
 
 .row {
   display: flex;
-  justify-content: space-between;
   gap: 6px;
 }
 
+// Макет Onboarding: квадраты 46 px с радиусом 14; выбранный — тёмно-зелёный.
 .day {
-  // Зона нажатия 44 px; сам кружок (.disc) — 38 px, как в макете.
-  display: flex;
   flex: 1;
-  align-items: center;
-  justify-content: center;
   min-width: $tap-min;
-  min-height: $tap-min;
-  color: $color-white;
-  font-size: 12px;
-  font-weight: 800;
+  height: 46px;
+  border-radius: 14px;
+  background: $color-white;
+  color: $color-muted;
+  font-size: 14px;
+  font-weight: 700;
 
   &:focus-visible {
-    outline: 2px solid $color-volt;
+    outline: 3px solid $color-ink-soft;
     outline-offset: 2px;
   }
 
   &:disabled {
-    opacity: 0.35;
+    opacity: 0.4;
     cursor: not-allowed;
   }
 }
 
-.disc {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 38px;
-  height: 38px;
-  border-radius: $radius-pill;
-  background: $color-surface;
-}
-
 .on {
-  color: var(--accent-text);
-
-  .disc {
-    background: var(--accent);
-  }
+  background: $color-ink;
+  color: $color-white;
 }

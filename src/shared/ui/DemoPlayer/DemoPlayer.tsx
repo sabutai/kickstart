@@ -1,6 +1,5 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState, type ReactNode } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Mascot } from '../Mascot/Mascot';
 import styles from './DemoPlayer.module.scss';
 
 type Demo = { kind: 'video' | 'image'; src: string; poster: string };
@@ -9,14 +8,12 @@ type Props = {
   demo: Demo;
   /** Название упражнения — для доступного имени области. */
   title: string;
-  /** Низкий вариант для экрана работы: оставляет место кольцу и кнопкам. */
-  compact?: boolean;
-  /** Занять весь родительский блок (шапка экрана упражнения). */
-  fill?: boolean;
-  /** Каждое новое значение перезапускает демонстрацию (кнопка «повторить» вне плеера). */
+  /** Что показать, пока нет медиа или оно не загрузилось (обычно Кик и пометка). */
+  fallback: ReactNode;
+  /** Каждое новое значение перезапускает демонстрацию (кнопка «повторить» снаружи). */
   replaySignal?: number;
-  /** Не рисовать собственную кнопку повтора (когда она есть снаружи). */
-  hideReplay?: boolean;
+  /** Нарисовать собственную кнопку «повторить» (если снаружи её нет). */
+  showReplay?: boolean;
 };
 
 const prefersReducedMotion = (): boolean =>
@@ -24,18 +21,19 @@ const prefersReducedMotion = (): boolean =>
 
 const asset = (path: string) => `${import.meta.env.BASE_URL}${path}`;
 
+/** Пометка «демонстрация скоро появится» — для заглушки поверх фона. */
+export function DemoSoonNote({ className }: { className?: string }) {
+  const { t } = useTranslation();
+  return (
+    <span className={className ? `${styles.note} ${className}` : styles.note}>{t('exercise.demo.soon')}</span>
+  );
+}
+
 /**
- * Демонстрация упражнения: зацикленное видео без звука либо картинка-превью.
- * Нет файла или он не загрузился — заглушка с Киком (на сегодня основной путь: медиа ещё нет).
+ * Демонстрация упражнения: зацикленное видео без звука либо картинка-превью, на весь родительский блок.
+ * Нет файла или он не загрузился — показывается `fallback` (на сегодня основной путь: медиа ещё нет).
  */
-export function DemoPlayer({
-  demo,
-  title,
-  compact = false,
-  fill = false,
-  replaySignal = 0,
-  hideReplay = false,
-}: Props) {
+export function DemoPlayer({ demo, title, fallback, replaySignal = 0, showReplay = false }: Props) {
   const { t } = useTranslation();
   const videoRef = useRef<HTMLVideoElement>(null);
   const [failed, setFailed] = useState(false);
@@ -54,16 +52,9 @@ export function DemoPlayer({
   }, [replaySignal, play]);
 
   return (
-    <div
-      className={[styles.root, compact && styles.compact, fill && styles.fill].filter(Boolean).join(' ')}
-      role="group"
-      aria-label={t('exercise.demo.label', { title })}
-    >
+    <div className={styles.root} role="group" aria-label={t('exercise.demo.label', { title })}>
       {failed ? (
-        <div className={styles.placeholder}>
-          <Mascot emotion="thinking" size={compact ? 64 : 96} />
-          <p className={styles.soon}>{t('exercise.demo.soon')}</p>
-        </div>
+        fallback
       ) : demo.kind === 'video' ? (
         <>
           <video
@@ -77,7 +68,7 @@ export function DemoPlayer({
             playsInline
             onError={() => setFailed(true)}
           />
-          {!hideReplay && (
+          {(showReplay || reducedMotion) && (
             <button type="button" className={styles.replay} onClick={play}>
               {t(reducedMotion ? 'exercise.demo.play' : 'exercise.demo.replay')}
             </button>

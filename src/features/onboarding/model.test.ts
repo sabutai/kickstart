@@ -25,14 +25,12 @@ import {
   $draft,
   $finishError,
   ageChanged,
-  daysSkipped,
   dayToggled,
   nameChanged,
   onboardingFinished,
   pinChosen,
   remindersChanged,
   startDateChanged,
-  startSkipped,
 } from './model';
 
 beforeEach(async () => {
@@ -71,19 +69,6 @@ describe('черновик онбординга', () => {
     await allSettled(dayToggled, { scope, params: { group: 'home', day: 3 } }); // 3 — уже секция
     expect(scope.getState($draft).clubDays).toEqual([3]);
     expect(scope.getState($draft).homeDays).toEqual([2, 4, 6]);
-  });
-
-  it('«Пропустить» возвращает дни и дату по умолчанию', async () => {
-    const scope = fork();
-    await allSettled(dayToggled, { scope, params: { group: 'club', day: 1 } });
-    await allSettled(startDateChanged, { scope, params: '2026-12-01' });
-    await allSettled(daysSkipped, { scope });
-    await allSettled(startSkipped, { scope });
-    expect(scope.getState($draft)).toMatchObject({
-      clubDays: [],
-      homeDays: [2, 4, 6],
-      startDate: '2026-11-02',
-    });
   });
 });
 

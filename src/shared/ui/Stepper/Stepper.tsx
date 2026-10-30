@@ -24,9 +24,11 @@ export function Stepper({ value, min, max, onChange, decreaseLabel, increaseLabe
         disabled={value <= min}
         onClick={() => onChange(clamp(value - 1))}
       >
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-          <path d="M5 12H19" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" />
-        </svg>
+        <span className={styles.disc} aria-hidden="true">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
+            <path d="M5 12H19" stroke="currentColor" strokeWidth="2.6" strokeLinecap="round" />
+          </svg>
+        </span>
       </button>
       <output className={styles.value} aria-live="polite">
         <span className={styles.number}>{value}</span>
@@ -39,9 +41,11 @@ export function Stepper({ value, min, max, onChange, decreaseLabel, increaseLabe
         disabled={value >= max}
         onClick={() => onChange(clamp(value + 1))}
       >
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-          <path d="M12 5V19M5 12H19" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" />
-        </svg>
+        <span className={styles.disc} aria-hidden="true">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
+            <path d="M12 5V19M5 12H19" stroke="currentColor" strokeWidth="2.6" strokeLinecap="round" />
+          </svg>
+        </span>
       </button>
     </div>
   );

@@ -2,7 +2,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { fireEvent, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import '../../../app/i18n';
-import { DemoPlayer } from './DemoPlayer';
+import { DemoPlayer, DemoSoonNote } from './DemoPlayer';
 
 const video = {
   kind: 'video',
@@ -14,6 +14,7 @@ const image = {
   src: 'content/skating-jumps_l3.webp',
   poster: 'content/skating-jumps_l3.webp',
 } as const;
+const fallback = <p>заглушка</p>;
 
 const play = vi.fn(() => Promise.resolve());
 
@@ -32,7 +33,7 @@ const mockReducedMotion = (reduce: boolean) =>
 
 describe('DemoPlayer', () => {
   it('видео: автозапуск без звука по кругу, с постером', () => {
-    const { container } = render(<DemoPlayer demo={video} title="Прыжки" />);
+    const { container } = render(<DemoPlayer demo={video} title="Прыжки" fallback={fallback} />);
     const el = container.querySelector('video')!;
     expect(el.autoplay).toBe(true);
     expect(el.muted).toBe(true);
@@ -43,19 +44,10 @@ describe('DemoPlayer', () => {
     expect(screen.getByRole('group', { name: 'Демонстрация: Прыжки' })).toBeInTheDocument();
   });
 
-  it('compact — низкий вариант для экрана работы', () => {
-    const { container } = render(<DemoPlayer demo={video} title="Прыжки" compact />);
-    expect(container.querySelector('.compact')).not.toBeNull();
-    expect(render(<DemoPlayer demo={video} title="Прыжки" />).container.querySelector('.compact')).toBeNull();
-  });
-
-  it('fill занимает весь блок (шапка экрана упражнения)', () => {
-    const { container } = render(<DemoPlayer demo={video} title="Прыжки" fill />);
-    expect(container.querySelector('.fill')).not.toBeNull();
-  });
-
-  it('«Повторить демонстрацию» перематывает на начало и запускает', async () => {
-    const { container } = render(<DemoPlayer demo={video} title="Прыжки" />);
+  it('собственная кнопка «Повторить демонстрацию» — только по запросу; перематывает и запускает', async () => {
+    const { container, rerender } = render(<DemoPlayer demo={video} title="Прыжки" fallback={fallback} />);
+    expect(screen.queryByRole('button')).toBeNull();
+    rerender(<DemoPlayer demo={video} title="Прыжки" fallback={fallback} showReplay />);
     const el = container.querySelector('video')!;
     el.currentTime = 5;
     await userEvent.click(screen.getByRole('button', { name: 'Повторить демонстрацию' }));
@@ -63,36 +55,52 @@ describe('DemoPlayer', () => {
     expect(play).toHaveBeenCalledTimes(1);
   });
 
+  it('сигнал повтора снаружи перезапускает видео', () => {
+    const { container, rerender } = render(
+      <DemoPlayer demo={video} title="П" fallback={fallback} replaySignal={0} />,
+    );
+    container.querySelector('video')!.currentTime = 4;
+    rerender(<DemoPlayer demo={video} title="П" fallback={fallback} replaySignal={1} />);
+    expect(play).toHaveBeenCalledTimes(1);
+    expect(container.querySelector('video')!.currentTime).toBe(0);
+  });
+
   it('уменьшенное движение: не запускается само, кнопка «Воспроизвести»', async () => {
     mockReducedMotion(true);
-    const { container } = render(<DemoPlayer demo={video} title="Прыжки" />);
+    const { container } = render(<DemoPlayer demo={video} title="Прыжки" fallback={fallback} />);
     expect(container.querySelector('video')!.autoplay).toBe(false);
     await userEvent.click(screen.getByRole('button', { name: 'Воспроизвести' }));
     expect(play).toHaveBeenCalledTimes(1);
   });
 
-  it('нет файла (ошибка загрузки видео) — заглушка с Киком вместо пустоты', () => {
-    const { container } = render(<DemoPlayer demo={video} title="Прыжки" />);
+  it('нет файла (ошибка загрузки видео) — заглушка вместо пустоты', () => {
+    const { container } = render(<DemoPlayer demo={video} title="Прыжки" fallback={fallback} />);
     fireEvent.error(container.querySelector('video')!);
     expect(container.querySelector('video')).toBeNull();
-    expect(screen.getByText('Демонстрация скоро появится')).toBeInTheDocument();
-    expect(screen.queryByRole('button')).toBeNull();
+    expect(screen.getByText('заглушка')).toBeInTheDocument();
   });
 
   it('браузер не смог запустить видео — тоже заглушка', async () => {
     play.mockImplementationOnce(() => Promise.reject(new Error('NotAllowedError')));
-    const { container } = render(<DemoPlayer demo={video} title="Прыжки" />);
+    const { container } = render(<DemoPlayer demo={video} title="Прыжки" fallback={fallback} showReplay />);
     await userEvent.click(screen.getByRole('button', { name: 'Повторить демонстрацию' }));
-    expect(await screen.findByText('Демонстрация скоро появится')).toBeInTheDocument();
+    expect(await screen.findByText('заглушка')).toBeInTheDocument();
     expect(container.querySelector('video')).toBeNull();
   });
 
-  it('картинка-превью: декоративная <img>, без кнопки повтора; ошибка → заглушка', () => {
-    const { container } = render(<DemoPlayer demo={image} title="Прыжки" />);
+  it('картинка-превью: декоративная <img>; ошибка → заглушка', () => {
+    const { container } = render(<DemoPlayer demo={image} title="Прыжки" fallback={fallback} />);
     const img = container.querySelector('img')!;
     expect(img).toHaveAttribute('alt', '');
     expect(screen.queryByRole('button')).toBeNull();
     fireEvent.error(img);
+    expect(screen.getByText('заглушка')).toBeInTheDocument();
+  });
+});
+
+describe('DemoSoonNote', () => {
+  it('пометка «скоро появится»', () => {
+    render(<DemoSoonNote />);
     expect(screen.getByText('Демонстрация скоро появится')).toBeInTheDocument();
   });
 });

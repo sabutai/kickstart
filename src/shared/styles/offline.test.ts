@@ -8,8 +8,9 @@ describe('офлайн-шрифты', () => {
     expect(html).not.toMatch(/https?:\/\//);
   });
 
-  it('шрифты Oswald и Manrope подключены из локальных пакетов', () => {
-    expect(fonts).toContain('@fontsource/oswald/cyrillic-700.css');
+  it('шрифт Manrope подключён из локального пакета (кириллица и латиница)', () => {
     expect(fonts).toContain('@fontsource/manrope/cyrillic-400.css');
+    expect(fonts).toContain('@fontsource/manrope/latin-800.css');
+    expect(fonts).not.toMatch(/oswald/i);
   });
 });

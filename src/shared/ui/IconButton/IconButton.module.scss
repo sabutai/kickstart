@@ -7,11 +7,11 @@
   justify-content: center;
   min-width: $tap-min;
   min-height: $tap-min;
-  color: $color-white;
+  color: $color-ink;
 
   &:focus-visible {
-    outline: 2px solid $color-volt;
-    outline-offset: 2px;
+    outline: 3px solid $color-ink-soft;
+    outline-offset: 0;
     border-radius: $radius-pill;
   }
 
@@ -28,12 +28,17 @@
   border-radius: $radius-pill;
 }
 
-.surface {
-  background: $color-surface;
+.white {
+  background: $color-white;
+}
+
+.ink {
+  background: $color-ink;
+  color: $color-white;
 }
 
 .glass {
-  background: rgba(255, 255, 255, 0.14);
+  background: rgba(255, 255, 255, 0.7);
 }
 
 .plain {

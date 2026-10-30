@@ -9,13 +9,21 @@
   text-align: center;
 }
 
+.head {
+  width: 96px;
+  height: auto;
+}
+
+.body {
+  height: 200px;
+  width: auto;
+}
+
 .title {
   margin: 0;
-  font-family: $font-display;
-  font-size: 20px;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.4px;
+  font-size: 22px;
+  font-weight: 800;
+  letter-spacing: -0.5px;
 }
 
 .text {
@@ -23,5 +31,5 @@
   margin: 0;
   font-size: 14px;
   line-height: 1.4;
-  color: $color-gray;
+  color: $color-muted;
 }

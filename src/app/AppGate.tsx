@@ -24,7 +24,7 @@ export function AppGate() {
     return (
       <div className={styles.center}>
         <EmptyState
-          mascot="thinking"
+          pose="head"
           title={t('gate.errorTitle')}
           text={t('gate.errorText')}
           action={<Button onClick={() => start()}>{t('gate.retry')}</Button>}

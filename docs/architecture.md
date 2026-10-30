@@ -104,17 +104,17 @@ type MiniTest = SyncMeta & { date: string; soleTaps30s?: number; oneLegEyesClose
 
 ## Экраны
 
-Макеты — `docs/design/*.dc.html` (см. `docs/design/README.md`). Режим «Ребёнок/Взрослый» меняет акцент (`#FF5A1F` / `#FFFFFF`) и состав блоков, но не маршруты; переключается атрибутом `data-mode` на `<html>`.
+Макет — `docs/design/KickStart Phone.dc.html` (светлая тема, см. `docs/design/README.md`). Режим «Ребёнок/Взрослый» не меняет цвета и маршруты, только состав блоков (у взрослого — ошибки и «на что смотреть», убрана поддержка «Отлично!»); переключается кнопкой на Главной и в Профиле.
 
 | Маршрут | Экран | Макет |
 | --- | --- | --- |
-| `/` | Главная | `Main.dc.html` |
-| `/library` | Упражнения | `Library.dc.html` |
-| `/timer` | Таймер / проигрыватель | `Timer.dc.html`, `RestTimer.dc.html` |
-| `/calendar` | Календарь | `Calendar.dc.html` |
-| `/profile` | Профиль | `Profile.dc.html` |
-| `/exercise/:exerciseId` | Экран упражнения | `ExerciseDetail.dc.html` |
-| `/onboarding` | Онбординг (4 шага) | `Onboarding1–4.dc.html` |
+| `/` | Главная | `KickStart Phone.dc.html` (`home`) |
+| `/library` | Упражнения | (`library`) |
+| `/timer` | Таймер / проигрыватель | (`timer`, `rest`, `done`) |
+| `/calendar` | Календарь | (`calendar`) |
+| `/profile` | Профиль | (`profile`) |
+| `/exercise/:exerciseId` | Экран упражнения | (`exercise`) |
+| `/onboarding/:step` | Онбординг (3 шага) | (`onb1`–`onb3`) |
 
 ## Контент
 

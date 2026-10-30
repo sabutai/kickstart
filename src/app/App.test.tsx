@@ -72,7 +72,7 @@ describe('каркас приложения (онбординг пройден)'
   it('переключает табы', async () => {
     renderAt('/');
     await userEvent.click(await screen.findByRole('link', { name: 'Календарь' }));
-    expect(await screen.findByRole('heading', { name: 'Календарь' })).toBeInTheDocument();
+    expect(await screen.findByRole('table', { name: /\d{4}$/ })).toBeInTheDocument(); // сетка месяца
   });
 
   it('полноэкранные экраны открываются без таб-бара', async () => {
@@ -110,65 +110,76 @@ describe('ворота приложения', () => {
 });
 
 describe('онбординг', () => {
-  const next = () => screen.getByRole('button', { name: /^(Далее|Начать тренировки)$/ });
+  const next = () => screen.getByRole('button', { name: /^(Далее|Начать)$/ });
+  const nameField = () => screen.findByLabelText('Имя');
 
   it('«Далее» заблокирована, пока нет имени', async () => {
     renderAt('/onboarding/1');
     await screen.findByRole('heading', { name: 'Познакомимся!' });
     expect(next()).toBeDisabled();
-    await userEvent.type(screen.getByLabelText('Имя ребёнка'), '   ');
+    await userEvent.type(await nameField(), '   ');
     expect(next()).toBeDisabled();
-    await userEvent.type(screen.getByLabelText('Имя ребёнка'), 'Тимур');
+    await userEvent.type(await nameField(), 'Тимур');
     expect(next()).toBeEnabled();
   });
 
   it('возраст: по умолчанию 8, границы 7–13', async () => {
     renderAt('/onboarding/1');
-    expect(await screen.findByRole('status', { name: '' })).toHaveTextContent('8лет');
+    const age = within(await screen.findByRole('group', { name: 'Возраст' }));
+    expect(age.getByRole('status')).toHaveTextContent('8лет');
     for (let i = 0; i < 3; i++)
       await userEvent.click(screen.getByRole('button', { name: 'Уменьшить возраст' }));
-    expect(screen.getAllByRole('status')[0]).toHaveTextContent('7лет');
+    expect(age.getByRole('status')).toHaveTextContent('7лет');
     expect(screen.getByRole('button', { name: 'Уменьшить возраст' })).toBeDisabled();
   });
 
   it('шаг 2: без домашнего дня идти дальше нельзя; день секции нельзя взять домашним', async () => {
     renderAt('/onboarding/2');
-    const home = await screen.findByRole('group', { name: 'Дни тренировок дома' });
+    const home = await screen.findByRole('group', { name: 'Дни дома' });
     const club = screen.getByRole('group', { name: 'Дни секции' });
     // Вт, Чт, Сб выбраны дома по умолчанию — в группе секции они недоступны.
     expect(within(club).getByRole('button', { name: 'Вторник' })).toBeDisabled();
     for (const day of ['Вторник', 'Четверг', 'Суббота']) {
       await userEvent.click(within(home).getByRole('button', { name: day }));
     }
-    expect(screen.getByText('Выбери хотя бы один день дома')).toBeInTheDocument();
+    expect(screen.getByRole('alert')).toHaveTextContent('Выбери хотя бы один день дома');
     expect(next()).toBeDisabled();
     expect(within(club).getByRole('button', { name: 'Вторник' })).toBeEnabled();
   });
 
-  it('«Пропустить» на шаге 2 возвращает дни по умолчанию и ведёт на шаг 3', async () => {
+  it('шаг 2 → шаг 3: «Назад» возвращает, «Далее» ведёт к старту программы', async () => {
     renderAt('/onboarding/2');
-    const home = await screen.findByRole('group', { name: 'Дни тренировок дома' });
-    await userEvent.click(within(home).getByRole('button', { name: 'Понедельник' }));
-    await userEvent.click(screen.getByRole('button', { name: 'Пропустить' }));
-    expect(await screen.findByRole('heading', { name: 'Когда начнём?' })).toBeInTheDocument();
+    await screen.findByRole('group', { name: 'Дни дома' });
+    await userEvent.click(next());
+    expect(await screen.findByRole('heading', { name: 'Старт программы' })).toBeInTheDocument();
+    await userEvent.click(screen.getByRole('button', { name: 'Назад' }));
+    expect(await screen.findByRole('heading', { name: 'Когда тренируемся?' })).toBeInTheDocument();
   });
 
-  it('шаг 3: пресеты и сетка, прошлые дни недоступны', async () => {
+  it('шаг 3: дата старта, «Изменить» открывает пресеты и сетку, прошлые дни недоступны', async () => {
     renderAt('/onboarding/3');
-    await screen.findByRole('heading', { name: 'Когда начнём?' });
+    await screen.findByRole('heading', { name: 'Старт программы' });
+    expect(screen.getByText('Первое занятие')).toBeInTheDocument();
+    await userEvent.click(screen.getByRole('button', { name: /Изменить/ }));
     expect(screen.getByRole('button', { name: 'Сегодня', pressed: true })).toBeInTheDocument();
     await userEvent.click(screen.getByRole('button', { name: 'Завтра' }));
     expect(screen.getByRole('button', { name: 'Завтра', pressed: true })).toBeInTheDocument();
-    const past = screen
-      .getAllByRole('button')
-      .filter((b) => b.hasAttribute('disabled') && /\d+ [а-я]+$/.test(b.getAttribute('aria-label') ?? ''));
-    for (const b of past) expect(b).toBeDisabled();
     expect(screen.getByRole('button', { name: 'Предыдущий месяц' })).toBeDisabled();
+    await userEvent.click(screen.getByRole('button', { name: 'Готово' }));
+    expect(screen.getByText('Первое занятие')).toBeInTheDocument();
   });
 
-  it('PIN вводится дважды; несовпадение сбрасывает ввод', async () => {
-    renderAt('/onboarding/4');
-    await screen.findByRole('heading', { name: 'Напоминания и код взрослого' });
+  it('шаг 3: напоминания включены по умолчанию и переключаются', async () => {
+    renderAt('/onboarding/3');
+    const sw = await screen.findByRole('switch', { name: 'Напоминания' });
+    expect(sw).toHaveAttribute('aria-checked', 'true');
+    await userEvent.click(sw);
+    expect(sw).toHaveAttribute('aria-checked', 'false');
+  });
+
+  it('PIN вводится дважды; несовпадение сбрасывает ввод; задан — строка это показывает', async () => {
+    renderAt('/onboarding/3');
+    await userEvent.click(await screen.findByRole('button', { name: /PIN для взрослых/ }));
     const type = async (pin: string) => {
       for (const d of pin) await userEvent.click(screen.getByRole('button', { name: d }));
     };
@@ -178,39 +189,38 @@ describe('онбординг', () => {
     expect(screen.getByRole('alert')).toHaveTextContent('PIN не совпал');
     await type('1234');
     await type('1234');
-    expect(screen.getByRole('status')).toHaveTextContent('PIN сохранён');
+    expect(await screen.findByText(/PIN задан/)).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: 'Старт программы' })).toBeInTheDocument();
   });
 
   it('вернуться назад — черновик сохраняется', async () => {
     renderAt('/onboarding/1');
-    await userEvent.type(await screen.findByLabelText('Имя ребёнка'), 'Тимур');
+    await userEvent.type(await nameField(), 'Тимур');
     await userEvent.click(next());
     await userEvent.click(await screen.findByRole('button', { name: 'Назад' }));
-    expect(await screen.findByLabelText('Имя ребёнка')).toHaveValue('Тимур');
+    expect(await nameField()).toHaveValue('Тимур');
   });
 
-  it('весь путь: имя → дни → дата → завершение → главная, данные записаны', async () => {
+  it('весь путь: имя → дни → старт → главная, данные записаны', async () => {
     renderAt('/');
-    await userEvent.type(await screen.findByLabelText('Имя ребёнка'), 'Тимур');
+    await userEvent.type(await nameField(), 'Тимур');
     await userEvent.click(next());
     await screen.findByRole('heading', { name: 'Когда тренируемся?' });
     await userEvent.click(next());
-    await screen.findByRole('heading', { name: 'Когда начнём?' });
-    await userEvent.click(next());
-    await screen.findByRole('heading', { name: 'Напоминания и код взрослого' });
+    await screen.findByRole('heading', { name: 'Старт программы' });
     await userEvent.click(next());
 
-    expect(await screen.findByRole('heading', { name: 'Привет, Тимур' })).toBeInTheDocument();
+    expect(await screen.findByRole('heading', { level: 1, name: /Привет, Тимур/ })).toBeInTheDocument();
     const repos = createUserDataRepositories(env.db!);
     expect(await repos.profiles.list()).toMatchObject([{ name: 'Тимур', age: 8 }]);
     expect(await repos.schedules.list()).toMatchObject([{ weeks: 12, homeDays: [2, 4, 6], clubDays: [] }]);
     expect((await repos.plannedSessions.list()).length).toBeGreaterThanOrEqual(30);
   });
 
-  it('сбой записи: сообщение об ошибке, остаёмся на шаге 4, повтор работает', async () => {
+  it('сбой записи: сообщение об ошибке, остаёмся на последнем шаге, повтор работает', async () => {
     renderAt('/onboarding/1');
-    await userEvent.type(await screen.findByLabelText('Имя ребёнка'), 'Тимур');
-    for (const heading of ['Когда тренируемся?', 'Когда начнём?', 'Напоминания и код взрослого']) {
+    await userEvent.type(await nameField(), 'Тимур');
+    for (const heading of ['Когда тренируемся?', 'Старт программы']) {
       await userEvent.click(next());
       await screen.findByRole('heading', { name: heading });
     }
@@ -218,6 +228,6 @@ describe('онбординг', () => {
     await userEvent.click(next());
     expect(await screen.findByRole('alert')).toHaveTextContent('Не удалось сохранить');
     await userEvent.click(next());
-    expect(await screen.findByRole('heading', { name: 'Привет, Тимур' })).toBeInTheDocument();
+    expect(await screen.findByRole('heading', { level: 1, name: /Привет, Тимур/ })).toBeInTheDocument();
   });
 });

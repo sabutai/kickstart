@@ -16,14 +16,14 @@ describe('EmptyState', () => {
     expect(screen.getByRole('button', { name: 'Обновить' })).toBeInTheDocument();
   });
 
-  it('текст и действие необязательны; по умолчанию Кик задумался', () => {
+  it('текст и действие необязательны; по умолчанию Кик показан головой', () => {
     const { container } = render(<EmptyState title="Пусто" />);
     expect(container.querySelector('p')).toBeNull();
-    expect(container.querySelector('svg')).toHaveAttribute('data-emotion', 'thinking');
+    expect(container.querySelector('img')).toHaveAttribute('data-pose', 'head');
   });
 
-  it('передаёт эмоцию маскоту', () => {
-    const { container } = render(<EmptyState title="Отдых" mascot="rest" />);
-    expect(container.querySelector('svg')).toHaveAttribute('data-emotion', 'rest');
+  it('передаёт позу маскоту', () => {
+    const { container } = render(<EmptyState title="Отдых" pose="side" />);
+    expect(container.querySelector('img')).toHaveAttribute('data-pose', 'side');
   });
 });

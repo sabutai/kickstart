@@ -28,10 +28,9 @@ const cards = () => within(screen.getByRole('list')).getAllByRole('link');
 const where = () => screen.getByTestId('where').textContent;
 
 describe('библиотека', () => {
-  it('по умолчанию «Все»: все упражнения программы и счётчик', () => {
+  it('по умолчанию «Все»: все упражнения программы', () => {
     renderLibrary();
     expect(cards()).toHaveLength(exercises.length);
-    expect(screen.getByText(`Упражнений: ${exercises.length}`)).toBeInTheDocument();
     expect(screen.getByRole('button', { name: 'Все', pressed: true })).toBeInTheDocument();
   });
 
@@ -74,22 +73,20 @@ describe('библиотека', () => {
     expect(screen.getByRole('button', { name: 'Все', pressed: true })).toBeInTheDocument();
   });
 
-  it('карточка: ссылка на упражнение, описание, уровень и подходы', () => {
+  it('карточка: ссылка на упражнение, категория и число подходов, название', () => {
     renderLibrary('/library?category=balance');
     const card = screen.getByRole('link', { name: /Прыжки конькобежца/ });
     expect(card).toHaveAttribute('href', '/exercise/skating-jumps');
-    expect(within(card).getByText(/голеностоп/)).toBeInTheDocument();
-    expect(within(card).getByText('Ур. 1')).toBeInTheDocument();
-    expect(within(card).getByText('2 подхода')).toBeInTheDocument();
-    expect(within(card).getByRole('img', { name: 'Уровень 1 из 5' })).toBeInTheDocument();
+    expect(within(card).getByText('Баланс · 2 подхода')).toBeInTheDocument();
+    expect(within(card).getByText('Прыжки конькобежца')).toBeInTheDocument();
   });
 
-  it('упражнения с одним уровнем — без пипсов, со временем; с 5-й недели помечены', () => {
+  it('упражнения с одним уровнем: время работы; открывающиеся позже — с пометкой недели', () => {
     renderLibrary('/library?category=technique');
     const snail = screen.getByRole('link', { name: /Улитка/ });
-    expect(within(snail).queryByRole('img', { name: /Уровень/ })).toBeNull();
-    expect(within(snail).getByText('30–45 с')).toBeInTheDocument();
-    expect(within(snail).getByText('с 5-й недели')).toBeInTheDocument();
+    expect(within(snail).getByText('Техника · 30–45 сек · с 5-й недели')).toBeInTheDocument();
+    const toe = screen.getByRole('link', { name: /Тычки/ });
+    expect(within(toe).getByText('Техника · 30–45 сек')).toBeInTheDocument();
   });
 
   it('все карточки — настоящие ссылки на существующие упражнения', () => {

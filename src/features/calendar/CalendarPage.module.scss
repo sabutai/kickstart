@@ -1,114 +1,77 @@
 @use '../../shared/styles/tokens' as *;
 
-.monthRow {
+.aside {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  margin-bottom: 8px;
+  gap: 2px;
 }
 
-.month {
-  margin: 0;
-  font-size: 13px;
+.weekOf {
+  margin-right: 4px;
+  font-size: 12px;
   font-weight: 700;
-  letter-spacing: 0.3px;
-  text-transform: capitalize;
+  color: $color-muted;
 }
 
-.legend {
-  display: flex;
-  gap: 16px;
-  margin: 8px 0 16px;
-  padding: 0;
-  list-style: none;
-  font-size: $font-size-min;
-  font-weight: 700;
-  color: $color-gray;
-
-  li {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-  }
+.grid {
+  padding: 0 14px 18px;
 }
 
-.swatch {
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-}
-
-.swatchDone {
-  background: $color-volt;
-}
-
-.swatchPlanned {
-  border: 2px solid var(--accent);
-}
-
-.dayArea {
-  margin-bottom: 16px;
-}
-
-.cardHead {
+// Карточка выбранного дня: градиент с Киком, текст слева (макет «Календарь»).
+.dayCard {
   position: relative;
   display: flex;
-  gap: 14px;
-  align-items: center;
-  justify-content: space-between;
+  align-items: flex-end;
+  min-height: 220px;
+  overflow: hidden;
+  background: linear-gradient(180deg, $color-grad-from, $color-grad-to);
 }
 
-// Огромная блёклая цифра дня на фоне карточки (макет Calendar).
-.numeral {
+.kik {
   position: absolute;
-  top: -6px;
-  right: -6px;
-  font-family: $font-display;
-  font-size: 92px;
-  font-weight: 700;
-  line-height: 1;
-  color: rgba($color-white, 0.06);
+  top: 10px;
+  right: 20px;
+  width: auto;
+  height: 340px;
   pointer-events: none;
 }
 
-.cardInfo {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-  min-width: 0;
+.dayText {
+  position: relative;
+  max-width: 62%;
+  padding: 18px 0 18px 20px;
 }
 
 .cardLabel {
   font-size: $font-size-min;
-  font-weight: 800;
-  color: $color-volt;
+  font-weight: 700;
+  color: $color-ink-soft;
   text-transform: uppercase;
-  letter-spacing: 0.5px;
 }
 
 .cardTitle {
-  font-family: $font-display;
-  font-size: 18px;
-  font-weight: 700;
-  text-transform: uppercase;
+  margin: 4px 0 0;
+  font-size: 22px;
+  font-weight: 800;
+  line-height: 1.1;
 }
 
 .cardMeta {
   margin: 4px 0 0;
   font-size: 13px;
   font-weight: 600;
-  color: $color-gray;
+  color: $color-ink-soft;
 }
 
 .actions {
   display: flex;
-  flex-direction: column;
+  flex-wrap: wrap;
   gap: 8px;
-  margin-top: 14px;
+  margin-top: 12px;
 }
 
 .rejection {
-  margin: 12px 0 0;
+  margin: 10px 0 0;
   font-size: 13px;
   font-weight: 700;
 }

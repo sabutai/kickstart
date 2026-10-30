@@ -3,7 +3,7 @@ import { Link } from 'react-router';
 import styles from './Button.module.scss';
 
 type Common = {
-  variant?: 'primary' | 'secondary' | 'ghost';
+  variant?: 'primary' | 'secondary' | 'mint' | 'ghost';
   size?: 'sm' | 'md' | 'lg';
   fullWidth?: boolean;
   iconRight?: ReactNode;

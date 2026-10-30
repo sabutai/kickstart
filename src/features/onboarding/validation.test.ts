@@ -46,13 +46,9 @@ describe('canProceed', () => {
     expect(canProceed(2, { ...draft, homeDays: [], clubDays: [2] }, today)).toBe(false);
   });
 
-  it('шаг 3: дата старта не раньше сегодня', () => {
+  it('шаг 3: дата старта не раньше сегодня (PIN необязателен)', () => {
     expect(canProceed(3, draft, today)).toBe(true);
     expect(canProceed(3, { ...draft, startDate: '2026-11-01' }, today)).toBe(false);
     expect(canProceed(3, { ...draft, startDate: '2026-11-03' }, today)).toBe(true);
-  });
-
-  it('шаг 4: всегда можно (PIN необязателен)', () => {
-    expect(canProceed(4, { ...draft, pin: null }, today)).toBe(true);
   });
 });

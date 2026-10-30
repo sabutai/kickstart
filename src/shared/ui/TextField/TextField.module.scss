@@ -1,48 +1,50 @@
 @use '../../styles/tokens' as *;
 
+// Поле в плашке (макет Onboarding): подпись над значением, без рамки.
 .field {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  min-height: $tap-min;
+  padding: 10px 16px;
+  border-radius: $radius-field;
+  background: $color-field;
+
+  &:focus-within {
+    outline: 3px solid $color-ink-soft;
+    outline-offset: 2px;
+  }
 }
 
 .label {
   font-size: $font-size-min;
-  font-weight: 800;
-  color: $color-gray;
+  font-weight: 700;
+  color: $color-muted;
   text-transform: uppercase;
-  letter-spacing: 0.5px;
 }
 
 .input {
-  // Макет Onboarding1: без рамки и заливки, крупный текст, подчёркивание.
-  min-height: $tap-min;
-  padding: 6px 0;
+  width: 100%;
+  padding: 2px 0;
   border: none;
-  border-bottom: 2px solid $color-line;
-  border-radius: 0;
   background: transparent;
-  color: $color-white;
+  color: $color-ink;
   font: inherit;
   font-size: 19px;
-  font-weight: 600;
-  letter-spacing: 0.3px;
+  font-weight: 700;
+  outline: none;
 
   &::placeholder {
-    color: $color-gray;
-  }
-
-  &:focus-visible {
-    outline: none;
-    border-bottom-color: $color-volt;
+    color: $color-muted;
+    font-weight: 600;
   }
 }
 
 .invalid {
-  border-bottom-color: $color-accent-child;
+  outline: 2px solid $color-ink;
 }
 
 .error {
+  margin-top: 4px;
   font-size: 12px;
-  color: $color-white;
+  font-weight: 700;
 }

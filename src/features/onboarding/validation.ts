@@ -7,7 +7,7 @@ export const AGE_MAX = 13;
 export const DEFAULT_AGE = 8;
 /** Дни дома по умолчанию (макет: Вт, Чт, Сб) — их получает «Пропустить» на шаге 2. */
 export const DEFAULT_HOME_DAYS = [2, 4, 6];
-export const STEPS = 4;
+export const STEPS = 3;
 
 export type Draft = {
   name: string;
@@ -19,7 +19,7 @@ export type Draft = {
   pin: string | null;
 };
 
-export type Step = 1 | 2 | 3 | 4;
+export type Step = 1 | 2 | 3;
 
 export const isNameValid = (name: string): boolean =>
   name.trim().length >= 1 && name.trim().length <= NAME_MAX;
@@ -31,7 +31,7 @@ export function presetDate(preset: StartPreset, today: string): string {
   return toKey(addDays(toDate(today), offset));
 }
 
-/** Можно ли перейти дальше с шага. Шаг 4 всегда готов: PIN необязателен. */
+/** Можно ли перейти дальше с шага. PIN необязателен, поэтому на последнем шаге нужна только дата старта. */
 export function canProceed(step: Step, draft: Draft, today: string): boolean {
   switch (step) {
     case 1:
@@ -41,7 +41,5 @@ export function canProceed(step: Step, draft: Draft, today: string): boolean {
       return draft.homeDays.length > 0;
     case 3:
       return draft.startDate >= today;
-    case 4:
-      return true;
   }
 }

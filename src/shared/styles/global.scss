@@ -1,29 +1,21 @@
 @use 'tokens' as *;
 
 :root {
+  --bg: #{$color-bg};
   --ink: #{$color-ink};
-  --ink-deep: #{$color-ink-deep};
-  --surface: #{$color-surface};
-  --gray: #{$color-gray};
-  --volt: #{$color-volt};
-  --line: #{$color-line};
-  --accent: #{$color-accent-child};
-  --accent-text: #{$color-accent-child-text};
+  --muted: #{$color-muted};
+  --mint: #{$color-mint};
+  --field: #{$color-field};
+  --track: #{$color-track};
   --cat-warmup: #{$color-cat-warmup};
   --cat-balance: #{$color-cat-balance};
   --cat-strength: #{$color-cat-strength};
   --cat-technique: #{$color-cat-technique};
   --cat-games: #{$color-cat-games};
   --cat-mobility: #{$color-cat-mobility};
-  --font-display: #{$font-display};
   --font-body: #{$font-body};
 
-  color-scheme: dark;
-}
-
-:root[data-mode='coach'] {
-  --accent: #{$color-accent-coach};
-  --accent-text: #{$color-accent-coach-text};
+  color-scheme: light;
 }
 
 *,
@@ -40,8 +32,8 @@ body,
 }
 
 body {
-  background: var(--ink);
-  color: $color-white;
+  background: var(--bg);
+  color: var(--ink);
   font-family: var(--font-body);
   -webkit-font-smoothing: antialiased;
   -webkit-tap-highlight-color: transparent;
@@ -54,6 +46,7 @@ a {
 }
 
 button {
+  padding: 0;
   font: inherit;
   color: inherit;
   border: none;
@@ -73,7 +66,7 @@ button {
   #root {
     max-width: 430px;
     margin: 0 auto;
-    background: var(--ink);
+    background: var(--bg);
     box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.12);
   }
 }
