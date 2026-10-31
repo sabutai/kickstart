@@ -109,9 +109,18 @@ export const SessionTemplateSchema = z.object({
 });
 export type SessionTemplate = z.infer<typeof SessionTemplateSchema>;
 
+/** Общие правила блоков (показываются на экране упражнения): Б — чувство мяча, В — быстрые ноги, мобильность. */
+export const RulesSchema = z.object({
+  ball: LocalizedList.optional(),
+  feet: LocalizedList.optional(),
+  mobility: LocalizedList.optional(),
+});
+export type Rules = z.infer<typeof RulesSchema>;
+
 export const ProgramSchema = z
   .object({
     exercises: z.array(ExerciseSchema).min(1),
+    rules: RulesSchema,
     session: SessionTemplateSchema,
   })
   .superRefine((program, ctx) => {

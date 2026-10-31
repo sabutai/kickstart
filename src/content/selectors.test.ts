@@ -9,6 +9,10 @@ import {
   firstSentence,
   isCategory,
   maxHomeLevel,
+  ruleGroup,
+  rulesFor,
+  splitSentences,
+  stepsFor,
 } from './selectors';
 
 describe('категории', () => {
@@ -96,5 +100,75 @@ describe('clampLevel / maxHomeLevel', () => {
     expect(maxHomeLevel(roll)).toBe(3);
     expect(maxHomeLevel(stance)).toBe(5);
     expect(maxHomeLevel(toeTaps)).toBe(1);
+  });
+});
+
+describe('splitSentences', () => {
+  it('делит на предложения', () => {
+    expect(splitSentences('Раз. Два! Три?')).toEqual(['Раз.', 'Два!', 'Три?']);
+  });
+
+  it('число с точкой/запятой и сокращение перед строчной буквой предложение не рвут', () => {
+    expect(splitSentences('Отойти на 1,5 м. вперёд и вернуться. Дальше.')).toEqual([
+      'Отойти на 1,5 м. вперёд и вернуться.',
+      'Дальше.',
+    ]);
+    expect(splitSentences('Версия 2.5 подходит. Дальше')).toEqual(['Версия 2.5 подходит.', 'Дальше']);
+  });
+
+  it('кавычки в начале предложения, пустая строка, одно предложение', () => {
+    expect(splitSentences('Скажи. «Стоп» — замри.')).toEqual(['Скажи.', '«Стоп» — замри.']);
+    expect(splitSentences('')).toEqual([]);
+    expect(splitSentences('Одно предложение без точки')).toEqual(['Одно предложение без точки']);
+  });
+});
+
+describe('stepsFor', () => {
+  const ex = (id: string) => getExercise(id)!;
+
+  it('блок А: шаги из данных', () => {
+    expect(stepsFor(ex('skating-jumps'), 'любой')).toHaveLength(5);
+  });
+
+  it('блок А без общих шагов (несколько уровней) — списка нет', () => {
+    expect(stepsFor(ex('single-leg-stance'), ex('single-leg-stance').levels[0]!.variation.ru)).toBeNull();
+  });
+
+  it('блок Б–Г: абзац из нескольких предложений становится шагами, из одного — нет', () => {
+    const many = stepsFor(ex('toe-taps'), ex('toe-taps').levels[0]!.variation.ru);
+    expect(many).toEqual([
+      'Мяч перед собой.',
+      'Поочерёдно касаться верха мяча подошвой правой и левой ноги, как бег на месте.',
+      'Мяч не двигается',
+    ]);
+    expect(stepsFor(ex('skittles'), ex('skittles').levels[0]!.variation.ru)).toBeNull();
+  });
+
+  it('шаги — тот же текст: склеенные обратно, они дают исходный абзац', () => {
+    for (const e of exercises.filter((x) => x.levels.length === 1)) {
+      const text = e.levels[0]!.variation.ru;
+      const steps = stepsFor(e, text);
+      if (steps) expect(steps.join(' ').replace(/\s+/g, ' ')).toBe(text.replace(/\s+/g, ' '));
+    }
+  });
+});
+
+describe('общие правила блоков', () => {
+  it('группа: Б, В, мобильность; игры и блок А — без правил', () => {
+    expect(ruleGroup(getExercise('toe-taps')!)).toBe('ball');
+    expect(ruleGroup(getExercise('ladder')!)).toBe('feet');
+    expect(ruleGroup(getExercise('deep-squat')!)).toBe('mobility');
+    expect(ruleGroup(getExercise('traffic-light')!)).toBeNull();
+    expect(ruleGroup(getExercise('one-v-one')!)).toBeNull();
+    expect(ruleGroup(getExercise('skating-jumps')!)).toBeNull();
+  });
+
+  it('rulesFor: правила есть у блоков Б, В и мобильности', () => {
+    expect(rulesFor(getExercise('toe-taps')!)[0]).toBe(
+      'Стоять на носках, колени слегка согнуты, корпус чуть вперёд.',
+    );
+    expect(rulesFor(getExercise('ladder')!)).toHaveLength(2);
+    expect(rulesFor(getExercise('hamstring-reach')!).at(-1)).toMatch(/Статическая растяжка/);
+    expect(rulesFor(getExercise('traffic-light')!)).toEqual([]);
   });
 });

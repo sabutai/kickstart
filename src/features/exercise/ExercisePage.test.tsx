@@ -46,6 +46,22 @@ async function renderExercise(
   return scope;
 }
 
+/** renderExercise, но с возможностью размонтировать (несколько экранов в одном тесте). */
+async function renderAndGet(id: string) {
+  const scope = fork();
+  await allSettled(profileSaved, { scope, params: { name: 'Тимур', age: 8, lang: 'ru', mode: 'child' } });
+  const router = createMemoryRouter([{ path: '/exercise/:exerciseId', element: <ExercisePage /> }], {
+    initialEntries: [`/exercise/${id}`],
+  });
+  const view = render(
+    <Provider value={scope}>
+      <RouterProvider router={router} />
+    </Provider>,
+  );
+  await screen.findByRole('heading', { level: 1 });
+  return view;
+}
+
 describe('экран упражнения: ребёнок', () => {
   it('название, категория, объём одной строкой, «Зачем», шаги', async () => {
     await renderExercise('skating-jumps');
@@ -97,13 +113,50 @@ describe('экран упражнения: ребёнок', () => {
     expect(screen.queryByRole('note')).toBeNull();
   });
 
-  it('упражнение блока Б: один уровень — без строки уровня и без шагов, время вместо повторов', async () => {
+  it('упражнение блока Б: один уровень — без строки уровня, «Как делать» шагами, время вместо повторов', async () => {
     await renderExercise('toe-taps');
     expect(await screen.findByRole('heading', { level: 1, name: 'Тычки' })).toBeInTheDocument();
     expect(screen.getByText('2 подхода по 30–45 сек · отдых 20 сек')).toBeInTheDocument();
-    expect(screen.queryByRole('list')).toBeNull();
+    const steps = screen.getAllByRole('listitem').map((li) => li.textContent);
+    expect(steps.slice(0, 3)).toEqual([
+      '1Мяч перед собой.',
+      '2Поочерёдно касаться верха мяча подошвой правой и левой ноги, как бег на месте.',
+      '3Мяч не двигается',
+    ]);
     expect(screen.queryByText(/Зачем:/)).toBeNull();
-    expect(screen.getByText(/Мяч перед собой/)).toBeInTheDocument();
+  });
+
+  it('блок Б: «На что смотреть» и общие правила блока видны ребёнку', async () => {
+    await renderExercise('toe-taps');
+    await screen.findByRole('heading', { level: 1 });
+    expect(screen.getByText(/Касание передней частью подошвы без давления/)).toHaveTextContent(
+      'На что смотреть:',
+    );
+    const common = screen.getByRole('region', { name: 'Общее' });
+    expect(within(common).getByText('Касания лёгкие — мяч «гладим», не пинаем.')).toBeInTheDocument();
+    expect(within(common).getAllByRole('listitem')).toHaveLength(4);
+  });
+
+  it('блок В и мобильность: свои общие правила; у игр их нет', async () => {
+    const { unmount } = await renderAndGet('ladder');
+    expect(
+      within(screen.getByRole('region', { name: 'Общее' })).getByText(/Качество важнее скорости/),
+    ).toBeInTheDocument();
+    unmount();
+    const second = await renderAndGet('deep-squat');
+    expect(
+      within(screen.getByRole('region', { name: 'Общее' })).getByText(/Статическая растяжка/),
+    ).toBeInTheDocument();
+    second.unmount();
+    await renderAndGet('traffic-light');
+    expect(screen.queryByRole('region', { name: 'Общее' })).toBeNull();
+  });
+
+  it('блок А: команда ребёнку видна всем, ошибки — только взрослому', async () => {
+    await renderExercise('sideways-roll');
+    await screen.findByRole('heading', { level: 1 });
+    expect(screen.getByText(/Свернись в мячик!/)).toHaveTextContent('Команда:');
+    expect(screen.queryByText('Голова касается матраса')).toBeNull();
   });
 
   it('несуществующее упражнение: понятный экран и путь в библиотеку', async () => {
@@ -133,7 +186,6 @@ describe('экран упражнения: взрослый', () => {
     await screen.findByRole('heading', { level: 1, name: 'Перекат вбок' });
     const adult = screen.getByRole('region', { name: 'Для взрослого' });
     expect(within(adult).getByText('Голова касается матраса')).toBeInTheDocument();
-    expect(within(adult).getByText('«Свернись в мячик!»')).toBeInTheDocument();
     const tabs = within(screen.getByRole('group', { name: 'Уровни' }));
     expect(tabs.getAllByRole('button')).toHaveLength(5);
     expect(tabs.getByRole('button', { name: 'Ур. 3' })).toBeInTheDocument();
@@ -153,10 +205,10 @@ describe('экран упражнения: взрослый', () => {
     expect(screen.getByRole('button', { name: 'Ур. 5', pressed: true })).toBeInTheDocument();
   });
 
-  it('блок Б для взрослого: «На что смотреть», без переключателя уровней', async () => {
+  it('блок Б для взрослого: блока «Для взрослого» нет (нет ни уровней, ни ошибок)', async () => {
     await renderExercise('toe-taps', { mode: 'coach' });
-    const adult = await screen.findByRole('region', { name: 'Для взрослого' });
-    expect(within(adult).getByText(/Касание передней частью подошвы/)).toBeInTheDocument();
+    await screen.findByRole('heading', { level: 1 });
+    expect(screen.queryByRole('region', { name: 'Для взрослого' })).toBeNull();
     expect(screen.queryByRole('group', { name: 'Уровни' })).toBeNull();
   });
 });

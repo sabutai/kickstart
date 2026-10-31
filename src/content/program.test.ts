@@ -1,3 +1,5 @@
+/// <reference types="node" />
+import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 import { exercises, getExercise, program } from './index';
 
@@ -97,5 +99,15 @@ describe('программа (docs/program.md)', () => {
 
   it('в текстах нет бренда FIFA', () => {
     expect(JSON.stringify(program)).not.toMatch(/fifa/i);
+  });
+
+  it('общие правила блоков взяты дословно из docs/program.md (методику не придумываем)', () => {
+    const source = readFileSync('docs/program.md', 'utf8').replace(/\s+/g, ' ').toLowerCase();
+    for (const list of Object.values(program.rules)) {
+      for (const rule of list?.ru ?? []) {
+        // первая буква в источнике может быть строчной («Общее: стоять…»), поэтому сравниваем без регистра
+        expect(source, rule).toContain(rule.replace(/\s+/g, ' ').toLowerCase());
+      }
+    }
   });
 });

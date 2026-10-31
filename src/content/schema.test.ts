@@ -165,12 +165,14 @@ describe('ProgramSchema', () => {
   const template = { parts: [{ kind: 'program', minutes: 15 }] };
 
   it('принимает набор упражнений и шаблон', () => {
-    expect(ProgramSchema.safeParse({ exercises: [exercise()], session: template }).success).toBe(true);
+    expect(ProgramSchema.safeParse({ exercises: [exercise()], rules: {}, session: template }).success).toBe(
+      true,
+    );
   });
 
   it('отклоняет повторяющиеся id', () => {
-    expect(ProgramSchema.safeParse({ exercises: [exercise(), exercise()], session: template }).success).toBe(
-      false,
-    );
+    expect(
+      ProgramSchema.safeParse({ exercises: [exercise(), exercise()], rules: {}, session: template }).success,
+    ).toBe(false);
   });
 });

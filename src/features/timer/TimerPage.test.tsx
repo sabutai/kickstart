@@ -227,6 +227,15 @@ describe('вступление к упражнению: полное описа�
     expect(screen.getByText(/Учит резко останавливаться/)).toHaveTextContent('Зачем:');
   });
 
+  it('игра перед стартом: правила — нумерованными шагами, а не одним абзацем', async () => {
+    const game = createPlayer(tiny(item('tails', 'game', { workSec: 120 })), Date.now());
+    await renderTimer({ player: game });
+    const steps = within(screen.getByRole('list')).getAllByRole('listitem');
+    expect(steps).toHaveLength(3);
+    expect(steps[0]).toHaveTextContent('У ребёнка за поясом сзади лента или платок.');
+    expect(steps[2]).toHaveTextContent('Раунд 20 с');
+  });
+
   it('упражнение с матрасом: предупреждение и в таймере', async () => {
     await renderTimer({ player: ready('sideways-roll') });
     expect(screen.getByRole('note')).toHaveTextContent('на ковре или матрасе');
