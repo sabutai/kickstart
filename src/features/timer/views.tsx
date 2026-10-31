@@ -1,7 +1,7 @@
-import { useState } from 'react';
+import { useState, type ReactNode } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useUnit } from 'effector-react';
-import { volumeStats } from '../../content/format';
+import { volumeLine } from '../../content/format';
 import { describeExercise } from '../../content/selectors';
 import {
   currentItem,
@@ -11,84 +11,120 @@ import {
   upNext,
   type PlayerState,
 } from '../../entities/session/player';
-import { $mode } from '../../entities/profile/model';
+import { $mode, $profile } from '../../entities/profile/model';
+import { streak as streakOf } from '../../entities/schedule/home';
+import { $plannedSessions } from '../../entities/schedule/model';
+import { useToday } from '../../shared/lib/useToday';
 import { Button } from '../../shared/ui/Button/Button';
-import { DemoPlayer } from '../../shared/ui/DemoPlayer/DemoPlayer';
+import { DemoPlayer, DemoSoonNote } from '../../shared/ui/DemoPlayer/DemoPlayer';
 import { IconButton } from '../../shared/ui/IconButton/IconButton';
-import { LevelPips } from '../../shared/ui/LevelPips/LevelPips';
 import { Mascot } from '../../shared/ui/Mascot/Mascot';
-import { ProgressRing } from '../../shared/ui/ProgressRing/ProgressRing';
-import { StatRow } from '../../shared/ui/StatRow/StatRow';
 import { averageRating, formatClock } from './format';
-import { playerEvent, sessionLeft } from './model';
+import { endDialogOpened, playerEvent, sessionLeft } from './model';
 import styles from './Timer.module.scss';
 
 type ViewProps = { player: PlayerState; now: number };
 
-const ARROW = (
-  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-    <path
-      d="M9 6L16 12L9 18"
-      stroke="currentColor"
-      strokeWidth="2.6"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    />
-  </svg>
-);
+const STAR_PATH = 'M12 3L15 9L21 10L16.5 14.5L17.7 21L12 17.8L6.3 21L7.5 14.5L3 10L9 9Z';
 
-/** Название, уровень и демонстрация текущего упражнения. */
-function ExerciseHeader({
-  player,
-  compact = false,
-  replaySignal = 0,
-}: {
-  player: PlayerState;
-  compact?: boolean;
-  replaySignal?: number;
-}) {
-  const { t } = useTranslation();
-  const item = currentItem(player);
-  const level = item.exercise.levels[item.level - 1]!;
+function Star({ filled, size }: { filled: boolean; size: number }) {
   return (
-    <>
-      <DemoPlayer
-        key={`${item.exercise.id}-${item.level}`}
-        demo={level.demo}
-        title={item.exercise.title.ru}
-        compact={compact}
-        replaySignal={replaySignal}
-        hideReplay={compact}
+    <svg width={size} height={size} viewBox="0 0 24 24" aria-hidden="true">
+      <path
+        d={STAR_PATH}
+        className={filled ? styles.starFilled : styles.starEmpty}
+        strokeWidth="1.2"
+        strokeLinejoin="round"
       />
-      <header className={styles.exerciseHead}>
-        <h1 className={styles.title}>{item.exercise.title.ru}</h1>
-        {item.exercise.levels.length > 1 && <LevelPips level={item.level} showLabel />}
-      </header>
-      {!compact && <p className={styles.sectionTitle}>{t(`timer.parts.${item.partKind}`)}</p>}
-    </>
+    </svg>
   );
 }
 
-/** Вступление: упражнение, объём и «Начать» (блок А и игры — нужно приготовиться взрослому). */
+/** Кнопка «завершить тренировку» (крестик): открывает диалог, время на это время стоит. */
+function CloseButton({ className }: { className?: string }) {
+  const { t } = useTranslation();
+  const open = useUnit(endDialogOpened);
+  return (
+    <div className={className}>
+      <IconButton label={t('timer.close')} size={40} onClick={() => open()}>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M6 6L18 18M18 6L6 18" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" />
+        </svg>
+      </IconButton>
+    </div>
+  );
+}
+
+/** Крупный экран с Киком на градиенте: «Приготовься» и отдых (макет «Отдых»). */
+function BigCountdown({
+  label,
+  value,
+  caption,
+  action,
+  pose,
+  children,
+}: {
+  label: string;
+  value: string;
+  caption?: string;
+  action: ReactNode;
+  pose: 'side' | 'three';
+  children?: ReactNode;
+}) {
+  return (
+    <div className={styles.restScreen}>
+      <Mascot pose={pose} className={styles.restKik} />
+      <CloseButton className={styles.closeTopRight} />
+      <div className={styles.restText}>
+        <h1 className={styles.restLabel}>{label}</h1>
+        <div className={styles.restNumber} role="timer">
+          {value}
+        </div>
+        {caption && <p className={styles.restCaption}>{caption}</p>}
+        {children}
+      </div>
+      <div className={styles.restAction}>{action}</div>
+    </div>
+  );
+}
+
+/** Вступление: Кик, название, объём и «Начать» (блок А и игры — нужно приготовиться взрослому). */
 export function ReadyView({ player }: ViewProps) {
   const { t } = useTranslation();
   const send = useUnit(playerEvent);
   const item = currentItem(player);
+  const level = item.exercise.levels[item.level - 1]!;
   return (
-    <>
-      <ExerciseHeader player={player} />
-      <StatRow items={volumeStats(t, item.volume)} />
-      {item.exercise.setup && <p className={styles.text}>{item.exercise.setup.ru}</p>}
-      {!item.exercise.setup && <p className={styles.text}>{describeExercise(item.exercise)}</p>}
-      {item.exercise.safety?.needsMat && (
-        <p className={styles.safety} role="note">
-          {t('exercise.safetyMat')}
-        </p>
-      )}
-      <Button size="lg" fullWidth iconRight={ARROW} onClick={() => send({ type: 'begin' })}>
-        {t('timer.start')}
-      </Button>
-    </>
+    <div className={styles.readyScreen}>
+      <div className={styles.readyHero}>
+        <DemoPlayer
+          key={`${item.exercise.id}-${item.level}`}
+          demo={level.demo}
+          title={item.exercise.title.ru}
+          fallback={
+            <>
+              <Mascot pose="three" className={styles.readyKik} />
+              <DemoSoonNote className={styles.readyNote} />
+            </>
+          }
+        />
+      </div>
+      <CloseButton className={styles.closeTopLeft} />
+      <section className={styles.sheet}>
+        <p className={styles.sheetLabel}>{t(`timer.parts.${item.partKind}`)}</p>
+        <h1 className={styles.sheetTitle}>{item.exercise.title.ru}</h1>
+        <p className={styles.sheetMeta}>{volumeLine(t, item.volume)}</p>
+        <p className={styles.sheetText}>{item.exercise.setup?.ru ?? describeExercise(item.exercise)}</p>
+        {item.exercise.safety?.needsMat && (
+          <p className={styles.sheetNote} role="note">
+            {t('exercise.safetyMat')}
+          </p>
+        )}
+        <Button size="lg" fullWidth onClick={() => send({ type: 'begin' })}>
+          {t('timer.start')}
+        </Button>
+      </section>
+    </div>
   );
 }
 
@@ -97,25 +133,19 @@ export function PrepareView({ player, now }: ViewProps) {
   const { t } = useTranslation();
   const send = useUnit(playerEvent);
   const item = currentItem(player);
-  const remaining = remainingMs(player, now) ?? 0;
+  const seconds = Math.ceil((remainingMs(player, now) ?? 0) / 1000);
   return (
-    <>
-      <h1 className={styles.title}>{item.exercise.title.ru}</h1>
-      <div className={styles.ringBox}>
-        <ProgressRing
-          value={1 - fractionElapsed(player, now)}
-          label={t('timer.prepare.title')}
-          size={228}
-          strokeWidth={12}
-        >
-          <span className={styles.bigTime}>{Math.ceil(remaining / 1000)}</span>
-        </ProgressRing>
-      </div>
-      <p className={styles.center}>{t('timer.prepare.title')}</p>
-      <Button fullWidth onClick={() => send({ type: 'skip' })}>
-        {t('timer.prepare.go')}
-      </Button>
-    </>
+    <BigCountdown
+      pose="three"
+      label={t('timer.prepare.title')}
+      value={String(seconds)}
+      caption={item.exercise.title.ru}
+      action={
+        <Button size="lg" onClick={() => send({ type: 'skip' })}>
+          {t('timer.prepare.go')}
+        </Button>
+      }
+    />
   );
 }
 
@@ -135,113 +165,148 @@ function upNextText(player: PlayerState, t: ReturnType<typeof useTranslation>['t
   }
 }
 
-/** Подход: на время — кольцо с обратным отсчётом, на повторы — число и «Готово». */
+/** Подход (макет «Таймер»): Кик на весь экран, три плашки сверху, ряд кнопок снизу. */
 export function WorkView({ player, now }: ViewProps) {
   const { t } = useTranslation();
   const [send, mode] = useUnit([playerEvent, $mode]);
   const item = currentItem(player);
+  const level = item.exercise.levels[item.level - 1]!;
   const turn = currentTurn(player);
   const remaining = remainingMs(player, now);
   const timed = remaining !== null;
+  // Длинные игры (минуты) показываем минутами: «180 сек» ребёнку ничего не говорит.
+  const inMinutes = timed && remaining >= 100_000;
   const setsDone = player.results[player.itemIndex]!.setsDone;
   const [replaySignal, setReplaySignal] = useState(0);
 
   return (
-    <>
-      <ExerciseHeader player={player} compact replaySignal={replaySignal} />
-      <div className={styles.setPips} aria-hidden="true">
-        {Array.from({ length: turn.sets }, (_, i) => (
-          <span
-            key={i}
-            className={
-              i < setsDone
-                ? `${styles.pip} ${styles.pipDone}`
-                : i === turn.set
-                  ? `${styles.pip} ${styles.pipNow}`
-                  : styles.pip
-            }
-          />
-        ))}
+    <div className={styles.workScreen}>
+      <div className={styles.workMedia}>
+        <DemoPlayer
+          key={`${item.exercise.id}-${item.level}`}
+          demo={level.demo}
+          title={item.exercise.title.ru}
+          replaySignal={replaySignal}
+          fallback={
+            <>
+              <Mascot pose="front" className={styles.workKik} />
+              <DemoSoonNote className={styles.workNote} />
+            </>
+          }
+        />
       </div>
-      <p className={styles.center}>
-        {t('timer.work.set', { n: turn.set + 1, total: turn.sets })}
-        {turn.side !== null && ` · ${t(turn.side === 0 ? 'timer.side.first' : 'timer.side.second')}`}
-      </p>
 
-      {timed ? (
-        <div className={styles.ringBox}>
-          <ProgressRing
-            value={1 - fractionElapsed(player, now)}
-            label={t('timer.work.set', { n: turn.set + 1, total: turn.sets })}
-            size={228}
-            strokeWidth={12}
-          >
-            <span className={styles.bigTime} role="timer">
+      <div className={styles.tiles}>
+        <div
+          className={styles.tileSet}
+          aria-label={t('timer.work.setLabel', { n: turn.set + 1, total: turn.sets })}
+        >
+          <div className={styles.tileSetNumber}>
+            {turn.set + 1}
+            <span className={styles.tileSetOf}> {t('timer.work.of', { total: turn.sets })}</span>
+          </div>
+          <div className={styles.setPips} aria-hidden="true">
+            {Array.from({ length: turn.sets }, (_, i) => (
+              <span
+                key={i}
+                className={
+                  i < setsDone || i === turn.set ? `${styles.setPip} ${styles.setPipOn}` : styles.setPip
+                }
+              />
+            ))}
+          </div>
+        </div>
+        <div className={styles.tileMain}>
+          <div className={styles.tileMainNumber}>
+            {timed
+              ? inMinutes
+                ? Math.ceil(remaining / 60_000)
+                : Math.ceil(remaining / 1000)
+              : item.volume.reps}
+          </div>
+          <div className={styles.tileMainUnit}>
+            {timed
+              ? t(inMinutes ? 'timer.work.min' : 'timer.work.sec')
+              : t('timer.work.repsUnit', { count: item.volume.reps ?? 0 })}
+          </div>
+        </div>
+        {timed && (
+          <div className={styles.tileTime}>
+            <div className={styles.tileTimeValue} role="timer">
               {formatClock(remaining)}
-            </span>
-          </ProgressRing>
-        </div>
-      ) : (
-        <div className={styles.repsBox}>
-          <span className={styles.bigTime}>{item.volume.reps}</span>
-          <span className={styles.repsLabel}>{t('timer.work.reps', { count: item.volume.reps })}</span>
-          <span className={styles.hint}>{t('timer.work.repsHint')}</span>
-        </div>
+            </div>
+            <div className={styles.bar} aria-hidden="true">
+              <div
+                className={styles.barFill}
+                style={{ width: `${(1 - fractionElapsed(player, now)) * 100}%` }}
+              />
+            </div>
+          </div>
+        )}
+      </div>
+
+      <CloseButton className={styles.closeUnderTiles} />
+      {turn.side !== null && (
+        <span className={styles.sidePill}>
+          {t(turn.side === 0 ? 'timer.work.sideFirst' : 'timer.work.sideSecond')}
+        </span>
       )}
 
-      <div className={styles.controls}>
-        <IconButton label={t('exercise.demo.replay')} size={46} onClick={() => setReplaySignal((n) => n + 1)}>
-          <svg width="19" height="19" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-            <path
-              d="M4 12A8 8 0 0 1 19 8.5M20 12A8 8 0 0 1 5 15.5"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-            />
-            <path
-              d="M19 4V9H14M5 20V15H10"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-          </svg>
-        </IconButton>
-        {timed ? (
-          <button
-            type="button"
-            className={styles.pauseButton}
-            aria-label={t('timer.work.pause')}
-            onClick={() => send({ type: 'pause' })}
+      <div className={styles.workBottom}>
+        {mode === 'child' && <div className={styles.encourage}>{t('timer.work.encourage')}</div>}
+        <div className={styles.controls}>
+          <IconButton
+            label={t('exercise.demo.replay')}
+            size={56}
+            onClick={() => setReplaySignal((n) => n + 1)}
           >
-            <svg width="26" height="26" viewBox="0 0 24 24" aria-hidden="true">
-              <rect x="6" y="5" width="4" height="14" rx="1.2" fill="currentColor" />
-              <rect x="14" y="5" width="4" height="14" rx="1.2" fill="currentColor" />
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path
+                d="M4 12A8 8 0 0 1 19 8.5M20 12A8 8 0 0 1 5 15.5"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+              />
+              <path
+                d="M19 4V9H14M5 20V15H10"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
             </svg>
-          </button>
-        ) : (
-          <Button size="lg" onClick={() => send({ type: 'complete' })}>
-            {t('timer.work.done')}
-          </Button>
-        )}
-        <IconButton label={t('timer.work.skip')} size={46} onClick={() => send({ type: 'skip' })}>
-          <svg width="19" height="19" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-            <path d="M6 5L16 12L6 19Z" fill="currentColor" />
-            <rect x="17" y="5" width="2.6" height="14" fill="currentColor" />
-          </svg>
-        </IconButton>
+          </IconButton>
+          <div className={styles.upNext}>{upNextText(player, t)}</div>
+          <IconButton label={t('timer.work.skip')} size={56} onClick={() => send({ type: 'skip' })}>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M6 5L16 12L6 19Z" fill="currentColor" />
+              <rect x="17" y="5" width="2.6" height="14" fill="currentColor" />
+            </svg>
+          </IconButton>
+          {timed ? (
+            <IconButton
+              label={t('timer.work.pause')}
+              size={56}
+              variant="ink"
+              onClick={() => send({ type: 'pause' })}
+            >
+              <svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true">
+                <rect x="6" y="5" width="4" height="14" rx="1.2" fill="currentColor" />
+                <rect x="14" y="5" width="4" height="14" rx="1.2" fill="currentColor" />
+              </svg>
+            </IconButton>
+          ) : (
+            <button type="button" className={styles.doneButton} onClick={() => send({ type: 'complete' })}>
+              {t('timer.work.done')}
+            </button>
+          )}
+        </div>
       </div>
-
-      <p className={styles.upNext}>
-        <span className={styles.upNextLabel}>{t('timer.upNext.label')} </span>
-        {upNextText(player, t)}
-      </p>
-      {mode === 'child' && <p className={styles.encourage}>⭐ {t('timer.work.encourage')}</p>}
-    </>
+    </div>
   );
 }
 
-/** Отдых: обратный отсчёт и (если дальше новое упражнение) карточка следующего. */
+/** Отдых (макет «Отдых»): огромное число, Кик в профиль, «Пропустить». */
 export function RestView({ player, now }: ViewProps) {
   const { t } = useTranslation();
   const send = useUnit(playerEvent);
@@ -249,54 +314,29 @@ export function RestView({ player, now }: ViewProps) {
   const rest = player.rest!;
   const turn = currentTurn(player);
   const next = rest.next === 'item' ? player.session.items[player.itemIndex + 1] : undefined;
+  const seconds = Math.ceil(remaining / 1000);
 
   const caption =
     rest.kind === 'side'
-      ? t('timer.rest.sideTitle')
+      ? t('timer.rest.nextSide')
       : rest.kind === 'sets'
-        ? t('timer.rest.beforeSet', { n: turn.set + 1, total: turn.sets })
-        : t('timer.rest.nextExercise');
+        ? t('timer.rest.nextSet', { n: turn.set + 1, total: turn.sets })
+        : next
+          ? t('timer.rest.nextItem', { title: next.exercise.title.ru })
+          : '';
 
   return (
-    <>
-      <h1 className={styles.restLabel}>
-        {rest.kind === 'side' ? t('timer.rest.sideTitle') : t('timer.rest.title')}
-      </h1>
-      <div className={styles.ringBox}>
-        <ProgressRing
-          value={1 - fractionElapsed(player, now)}
-          label={t('timer.rest.title')}
-          size={236}
-          strokeWidth={11}
-        >
-          <span className={`${styles.bigTime} ${styles.bigTimeRest}`} role="timer">
-            {formatClock(remaining)}
-          </span>
-        </ProgressRing>
-      </div>
-      {!next && <p className={styles.center}>{caption}</p>}
-
-      {next && (
-        <section className={styles.nextCard} aria-label={t('timer.rest.nextExercise')}>
-          <span
-            className={styles.nextThumb}
-            aria-hidden="true"
-            style={{ ['--cat' as string]: `var(--cat-${next.exercise.category})` }}
-          >
-            <Mascot emotion="joy" size={44} />
-          </span>
-          <div className={styles.nextBody}>
-            <span className={styles.sectionTitle}>{t('timer.rest.nextExercise')}</span>
-            <span className={styles.nextTitle}>{next.exercise.title.ru}</span>
-            {next.exercise.levels.length > 1 && <LevelPips level={next.level} showLabel />}
-          </div>
-        </section>
-      )}
-
-      <Button fullWidth iconRight={ARROW} onClick={() => send({ type: 'skip' })}>
-        {t('timer.rest.skip')}
-      </Button>
-    </>
+    <BigCountdown
+      pose="side"
+      label={rest.kind === 'side' ? t('timer.rest.sideTitle') : t('timer.rest.title')}
+      value={seconds >= 60 ? formatClock(remaining) : String(seconds)}
+      caption={caption}
+      action={
+        <Button size="lg" onClick={() => send({ type: 'skip' })}>
+          {t('timer.rest.skip')}
+        </Button>
+      }
+    />
   );
 }
 
@@ -305,68 +345,76 @@ export function RatingView({ player }: ViewProps) {
   const { t } = useTranslation();
   const send = useUnit(playerEvent);
   const item = currentItem(player);
+  const [hover, setHover] = useState(0);
   return (
-    <>
-      <div className={styles.centerBlock}>
-        <Mascot emotion="joy" size={110} />
-        <h1 className={styles.title}>{t('timer.rating.title')}</h1>
-        <p className={styles.text}>{item.exercise.title.ru}</p>
-        <p className={styles.hint}>{t('timer.rating.hint')}</p>
-      </div>
-      <div className={styles.stars} role="group" aria-label={t('timer.rating.title')}>
-        {[1, 2, 3, 4, 5].map((n) => (
-          <button
-            key={n}
-            type="button"
-            className={styles.star}
-            aria-label={t('timer.rating.star', { n })}
-            onClick={() => send({ type: 'rate', rating: n })}
-          >
-            <svg width="38" height="38" viewBox="0 0 24 24" aria-hidden="true">
-              <path
-                d="M12 3L15 9L21 10L16.5 14.5L17.7 21L12 17.8L6.3 21L7.5 14.5L3 10L9 9Z"
-                fill="currentColor"
-              />
-            </svg>
-            <span className={styles.starNumber} aria-hidden="true">
-              {n}
-            </span>
-          </button>
-        ))}
-      </div>
-      <Button variant="ghost" fullWidth onClick={() => send({ type: 'rate', rating: null })}>
-        {t('timer.rating.skip')}
-      </Button>
-    </>
+    <div className={styles.finishScreen}>
+      <Mascot pose="front" className={styles.finishKik} />
+      <CloseButton className={styles.closeTopLeft} />
+      <section className={styles.sheet}>
+        <h1 className={styles.sheetTitleCenter}>{t('timer.rating.title')}</h1>
+        <p className={styles.sheetMetaCenter}>{item.exercise.title.ru}</p>
+        <p className={styles.sheetHint}>{t('timer.rating.hint')}</p>
+        <div
+          className={styles.stars}
+          role="group"
+          aria-label={t('timer.rating.title')}
+          onMouseLeave={() => setHover(0)}
+        >
+          {[1, 2, 3, 4, 5].map((n) => (
+            <button
+              key={n}
+              type="button"
+              className={styles.starButton}
+              aria-label={t('timer.rating.star', { n })}
+              onMouseEnter={() => setHover(n)}
+              onClick={() => send({ type: 'rate', rating: n })}
+            >
+              <Star filled={n <= hover} size={30} />
+            </button>
+          ))}
+        </div>
+        <Button variant="ghost" fullWidth onClick={() => send({ type: 'rate', rating: null })}>
+          {t('timer.rating.skip')}
+        </Button>
+      </section>
+    </div>
   );
 }
 
-/** Итоги занятия с радостным Киком. */
+/** Итоги занятия (макет «Ура»): Кик, поздравление, средняя оценка, «На главную». */
 export function DoneView({ player }: ViewProps) {
   const { t } = useTranslation();
   const leave = useUnit(sessionLeft);
+  const [profile, plan] = useUnit([$profile, $plannedSessions]);
+  const today = useToday();
+  const streak = streakOf(plan, today);
   const minutes = Math.max(
     1,
     Math.round(((player.finishedAt ?? player.startedAt) - player.startedAt) / 60_000),
   );
-  const exercises = player.results.filter((r) => r.setsDone > 0).length;
   const rating = averageRating(player.results.map((r) => r.rating));
+  const stars = rating === null ? 0 : Math.round(Number(rating.replace(',', '.')));
   return (
-    <>
-      <div className={styles.centerBlock}>
-        <Mascot emotion="joy" size={140} />
-        <h1 className={styles.title}>{t('timer.done.title')}</h1>
-      </div>
-      <StatRow
-        items={[
-          { label: t('timer.done.time'), value: t('timer.done.minutes', { count: minutes }) },
-          { label: t('timer.done.exercises'), value: String(exercises) },
-          { label: t('timer.done.rating'), value: rating ?? t('timer.done.none') },
-        ]}
-      />
-      <Button to="/" size="lg" fullWidth onClick={() => leave()}>
-        {t('timer.done.home')}
-      </Button>
-    </>
+    <div className={styles.finishScreen}>
+      <Mascot pose="front" className={styles.finishKik} />
+      <section className={styles.sheet}>
+        <h1 className={styles.sheetTitleCenter}>{t('timer.done.title', { name: profile?.name ?? '' })}</h1>
+        <p className={styles.sheetMetaCenter}>
+          {streak > 0
+            ? t('timer.done.summary', { minutes, streak: t('timer.done.streakDays', { count: streak }) })
+            : t('timer.done.minutesOnly', { minutes })}
+        </p>
+        {rating !== null && (
+          <div className={styles.starsRow} role="img" aria-label={t('timer.done.rating', { value: rating })}>
+            {[1, 2, 3, 4, 5].map((n) => (
+              <Star key={n} filled={n <= stars} size={34} />
+            ))}
+          </div>
+        )}
+        <Button to="/" size="lg" fullWidth onClick={() => leave()}>
+          {t('timer.done.home')}
+        </Button>
+      </section>
+    </div>
   );
 }

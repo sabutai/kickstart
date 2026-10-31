@@ -3,22 +3,20 @@ import { useLocation, useNavigate, useParams } from 'react-router';
 import { useTranslation } from 'react-i18next';
 import { useUnit } from 'effector-react';
 import { getExercise } from '../../content';
-import { volumeStats } from '../../content/format';
+import { volumeLine } from '../../content/format';
 import { clampLevel, maxHomeLevel } from '../../content/selectors';
 import { $mode } from '../../entities/profile/model';
 import { $exerciseLevels } from '../../entities/progress/model';
 import { Button } from '../../shared/ui/Button/Button';
-import { Card } from '../../shared/ui/Card/Card';
 import { Chip } from '../../shared/ui/Chip/Chip';
-import { DemoPlayer } from '../../shared/ui/DemoPlayer/DemoPlayer';
+import { DemoPlayer, DemoSoonNote } from '../../shared/ui/DemoPlayer/DemoPlayer';
 import { EmptyState } from '../../shared/ui/EmptyState/EmptyState';
 import { IconButton } from '../../shared/ui/IconButton/IconButton';
-import { LevelPips } from '../../shared/ui/LevelPips/LevelPips';
-import { StatRow } from '../../shared/ui/StatRow/StatRow';
+import { Mascot } from '../../shared/ui/Mascot/Mascot';
 import styles from './ExercisePage.module.scss';
 
 const BACK_ICON = (
-  <svg width="17" height="17" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
     <path
       d="M15 6L8 12L15 18"
       stroke="currentColor"
@@ -41,9 +39,8 @@ export function ExercisePage() {
 
   if (!exercise) {
     return (
-      <main className={styles.page}>
+      <main className={styles.empty}>
         <EmptyState
-          mascot="thinking"
           title={t('exercise.notFoundTitle')}
           text={t('exercise.notFoundText')}
           action={<Button to="/library">{t('exercise.toLibrary')}</Button>}
@@ -67,117 +64,116 @@ export function ExercisePage() {
   return (
     <main className={styles.page}>
       <div className={styles.hero}>
-        <DemoPlayer key={`${exercise.id}-${level}`} demo={data.demo} title={exercise.title.ru} fill />
-        <div className={styles.heroShade} aria-hidden="true" />
-        <div className={styles.heroTop}>
-          <IconButton label={t('exercise.back')} onClick={goBack} size={38} variant="glass">
-            {BACK_ICON}
-          </IconButton>
-          <span className={styles.category}>{t(`categories.${exercise.category}`)}</span>
-        </div>
+        <DemoPlayer
+          key={`${exercise.id}-${level}`}
+          demo={data.demo}
+          title={exercise.title.ru}
+          fallback={
+            <>
+              <Mascot pose="three" className={styles.kik} />
+              <DemoSoonNote className={styles.note} />
+            </>
+          }
+        />
       </div>
+      <div className={styles.back}>
+        <IconButton label={t('exercise.back')} onClick={goBack} size={42}>
+          {BACK_ICON}
+        </IconButton>
+      </div>
+      <span className={styles.category}>{t(`categories.${exercise.category}`)}</span>
 
-      <div className={styles.body}>
-        <header>
-          <h1 className={styles.title}>{exercise.title.ru}</h1>
-          {multiLevel && <LevelPips level={level} showLabel />}
-        </header>
+      <section className={styles.sheet}>
+        <div className={styles.scroll}>
+          <header>
+            <h1 className={styles.title}>{exercise.title.ru}</h1>
+            <p className={styles.meta}>
+              {multiLevel && `${t('exercise.levelNow', { level })} · `}
+              {volumeLine(t, data.volume)}
+            </p>
+          </header>
 
-        {isCoach && multiLevel && (
-          <div className={styles.levels} role="group" aria-label={t('exercise.levelsLabel')}>
-            {exercise.levels.map((l) => (
-              <Chip
-                key={l.level}
-                label={
-                  l.level > homeMax
-                    ? `${t('exercise.levelTab', { level: l.level })} · ${t('exercise.notAtHome')}`
-                    : t('exercise.levelTab', { level: l.level })
-                }
-                selected={l.level === level}
-                onClick={() => setViewLevel(l.level)}
-              />
-            ))}
-          </div>
-        )}
-
-        <StatRow compact items={volumeStats(t, data.volume)} />
-
-        {exercise.safety?.needsMat && (
-          <p className={styles.safety} role="note">
-            {t('exercise.safetyMat')}
-          </p>
-        )}
-
-        {exercise.setup && (
-          <section className={styles.section}>
-            <h2 className={styles.sectionTitle}>{t('exercise.setup')}</h2>
-            <p className={styles.text}>{exercise.setup.ru}</p>
-          </section>
-        )}
-
-        <section className={styles.section}>
-          <h2 className={styles.sectionTitle}>
-            {t(exercise.steps ? 'exercise.levelVariation' : 'exercise.steps')}
-          </h2>
+          {exercise.setup && <p className={styles.text}>{exercise.setup.ru}</p>}
           <p className={styles.text}>{data.variation.ru}</p>
-        </section>
 
-        {exercise.steps && (
-          <section className={styles.section}>
-            <h2 className={styles.sectionTitle}>{t('exercise.steps')}</h2>
+          {exercise.steps && (
             <ol className={styles.steps}>
               {exercise.steps.ru.map((step, i) => (
                 <li key={i} className={styles.step}>
                   <span className={styles.stepNumber} aria-hidden="true">
                     {i + 1}
                   </span>
-                  <span className={styles.text}>{step}</span>
+                  <span>{step}</span>
                 </li>
               ))}
             </ol>
-          </section>
-        )}
+          )}
 
-        {exercise.cue && (
-          <section className={styles.section}>
-            <h2 className={styles.sectionTitle}>{t('exercise.cue')}</h2>
-            <p className={styles.cue}>«{exercise.cue.ru}»</p>
-          </section>
-        )}
+          {exercise.safety?.needsMat && (
+            <p className={styles.note2} role="note">
+              {t('exercise.safetyMat')}
+            </p>
+          )}
 
-        {exercise.why && (
-          <Card as="section" padding="md" label={t('exercise.why')}>
-            <h2 className={styles.sectionTitle}>{t('exercise.why')}</h2>
-            <p className={styles.text}>{exercise.why.ru}</p>
-          </Card>
-        )}
+          {exercise.why && (
+            <p className={styles.why}>
+              <b>{t('exercise.why')} </b>
+              {exercise.why.ru}
+            </p>
+          )}
 
-        {isCoach && exercise.mistakes && (
-          <section className={styles.section}>
-            <h2 className={styles.sectionTitle}>{t('exercise.mistakes')}</h2>
-            <ul className={styles.mistakes}>
-              {exercise.mistakes.ru.map((m) => (
-                <li key={m} className={styles.text}>
-                  {m}
-                </li>
-              ))}
-            </ul>
-          </section>
-        )}
-
-        {isCoach && exercise.lookFor && (
-          <section className={styles.section}>
-            <h2 className={styles.sectionTitle}>{t('exercise.lookFor')}</h2>
-            <p className={styles.text}>{exercise.lookFor.ru}</p>
-          </section>
-        )}
-
+          {isCoach && (
+            <section className={styles.coach} aria-label={t('exercise.forAdult')}>
+              <p className={styles.coachTitle}>
+                <b>{t('exercise.forAdult')}</b>
+              </p>
+              {multiLevel && (
+                <div className={styles.levels} role="group" aria-label={t('exercise.levelsLabel')}>
+                  {exercise.levels.map((l) => (
+                    <Chip
+                      key={l.level}
+                      label={
+                        l.level > homeMax
+                          ? `${t('exercise.levelTab', { level: l.level })} · ${t('exercise.notAtHome')}`
+                          : t('exercise.levelTab', { level: l.level })
+                      }
+                      selected={l.level === level}
+                      onClick={() => setViewLevel(l.level)}
+                    />
+                  ))}
+                </div>
+              )}
+              {exercise.mistakes && (
+                <>
+                  <p className={styles.coachLabel}>{t('exercise.mistakes')}</p>
+                  <ul className={styles.mistakes}>
+                    {exercise.mistakes.ru.map((m) => (
+                      <li key={m}>{m}</li>
+                    ))}
+                  </ul>
+                </>
+              )}
+              {exercise.lookFor && (
+                <>
+                  <p className={styles.coachLabel}>{t('exercise.lookFor')}</p>
+                  <p className={styles.coachText}>{exercise.lookFor.ru}</p>
+                </>
+              )}
+              {exercise.cue && (
+                <>
+                  <p className={styles.coachLabel}>{t('exercise.cue')}</p>
+                  <p className={styles.coachText}>«{exercise.cue.ru}»</p>
+                </>
+              )}
+            </section>
+          )}
+        </div>
         <div className={styles.cta}>
           <Button to="/timer" fullWidth size="lg">
             {t('exercise.start')}
           </Button>
         </div>
-      </div>
+      </section>
     </main>
   );
 }

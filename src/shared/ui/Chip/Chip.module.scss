@@ -5,9 +5,23 @@
   flex: 0 0 auto;
   align-items: center;
   gap: 6px;
-  padding: 9px 14px;
+  padding: 10px 16px;
   border-radius: $radius-pill;
-  background: $color-surface;
+  background: $color-white;
+  color: $color-ink;
+}
+
+.interactive {
+  min-height: $tap-min;
+
+  &:focus-visible {
+    outline: 3px solid $color-ink-soft;
+    outline-offset: 2px;
+  }
+}
+
+.selected {
+  background: $color-ink;
   color: $color-white;
 }
 
@@ -17,27 +31,13 @@
   padding: 10px 4px;
 }
 
-.interactive {
-  min-height: $tap-min;
-
-  &:focus-visible {
-    outline: 2px solid $color-volt;
-    outline-offset: 2px;
-  }
-}
-
-.selected {
-  background: $color-chip-selected;
-  color: $color-chip-selected-text;
-}
-
 .dot {
-  width: 8px;
-  height: 8px;
+  width: 7px;
+  height: 7px;
   border-radius: $radius-pill;
 }
 
 .label {
-  font-size: 12px;
+  font-size: 12.5px;
   font-weight: 700;
 }

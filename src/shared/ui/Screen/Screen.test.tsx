@@ -1,35 +1,21 @@
 import { describe, expect, it } from 'vitest';
-import { fireEvent, render, screen } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import { Screen } from './Screen';
 
 describe('Screen', () => {
-  it('показывает заголовок, слот шапки и содержимое', () => {
+  it('показывает заголовок, слот справа и содержимое', () => {
     render(
-      <Screen title="Главная" header={<span>серия</span>}>
+      <Screen title="Календарь" aside={<span>Неделя 1 из 12</span>}>
         <p>контент</p>
       </Screen>,
     );
-    expect(screen.getByRole('heading', { name: 'Главная' })).toBeInTheDocument();
-    expect(screen.getByText('серия')).toBeInTheDocument();
+    expect(screen.getByRole('heading', { level: 1, name: 'Календарь' })).toBeInTheDocument();
+    expect(screen.getByText('Неделя 1 из 12')).toBeInTheDocument();
     expect(screen.getByText('контент')).toBeInTheDocument();
   });
 
-  it('без background картинку не рендерит', () => {
-    const { container } = render(<Screen title="Т" />);
-    expect(container.querySelector('img')).toBeNull();
-  });
-
-  it('с background рендерит декоративную картинку', () => {
-    const { container } = render(<Screen title="Т" background="home" />);
-    const img = container.querySelector('img');
-    expect(img).toHaveAttribute('src', expect.stringContaining('backgrounds/bg_home.webp'));
-    expect(img).toHaveAttribute('alt', '');
-    expect(img).toHaveAttribute('aria-hidden', 'true');
-  });
-
-  it('при ошибке загрузки убирает картинку и остаётся на фолбэке', () => {
-    const { container } = render(<Screen title="Т" background="home" />);
-    fireEvent.error(container.querySelector('img')!);
-    expect(container.querySelector('img')).toBeNull();
+  it('заголовок — в <main>', () => {
+    render(<Screen title="Упражнения" />);
+    expect(screen.getByRole('main')).toContainElement(screen.getByRole('heading', { level: 1 }));
   });
 });

@@ -1,0 +1,129 @@
+@use '../../shared/styles/tokens' as *;
+
+.screen {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 12px;
+  min-height: 0;
+  padding: calc(30px + env(safe-area-inset-top)) $space-screen-x calc(14px + $nav-overlap);
+  overflow-y: auto;
+  background: $color-bg;
+  scrollbar-width: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+.heading {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 700;
+  text-align: center;
+}
+
+.avatar {
+  position: relative;
+  align-self: center;
+  width: 110px;
+  height: 110px;
+  flex: none;
+  overflow: hidden;
+  border-radius: $radius-pill;
+  background: linear-gradient(180deg, $color-grad-from, $color-grad-to);
+}
+
+.avatarKik {
+  position: absolute;
+  top: 8px;
+  left: 14px;
+  width: 84px;
+  height: auto;
+}
+
+.who {
+  text-align: center;
+}
+
+.name {
+  margin: 0;
+  font-size: 22px;
+  font-weight: 800;
+}
+
+.sub {
+  margin: 2px 0 0;
+  font-size: 12px;
+  color: $color-muted;
+}
+
+.summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 16px;
+  border-radius: $radius-card;
+  background: $color-mint;
+}
+
+.count {
+  font-size: 20px;
+  font-weight: 800;
+}
+
+.countUnit {
+  font-size: 12px;
+  font-weight: 600;
+  color: $color-ink-soft;
+}
+
+.streak {
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.levels {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: $tap-min;
+  padding: 14px 16px;
+  border-radius: $radius-card;
+  background: $color-white;
+
+  &:focus-visible {
+    outline: 3px solid $color-ink-soft;
+    outline-offset: 2px;
+  }
+}
+
+.rowName {
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.rowEnd {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.chevron {
+  color: $color-muted;
+}
+
+.mode {
+  padding: 8px 16px;
+  border-radius: $radius-card;
+  background: $color-white;
+}

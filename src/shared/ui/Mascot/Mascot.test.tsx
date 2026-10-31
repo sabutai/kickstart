@@ -1,17 +1,38 @@
 import { describe, expect, it } from 'vitest';
 import { render } from '@testing-library/react';
-import { Mascot, type MascotEmotion } from './Mascot';
+import { Mascot } from './Mascot';
+import { KIK_POSES, type KikPose } from './poses';
 
 describe('Mascot', () => {
-  it.each<MascotEmotion>(['joy', 'rest', 'thinking'])('рисует эмоцию %s как декоративную', (emotion) => {
-    const { container } = render(<Mascot emotion={emotion} />);
-    const svg = container.querySelector('svg')!;
-    expect(svg).toHaveAttribute('aria-hidden', 'true');
-    expect(svg).toHaveAttribute('data-emotion', emotion);
+  it.each<KikPose>(['front', 'three', 'side', 'back', 'head'])(
+    'рисует позу %s как декоративную картинку',
+    (pose) => {
+      const { container } = render(<Mascot pose={pose} />);
+      const img = container.querySelector('img')!;
+      expect(img).toHaveAttribute('data-pose', pose);
+      expect(img).toHaveAttribute('alt', '');
+      expect(img).toHaveAttribute('aria-hidden', 'true');
+      expect(img.getAttribute('src')).toBeTruthy();
+    },
+  );
+
+  it('разные позы — разные файлы', () => {
+    const srcs = (['front', 'three', 'side', 'back', 'head'] as const).map((pose) =>
+      render(<Mascot pose={pose} />)
+        .container.querySelector('img')!
+        .getAttribute('src'),
+    );
+    expect(new Set(srcs).size).toBe(5);
   });
 
-  it('эмоции различаются по разметке', () => {
-    const html = (e: MascotEmotion) => render(<Mascot emotion={e} />).container.innerHTML;
-    expect(new Set([html('joy'), html('rest'), html('thinking')]).size).toBe(3);
+  it('с alt картинка доступна скринридеру', () => {
+    const { container } = render(<Mascot alt="Кик отдыхает" />);
+    const img = container.querySelector('img')!;
+    expect(img).toHaveAttribute('alt', 'Кик отдыхает');
+    expect(img).not.toHaveAttribute('aria-hidden');
+  });
+
+  it('порядок поз для списков — четыре ракурса без «головы»', () => {
+    expect(KIK_POSES).toEqual(['three', 'front', 'side', 'back']);
   });
 });

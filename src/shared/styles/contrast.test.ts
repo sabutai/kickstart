@@ -16,27 +16,53 @@ function token(name: string): string {
 const MIN = 4.5;
 
 describe('контраст текста (WCAG AA, ≥ 4.5:1)', () => {
-  const ink = token('color-ink');
-  const surface = token('color-surface');
-  // Карточка: rgba(11,42,27,.75) поверх худшего случая — белой картинки.
-  const cardOnWhite = over(ink, 0.75, '#ffffff');
+  const [ink, inkSoft, muted, white] = ['color-ink', 'color-ink-soft', 'color-muted', 'color-white'].map(
+    token,
+  ) as [string, string, string, string];
+  const [bg, field, mint, track] = ['color-bg', 'color-field', 'color-mint', 'color-track'].map(token) as [
+    string,
+    string,
+    string,
+    string,
+  ];
+  const gradFrom = token('color-grad-from');
+  const gradAltFrom = token('color-grad-alt-from');
+  // Полупрозрачная белая плашка поверх серо-фиолетового фона таймера (худший случай — нижний цвет).
+  const pillOnTimer = over(white, 0.75, token('color-timer-to'));
 
   it.each([
-    ['белый на ink', token('color-white'), ink],
-    ['белый на surface', token('color-white'), surface],
-    ['gray на ink', token('color-gray'), ink],
-    ['gray на surface', token('color-gray'), surface],
-    ['volt на ink', token('color-volt'), ink],
-    ['volt на surface', token('color-volt'), surface],
-    ['текст кнопки ребёнка', token('color-accent-child-text'), token('color-accent-child')],
-    ['текст кнопки взрослого', token('color-accent-coach-text'), token('color-accent-coach')],
-    ['текст выбранного чипа', token('color-chip-selected-text'), token('color-chip-selected')],
-    ['белый на карточке поверх белого фона', token('color-white'), cardOnWhite],
-  ])('%s', (_name, fg, bg) => {
-    expect(contrast(fg, bg)).toBeGreaterThanOrEqual(MIN);
+    ['основной текст на фоне', ink, bg],
+    ['основной текст на белом', ink, white],
+    ['основной текст на плашке «мята»', ink, mint],
+    ['основной текст на поле', ink, field],
+    ['подпись на фоне', muted, bg],
+    ['подпись на белом', muted, white],
+    ['подпись на поле (единица «лет»)', muted, field],
+    ['подпись на «мяте»', muted, mint],
+    ['второй текст на светлом конце градиента', inkSoft, gradFrom],
+    ['второй текст на светлом конце зелёного градиента (Главная, отдых)', inkSoft, gradAltFrom],
+    ['второй текст на «мяте»', inkSoft, mint],
+    ['«Далее: …» на плашке таймера', inkSoft, pillOnTimer],
+    ['белый на главной кнопке', white, ink],
+    ['белое число на тёмной плашке подхода', white, ink],
+    ['светло-зелёный «из 3» на тёмной плашке', track, ink],
+    ['неактивный пункт нижнего меню', token('color-muted-decor'), ink],
+    ['активный пункт нижнего меню', white, ink],
+  ])('%s', (_name, fg, background) => {
+    expect(contrast(fg, background)).toBeGreaterThanOrEqual(MIN);
   });
 
-  it('gray-dim не годится для текста — только декор', () => {
-    expect(contrast(token('color-gray-dim'), ink)).toBeLessThan(MIN);
+  it('muted-decor на светлом фоне не годится для текста — только декор', () => {
+    expect(contrast(token('color-muted-decor'), bg)).toBeLessThan(MIN);
+  });
+
+  it('точки и контуры (не текст) различимы: ≥ 3:1', () => {
+    for (const [fg, background] of [
+      [ink, bg],
+      [muted, bg],
+      [ink, white],
+    ] as const) {
+      expect(contrast(fg, background)).toBeGreaterThanOrEqual(3);
+    }
   });
 });

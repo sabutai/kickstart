@@ -2,30 +2,21 @@
 
 .chips {
   display: flex;
-  gap: 9px;
-  margin-bottom: 14px;
-  padding-bottom: 2px;
+  gap: 8px;
+  padding: 8px $space-screen-x 14px;
   overflow-x: auto;
-  scrollbar-width: none; // прокрутка пальцем остаётся, полоса не рисуется
+  scrollbar-width: none;
 
   &::-webkit-scrollbar {
     display: none;
   }
 }
 
-.count {
-  margin: 0 0 10px;
-  font-size: $font-size-min;
-  font-weight: 800;
-  color: $color-gray;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
-
+// Плитки идут встык, как в макете (зазор 2 px).
 .list {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 2px;
   margin: 0;
   padding: 0;
   list-style: none;

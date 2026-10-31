@@ -12,7 +12,7 @@ import {
 import type { PlannedSession } from '../../entities/user-data/schema';
 import { isoWeekday, toDate } from '../../shared/lib/dates';
 import { Button } from '../../shared/ui/Button/Button';
-import { Card } from '../../shared/ui/Card/Card';
+import { Mascot } from '../../shared/ui/Mascot/Mascot';
 import { $rejection } from './model';
 import styles from './CalendarPage.module.scss';
 
@@ -26,7 +26,7 @@ type Props = {
   onMoveRequested: (sessionId: string) => void;
 };
 
-/** Карточка выбранного дня: что за занятие и что с ним можно сделать. */
+/** Карточка выбранного дня (макет «Календарь»): градиент с Киком, название и действия. */
 export function DayCard({ date, today, session, onMoveRequested }: Props) {
   const { t } = useTranslation();
   const [rejection, markDone, skip, reset, moveToSunday] = useUnit([
@@ -38,88 +38,83 @@ export function DayCard({ date, today, session, onMoveRequested }: Props) {
   ]);
 
   const day = toDate(date);
-  const title = date === today ? t('calendar.today') : format(day, 'EEEE, d MMMM', { locale: ru });
+  const dateText = format(day, 'EEEEEE, d MMMM', { locale: ru });
+  const label = date === today ? t('calendar.todayCard', { date: dateText }) : dateText;
+
+  const kik = <Mascot pose="three" className={styles.kik} />;
 
   if (!session) {
     return (
-      <Card as="section" padding="lg" label={title}>
-        <div className={styles.cardLabel}>{title}</div>
-        <p className={styles.cardMeta}>{t('calendar.noSession')}</p>
-      </Card>
+      <section className={styles.dayCard} aria-label={label}>
+        {kik}
+        <div className={styles.dayText}>
+          <div className={styles.cardLabel}>{label}</div>
+          <p className={styles.cardMeta}>{t('calendar.noSession')}</p>
+        </div>
+      </section>
     );
   }
 
   const { id } = session;
   const isClub = session.kind === 'club';
-  const isHome = !isClub;
   const planned = session.status === 'planned';
-  const canStart = isHome && planned && date === today;
+  const canStart = !isClub && planned && date === today;
   const canMarkWas = isClub && planned && date <= today;
-  const canReset = (isClub && session.status !== 'planned') || (isHome && session.status === 'skipped');
-  const canMove = isHome && planned && isoWeekday(day) === 6;
-  const hasPrimary = canStart || canMarkWas;
+  const canReset = (isClub && session.status !== 'planned') || (!isClub && session.status === 'skipped');
+  const canMove = !isClub && planned && isoWeekday(day) === 6;
 
   return (
-    <Card as="section" padding="lg" label={title}>
-      <div className={styles.numeral} aria-hidden="true">
-        {day.getDate()}
-      </div>
-      <div className={styles.cardHead}>
-        <div className={styles.cardInfo}>
-          <div className={styles.cardLabel}>{title}</div>
-          <div className={styles.cardTitle}>{t(`calendar.kind.${session.kind}`)}</div>
-          <div className={styles.cardMeta}>
-            {t(`calendar.status.${session.status}`)}
-            {isHome && session.kind === 'home' && ` · ${t('calendar.minutes', { count: SESSION_MINUTES })}`}
-          </div>
-          {session.movedFrom && (
-            <div className={styles.cardMeta}>
-              {t('calendar.movedFrom', { date: format(toDate(session.movedFrom), 'd MMMM', { locale: ru }) })}
-            </div>
-          )}
-        </div>
-        {hasPrimary &&
-          (canStart ? (
+    <section className={styles.dayCard} aria-label={label}>
+      {kik}
+      <div className={styles.dayText}>
+        <div className={styles.cardLabel}>{label}</div>
+        <div className={styles.cardTitle}>{t(`calendar.kind.${session.kind}`)}</div>
+        <p className={styles.cardMeta}>
+          {t(`calendar.status.${session.status}`)}
+          {session.kind === 'home' && ` · ${t('calendar.minutes', { count: SESSION_MINUTES })}`}
+          {session.movedFrom &&
+            ` · ${t('calendar.movedFrom', { date: format(toDate(session.movedFrom), 'd MMMM', { locale: ru }) })}`}
+        </p>
+        <div className={styles.actions}>
+          {canStart && (
             <Button to="/timer" size="sm">
               {t('calendar.actions.start')}
             </Button>
-          ) : (
+          )}
+          {canMarkWas && (
             <Button size="sm" onClick={() => markDone({ id })}>
               {t('calendar.actions.was')}
             </Button>
-          ))}
+          )}
+          {canMove && (
+            <Button
+              variant="secondary"
+              size="sm"
+              onClick={() => {
+                onMoveRequested(id);
+                moveToSunday({ id });
+              }}
+            >
+              {t('calendar.actions.moveToSunday')}
+            </Button>
+          )}
+          {planned && (
+            <Button variant="secondary" size="sm" onClick={() => skip({ id })}>
+              {t('calendar.actions.skip')}
+            </Button>
+          )}
+          {canReset && (
+            <Button variant="secondary" size="sm" onClick={() => reset({ id })}>
+              {t('calendar.actions.reset')}
+            </Button>
+          )}
+        </div>
+        {rejection && (
+          <p className={styles.rejection} role="alert">
+            {t(`calendar.rejected.${rejection}`)}
+          </p>
+        )}
       </div>
-
-      <div className={styles.actions}>
-        {canMove && (
-          <Button
-            variant="secondary"
-            fullWidth
-            onClick={() => {
-              onMoveRequested(id);
-              moveToSunday({ id });
-            }}
-          >
-            {t('calendar.actions.moveToSunday')}
-          </Button>
-        )}
-        {planned && (
-          <Button variant="ghost" fullWidth onClick={() => skip({ id })}>
-            {t('calendar.actions.skip')}
-          </Button>
-        )}
-        {canReset && (
-          <Button variant="ghost" fullWidth onClick={() => reset({ id })}>
-            {t('calendar.actions.reset')}
-          </Button>
-        )}
-      </div>
-
-      {rejection && (
-        <p className={styles.rejection} role="alert">
-          {t(`calendar.rejected.${rejection}`)}
-        </p>
-      )}
-    </Card>
+    </section>
   );
 }

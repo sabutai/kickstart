@@ -25,19 +25,19 @@ export function EndDialog({ player }: { player: PlayerState }) {
         aria-labelledby="end-title"
         aria-describedby="end-text"
       >
-        <h2 id="end-title" className={styles.title}>
+        <h2 id="end-title" className={styles.dialogTitle}>
           {t('timer.endDialog.title')}
         </h2>
-        <p id="end-text" className={styles.text}>
+        <p id="end-text" className={styles.dialogText}>
           {t('timer.endDialog.text')}
         </p>
         <button ref={keepRef} type="button" className={styles.keep} onClick={() => close()}>
           {t('timer.endDialog.keep')}
         </button>
-        <Button variant="secondary" fullWidth disabled={!canSave} onClick={() => choose('save')}>
+        <Button variant="mint" fullWidth disabled={!canSave} onClick={() => choose('save')}>
           {t('timer.endDialog.save')}
         </Button>
-        {!canSave && <p className={styles.hint}>{t('timer.endDialog.saveHint')}</p>}
+        {!canSave && <p className={styles.dialogHint}>{t('timer.endDialog.saveHint')}</p>}
         <Button variant="ghost" fullWidth onClick={() => choose('discard')}>
           {t('timer.endDialog.discard')}
         </Button>

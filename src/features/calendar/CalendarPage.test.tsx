@@ -12,7 +12,7 @@ const env = vi.hoisted(() => ({ db: undefined as Database | undefined }));
 vi.mock('../../shared/lib/db/open', () => ({ getDb: async () => env.db! }));
 
 import { profileSaved } from '../../entities/profile/model';
-import { plannedSessionsSaved, type PlannedSessionInput } from '../../entities/schedule/model';
+import { plannedSessionsSaved, scheduleSaved, type PlannedSessionInput } from '../../entities/schedule/model';
 import { CalendarPage } from './CalendarPage';
 
 const session = (date: string, over: Partial<PlannedSessionInput> = {}): PlannedSessionInput => ({
@@ -58,13 +58,14 @@ async function renderCalendar(
   return scope;
 }
 
-const card = () => screen.getByRole('region');
+const card = () => screen.getByRole('region', { name: /(сб|вс|пн|вт|ср|чт|пт),/ });
 const day = (name: string) => screen.getByRole('button', { name });
 
 describe('экран календаря', () => {
   it('показывает текущий месяц и статусы дней в доступных именах', async () => {
     await renderCalendar();
-    expect(screen.getByRole('heading', { name: 'ноябрь 2026' })).toBeInTheDocument();
+    expect(screen.getByRole('heading', { level: 1, name: 'Ноябрь' })).toBeInTheDocument();
+    expect(screen.getByRole('table', { name: 'Ноябрь 2026' })).toBeInTheDocument();
     expect(day('5 ноября, выполнено')).toBeInTheDocument();
     expect(day('7 ноября, сегодня, запланировано')).toHaveAttribute('aria-current', 'date');
     expect(day('3 ноября, запланировано')).toBeInTheDocument();
@@ -73,7 +74,7 @@ describe('экран календаря', () => {
 
   it('по умолчанию выбран сегодняшний день: карточка с видом, статусом и длительностью', async () => {
     await renderCalendar();
-    expect(within(card()).getByText('Сегодня')).toBeInTheDocument();
+    expect(within(card()).getByText('Сегодня · сб, 7 ноября')).toBeInTheDocument();
     expect(within(card()).getByText('Домашняя тренировка')).toBeInTheDocument();
     expect(within(card()).getByText('Запланировано · ~35 мин')).toBeInTheDocument();
     expect(within(card()).getByRole('link', { name: 'Начать' })).toHaveAttribute('href', '/timer');
@@ -83,7 +84,7 @@ describe('экран календаря', () => {
     await renderCalendar();
     await userEvent.click(day('14 ноября, запланировано'));
     expect(within(card()).queryByRole('link', { name: 'Начать' })).toBeNull();
-    expect(within(card()).getByText('суббота, 14 ноября')).toBeInTheDocument();
+    expect(within(card()).getByText('сб, 14 ноября')).toBeInTheDocument();
   });
 
   it('день без занятия — «отдыхаем»', async () => {
@@ -133,8 +134,8 @@ describe('экран календаря', () => {
     await renderCalendar();
     await userEvent.click(within(card()).getByRole('button', { name: 'Перенести на воскресенье' }));
     expect(await screen.findByRole('button', { name: '8 ноября, запланировано' })).toBeInTheDocument();
-    expect(within(card()).getByText('Перенесено с 7 ноября')).toBeInTheDocument();
-    expect(within(card()).getByText('воскресенье, 8 ноября')).toBeInTheDocument();
+    expect(within(card()).getByText(/Перенесено с 7 ноября/)).toBeInTheDocument();
+    expect(within(card()).getByText('вс, 8 ноября')).toBeInTheDocument();
     expect(screen.getByRole('button', { name: '7 ноября, сегодня' })).toBeInTheDocument();
     // повторно переносить уже нельзя — это воскресенье
     expect(within(card()).queryByRole('button', { name: 'Перенести на воскресенье' })).toBeNull();
@@ -167,33 +168,32 @@ describe('экран календаря', () => {
     await renderCalendar();
     expect(screen.getByRole('button', { name: 'Предыдущий месяц' })).toBeDisabled();
     await userEvent.click(screen.getByRole('button', { name: 'Следующий месяц' }));
-    expect(screen.getByRole('heading', { name: 'декабрь 2026' })).toBeInTheDocument();
+    expect(screen.getByRole('heading', { level: 1, name: 'Декабрь' })).toBeInTheDocument();
     expect(day('1 декабря, запланировано')).toBeInTheDocument();
     expect(screen.getByRole('button', { name: 'Следующий месяц' })).toBeDisabled();
     await userEvent.click(screen.getByRole('button', { name: 'Предыдущий месяц' }));
-    expect(screen.getByRole('heading', { name: 'ноябрь 2026' })).toBeInTheDocument();
+    expect(screen.getByRole('heading', { level: 1, name: 'Ноябрь' })).toBeInTheDocument();
   });
 
   it('пустой план: календарь открывается, листать некуда', async () => {
     await renderCalendar([]);
-    expect(screen.getByRole('heading', { name: 'ноябрь 2026' })).toBeInTheDocument();
+    expect(screen.getByRole('heading', { level: 1, name: 'Ноябрь' })).toBeInTheDocument();
     expect(screen.getByRole('button', { name: 'Предыдущий месяц' })).toBeDisabled();
     expect(screen.getByRole('button', { name: 'Следующий месяц' })).toBeDisabled();
     expect(within(card()).getByText('В этот день занятий нет — отдыхаем')).toBeInTheDocument();
   });
 
-  it('режим ребёнка: статистики месяца нет', async () => {
-    await renderCalendar();
-    expect(screen.queryByText('В этом месяце')).toBeNull();
+  it('«Неделя N из 12» считается от старта программы', async () => {
+    const scope = await renderCalendar();
+    await allSettled(scheduleSaved, {
+      scope,
+      params: { startDate: '2026-11-02', clubDays: [], homeDays: [1, 3, 6], weeks: 12 },
+    });
+    expect(await screen.findByText('Неделя 1 из 12')).toBeInTheDocument();
   });
-});
 
-describe('экран календаря: режим взрослого', () => {
-  it('показывает число занятий месяца и долю выполненных среди наступивших', async () => {
-    await renderCalendar(PLAN, 'coach');
-    // ноябрь: 5 занятий; наступили 03, 05, 07 → выполнено 1 из 3 → 33%
-    const stats = screen.getByText('В этом месяце').closest('div')!;
-    expect(within(stats).getByText('5')).toBeInTheDocument();
-    expect(within(stats.parentElement!).getByText('33%')).toBeInTheDocument();
+  it('без расписания подписи недели нет', async () => {
+    await renderCalendar();
+    expect(screen.queryByText(/Неделя \d+ из/)).toBeNull();
   });
 });

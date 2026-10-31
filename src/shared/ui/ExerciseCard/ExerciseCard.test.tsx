@@ -5,48 +5,50 @@ import { ExerciseCard } from './ExerciseCard';
 
 describe('ExerciseCard', () => {
   const props = {
-    title: 'Игра на внимание',
-    description: 'Беги и замри по сигналу тренера',
-    level: 1,
-    levelText: 'Ур. 1',
-    badge: '3 подхода',
-    categoryColor: '#39e075',
-    to: '/exercise/attention-game',
+    title: 'Прыжки фигуриста',
+    category: 'Баланс',
+    detail: '2 подхода',
+    categoryColor: '#4d8cff',
+    to: '/exercise/skating-jumps',
+    index: 0,
   };
 
-  it('вся карточка — ссылка на упражнение', () => {
+  it('вся плитка — ссылка на упражнение', () => {
     renderUi(<ExerciseCard {...props} />);
-    expect(screen.getByRole('link', { name: /Игра на внимание/ })).toHaveAttribute(
+    expect(screen.getByRole('link', { name: /Прыжки фигуриста/ })).toHaveAttribute(
       'href',
-      '/exercise/attention-game',
+      '/exercise/skating-jumps',
     );
   });
 
-  it('показывает описание, подпись уровня, значок и пипсы', () => {
+  it('значок: категория и подробность; доступное имя читается связно', () => {
     renderUi(<ExerciseCard {...props} />);
     const link = screen.getByRole('link');
-    expect(within(link).getByText('Беги и замри по сигналу тренера')).toBeInTheDocument();
-    expect(within(link).getByText('Ур. 1')).toBeInTheDocument();
-    expect(within(link).getByText('3 подхода')).toBeInTheDocument();
-    expect(within(link).getByRole('img', { name: 'Уровень 1 из 5' })).toBeInTheDocument();
+    expect(within(link).getByText('Баланс · 2 подхода')).toBeInTheDocument();
+    expect(link).toHaveAccessibleName('Прыжки фигуриста. Баланс, 2 подхода');
   });
 
-  it('без level пипсов нет; пометка рядом остаётся', () => {
-    renderUi(<ExerciseCard {...props} level={undefined} levelText="с 5-й недели" badge="30–45 с" />);
-    expect(screen.queryByRole('img', { name: /Уровень/ })).toBeNull();
-    expect(screen.getByText('30–45 с')).toBeInTheDocument();
-    expect(screen.getByText('с 5-й недели')).toBeInTheDocument();
+  it('у Кика есть позиционирующий класс варианта (не потерялся при переименовании)', () => {
+    const { container } = renderUi(<ExerciseCard {...props} />);
+    expect(container.querySelector('img')!.className).toMatch(/kikGreen/);
   });
 
-  it('без level и без пометки строки уровня нет совсем', () => {
-    const { container } = renderUi(<ExerciseCard {...props} level={undefined} levelText={undefined} />);
-    expect(container.querySelector('.meta')).toBeNull();
+  it('Кик декоративен', () => {
+    const { container } = renderUi(<ExerciseCard {...props} />);
+    expect(container.querySelector('img')).toHaveAttribute('aria-hidden', 'true');
   });
 
-  it('превью (Кик, значок, «играть») декоративно и не попадает в доступное имя ссылки', () => {
-    renderUi(<ExerciseCard {...props} />);
-    const link = screen.getByRole('link');
-    expect(link.querySelector('.preview')).toHaveAttribute('aria-hidden', 'true');
-    expect(link).not.toHaveAccessibleName(/3 подхода/);
+  it('фон и поза Кика чередуются по номеру в списке', () => {
+    const variant = (index: number) => {
+      const { container, unmount } = renderUi(<ExerciseCard {...props} index={index} />);
+      const link = container.querySelector('a')!;
+      const out = [link.className, container.querySelector('img')!.getAttribute('data-pose')];
+      unmount();
+      return out;
+    };
+    const first = variant(0);
+    expect(variant(4)).toEqual(first); // круг из четырёх
+    expect(new Set([0, 1, 2, 3].map((i) => variant(i)[1])).size).toBe(4);
+    expect(new Set([0, 1, 2, 3].map((i) => variant(i)[0])).size).toBe(4);
   });
 });

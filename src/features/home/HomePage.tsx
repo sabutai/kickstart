@@ -1,23 +1,16 @@
 import { format } from 'date-fns';
 import { ru } from 'date-fns/locale';
+import { addDays, startOfISOWeek } from 'date-fns';
 import { useTranslation } from 'react-i18next';
 import { useUnit } from 'effector-react';
 import { program } from '../../content';
-import { CATEGORY_ORDER } from '../../content/selectors';
-import { $mode, $profile } from '../../entities/profile/model';
-import { homeState, streak as streakOf, weekGoal, type HomeState } from '../../entities/schedule/home';
+import { $mode, $profile, modeChanged } from '../../entities/profile/model';
+import { homeState, streak as streakOf, type HomeState } from '../../entities/schedule/home';
 import { $plannedSessions, sessionDone } from '../../entities/schedule/model';
-import type { PlannedSession } from '../../entities/user-data/schema';
-import { toDate } from '../../shared/lib/dates';
+import { toDate, toKey } from '../../shared/lib/dates';
 import { useToday } from '../../shared/lib/useToday';
-import { Brand } from '../../shared/ui/Brand/Brand';
 import { Button } from '../../shared/ui/Button/Button';
-import { Card } from '../../shared/ui/Card/Card';
-import { Chip } from '../../shared/ui/Chip/Chip';
 import { Mascot } from '../../shared/ui/Mascot/Mascot';
-import { ProgressRing } from '../../shared/ui/ProgressRing/ProgressRing';
-import { Screen } from '../../shared/ui/Screen/Screen';
-import { StatRow } from '../../shared/ui/StatRow/StatRow';
 import styles from './HomePage.module.scss';
 
 const SESSION_MINUTES = program.session.parts.reduce((sum, part) => sum + part.minutes, 0);
@@ -31,142 +24,127 @@ const SUB_KEYS: Record<HomeState['kind'], string> = {
   finished: 'home.sub.finished',
 };
 
-const ARROW = (
-  <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
-    <path
-      d="M9 6L16 12L9 18"
-      stroke="currentColor"
-      strokeWidth="2.6"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    />
-  </svg>
-);
-
-function NextInfo({ next }: { next: PlannedSession | null }) {
+/** Неделя Пн–Вс текущей даты: у каждого дня точка по статусу занятия. */
+function WeekStrip({ today }: { today: string }) {
   const { t } = useTranslation();
-  if (!next) return <p className={styles.meta}>{t('home.noNext')}</p>;
-  const when = format(toDate(next.date), 'EEEE, d MMMM', { locale: ru });
-  return <p className={styles.meta}>{t('home.next', { when })}</p>;
-}
-
-function TodayCard({ state }: { state: HomeState }) {
-  const { t } = useTranslation();
-  const markDone = useUnit(sessionDone);
-
-  if (state.kind === 'session' || state.kind === 'club') {
-    const { session } = state;
-    const title = t(`calendar.kind.${session.kind}`);
-    return (
-      <section className={styles.hero} aria-label={t('home.today')}>
-        <div className={styles.heroArt}>
-          <Mascot emotion="joy" size={120} />
-          <span className={`${styles.badge} ${styles.badgeLeft}`}>{t('home.today')}</span>
-          {session.kind === 'home' && (
-            <span className={`${styles.badge} ${styles.badgeRight}`}>
-              {t('calendar.minutes', { count: SESSION_MINUTES })}
-            </span>
-          )}
-        </div>
-        <h2 className={styles.heroTitle}>{title}</h2>
-        {state.kind === 'club' ? (
-          <Button fullWidth onClick={() => markDone({ id: session.id })}>
-            {t('home.was')}
-          </Button>
-        ) : (
-          <Button to="/timer" fullWidth iconRight={ARROW}>
-            {t('home.start')}
-          </Button>
-        )}
-      </section>
-    );
-  }
-
-  const mascot = state.kind === 'done' || state.kind === 'finished' ? 'joy' : 'rest';
+  const plan = useUnit($plannedSessions);
+  const monday = startOfISOWeek(toDate(today));
   return (
-    <Card as="section" padding="lg" label={t('home.today')}>
-      <div className={styles.restRow}>
-        <Mascot emotion={mascot} size={72} />
-        <div>
-          <div className={styles.label}>{t('home.today')}</div>
-          <h2 className={styles.cardTitle}>
-            {state.kind === 'done'
-              ? t('calendar.status.done')
-              : state.kind === 'skipped'
-                ? t('calendar.status.skipped')
-                : t(SUB_KEYS[state.kind])}
-          </h2>
-          {'next' in state && <NextInfo next={state.next} />}
-        </div>
-      </div>
-    </Card>
+    <ul className={styles.week} aria-label={t('home.weekLabel')}>
+      {Array.from({ length: 7 }, (_, i) => {
+        const date = toKey(addDays(monday, i));
+        const status = plan.find((s) => s.date === date)?.status;
+        const isToday = date === today;
+        const name = [
+          t(`ui.weekday.${i + 1}.full`),
+          isToday && t('ui.day.today'),
+          status && t(`ui.day.${status}`),
+        ]
+          .filter(Boolean)
+          .join(', ');
+        return (
+          <li
+            key={date}
+            className={isToday ? `${styles.day} ${styles.dayToday}` : styles.day}
+            aria-label={name}
+            aria-current={isToday ? 'date' : undefined}
+          >
+            <span className={styles.dayLetter} aria-hidden="true">
+              {t(`ui.weekday.${i + 1}.letter`)}
+            </span>
+            <span
+              className={[
+                styles.dayDot,
+                status === 'done' && styles.dayDotDone,
+                status === 'planned' && styles.dayDotPlanned,
+              ]
+                .filter(Boolean)
+                .join(' ')}
+              aria-hidden="true"
+            />
+          </li>
+        );
+      })}
+    </ul>
   );
 }
 
 export function HomePage() {
   const { t } = useTranslation();
   const today = useToday();
-  const [plan, profile, mode] = useUnit([$plannedSessions, $profile, $mode]);
+  const [plan, profile, mode, changeMode, markDone] = useUnit([
+    $plannedSessions,
+    $profile,
+    $mode,
+    modeChanged,
+    sessionDone,
+  ]);
 
   const state = homeState(plan, today);
-  const goal = weekGoal(plan, today);
   const streak = streakOf(plan, today);
-  const doneTotal = plan.filter((s) => s.status === 'done').length;
+  const isCoach = mode === 'coach';
+  const nextMode = isCoach ? 'child' : 'coach';
+
+  const title =
+    state.kind === 'session' || state.kind === 'club'
+      ? t(`calendar.kind.${state.session.kind}`)
+      : t(`home.cardTitle.${state.kind}`);
+  const line =
+    state.kind === 'session' && state.session.kind === 'home'
+      ? t('home.todayMinutes', { minutes: SESSION_MINUTES })
+      : t('home.today');
+  const next =
+    'next' in state && state.next
+      ? t('home.next', { when: format(toDate(state.next.date), 'EEEE, d MMMM', { locale: ru }) })
+      : 'next' in state
+        ? t('home.noNext')
+        : null;
 
   return (
-    <Screen
-      title={t('home.greeting', { name: profile?.name ?? '' })}
-      titleSize="lg"
-      background="home"
-      pitchLines
-      eyebrow={
-        <>
-          <Brand />
-          <span className={styles.streak} aria-label={t('home.streak', { count: streak })}>
-            <span aria-hidden="true">🔥</span>
-            <span aria-hidden="true">{streak}</span>
-          </span>
-        </>
-      }
-    >
-      <p className={styles.sub}>{t(SUB_KEYS[state.kind])}</p>
-
-      <TodayCard state={state} />
-
-      <div className={styles.goal}>
-        <ProgressRing value={goal.ratio} label={t('home.goal.label')} size={66}>
-          {Math.round(goal.ratio * 100)}%
-        </ProgressRing>
-        <div>
-          <div className={styles.label}>{t('home.goal.label')}</div>
-          <div className={styles.goalValue}>
-            {goal.total === 0
-              ? t('home.goal.empty')
-              : t('home.goal.value', { done: goal.done, total: goal.total })}
-          </div>
-        </div>
+    <main className={styles.screen}>
+      <div className={styles.art} aria-hidden="true">
+        <Mascot pose="front" className={styles.kik} />
       </div>
 
-      <nav className={styles.chips} aria-label={t('home.categoriesTitle')}>
-        {CATEGORY_ORDER.map((category) => (
-          <Chip
-            key={category}
-            label={t(`categories.${category}`)}
-            dotColor={`var(--cat-${category})`}
-            to={`/library?category=${category}`}
-          />
-        ))}
-      </nav>
+      <div className={styles.content}>
+        <div className={styles.top}>
+          <button
+            type="button"
+            className={styles.modeButton}
+            aria-label={t('mode.switchLabel', { mode: t(`mode.${mode}`) })}
+            onClick={() => changeMode(nextMode)}
+          >
+            {t(`mode.${mode}`)}
+          </button>
+          <span className={styles.streak} aria-label={t('home.streak', { count: streak })}>
+            {t('home.streakChip', { count: streak })}
+          </span>
+        </div>
 
-      {mode === 'coach' && (
-        <StatRow
-          items={[
-            { label: t('home.stats.sessions'), value: String(doneTotal) },
-            { label: t('home.stats.streak'), value: String(streak) },
-            { label: t('home.stats.goal'), value: goal.total === 0 ? '—' : `${goal.done}/${goal.total}` },
-          ]}
-        />
-      )}
-    </Screen>
+        <h1 className={styles.greeting}>
+          {t('home.greeting')} {profile?.name ?? ''}
+        </h1>
+        <p className={styles.sub}>{t(SUB_KEYS[state.kind])}</p>
+
+        <section className={styles.today} aria-label={t('home.today')}>
+          <p className={styles.todayLine}>{line}</p>
+          <h2 className={styles.title}>{title}</h2>
+          {next && <p className={styles.next}>{next}</p>}
+        </section>
+
+        <div className={styles.spacer} />
+        <WeekStrip today={today} />
+        {state.kind === 'session' && (
+          <Button to="/timer" size="lg" fullWidth>
+            {t('home.start')}
+          </Button>
+        )}
+        {state.kind === 'club' && (
+          <Button size="lg" fullWidth onClick={() => markDone({ id: state.session.id })}>
+            {t('home.was')}
+          </Button>
+        )}
+      </div>
+    </main>
   );
 }

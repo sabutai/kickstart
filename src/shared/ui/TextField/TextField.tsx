@@ -16,13 +16,13 @@ export function TextField({ label, value, onChange, placeholder, maxLength, erro
   const id = useId();
   const errorId = `${id}-error`;
   return (
-    <div className={styles.field}>
+    <div className={error ? `${styles.field} ${styles.invalid}` : styles.field}>
       <label className={styles.label} htmlFor={id}>
         {label}
       </label>
       <input
         id={id}
-        className={error ? `${styles.input} ${styles.invalid}` : styles.input}
+        className={styles.input}
         type="text"
         value={value}
         placeholder={placeholder}

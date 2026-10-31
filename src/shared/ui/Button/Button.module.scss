@@ -6,21 +6,18 @@
   justify-content: center;
   gap: 8px;
   min-height: $tap-min;
-  border-radius: $radius-pill;
-  font-family: $font-display;
+  border-radius: $radius-button;
   font-weight: 700;
-  letter-spacing: 0.6px;
-  text-transform: uppercase;
   transition:
     transform 0.08s ease,
     opacity 0.15s ease;
 
   &:active:not(:disabled) {
-    transform: scale(0.97);
+    transform: scale(0.98);
   }
 
   &:focus-visible {
-    outline: 2px solid $color-volt;
+    outline: 3px solid $color-ink-soft;
     outline-offset: 2px;
   }
 
@@ -30,22 +27,21 @@
   }
 }
 
+// sm — «Начать» в карточке календаря; md — обычная; lg — главная кнопка экрана (17 px по макету).
 .sm {
-  padding: 0 17px;
-  font-size: 12px;
-  font-weight: 800;
-  letter-spacing: 0.4px;
-}
-
-.md {
-  padding: 0 22px;
+  padding: 12px 22px;
+  border-radius: 16px;
   font-size: 14px;
 }
 
+.md {
+  padding: 14px 24px;
+  font-size: 15px;
+}
+
 .lg {
-  min-height: 52px;
-  padding: 0 28px;
-  font-size: 16px;
+  padding: 17px 24px;
+  font-size: 15px;
 }
 
 .full {
@@ -54,18 +50,23 @@
 }
 
 .primary {
-  background: var(--accent);
-  color: var(--accent-text);
+  background: $color-ink;
+  color: $color-white;
 }
 
 .secondary {
-  background: $color-surface;
-  color: $color-white;
+  background: $color-white;
+  color: $color-ink;
+}
+
+.mint {
+  background: $color-mint;
+  color: $color-ink;
 }
 
 .ghost {
   background: transparent;
-  color: $color-gray;
+  color: $color-muted;
 }
 
 .icon {

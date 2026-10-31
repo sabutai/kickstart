@@ -1,9 +1,10 @@
 import type { ReactNode } from 'react';
-import { Mascot, type MascotEmotion } from '../Mascot/Mascot';
+import { Mascot } from '../Mascot/Mascot';
+import type { KikPose } from '../Mascot/poses';
 import styles from './EmptyState.module.scss';
 
 type Props = {
-  mascot?: MascotEmotion;
+  pose?: KikPose;
   title: string;
   text?: string;
   /** Обычно `<Button>`. */
@@ -11,10 +12,10 @@ type Props = {
 };
 
 /** Пустое состояние: Кик, заголовок, пояснение и необязательное действие. */
-export function EmptyState({ mascot = 'thinking', title, text, action }: Props) {
+export function EmptyState({ pose = 'head', title, text, action }: Props) {
   return (
     <section className={styles.root}>
-      <Mascot emotion={mascot} />
+      <Mascot pose={pose} className={pose === 'head' ? styles.head : styles.body} />
       <h2 className={styles.title}>{title}</h2>
       {text && <p className={styles.text}>{text}</p>}
       {action}

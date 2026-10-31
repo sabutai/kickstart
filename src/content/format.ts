@@ -2,9 +2,7 @@ import type { TFunction } from 'i18next';
 import type { Exercise, ExerciseLevel } from './schema';
 import { clampLevel } from './selectors';
 
-export type StatItem = { value: string; label: string };
-
-/** «15 с», «30–45 с»; кратное минуте — минутами: «3–4 мин». */
+/** «15 сек», «30–45 сек»; кратное минуте — минутами: «3–4 мин». */
 export function formatDuration(t: TFunction, sec: number, secMax?: number): string {
   const max = secMax !== undefined && secMax !== sec ? secMax : undefined;
   const wholeMinutes = sec >= 60 && sec % 60 === 0 && (max === undefined || max % 60 === 0);
@@ -13,37 +11,29 @@ export function formatDuration(t: TFunction, sec: number, secMax?: number): stri
   return t(wholeMinutes ? 'library.minutesRange' : 'library.seconds', { value });
 }
 
-/** Показатели объёма для экрана упражнения: подходы, повторы или время, отдых. */
-export function volumeStats(t: TFunction, volume: ExerciseLevel['volume']): StatItem[] {
-  const stats: StatItem[] = [
-    { value: String(volume.sets), label: t('exercise.stats.sets', { count: volume.sets }) },
-  ];
+/** Объём одной строкой, как в макете: «3 подхода по 20 сек · отдых 20 сек». */
+export function volumeLine(t: TFunction, volume: ExerciseLevel['volume']): string {
+  const sets = t('library.sets', { count: volume.sets });
+  let work = '';
   if (volume.reps !== undefined) {
-    stats.push({
-      value: volume.perSide ? t('exercise.stats.repsPerSide', { count: volume.reps }) : String(volume.reps),
-      label: t('exercise.stats.reps'),
-    });
+    work = t('exercise.volume.reps', { count: volume.reps });
+    if (volume.perSide) work += ` ${t('exercise.volume.perSide')}`;
   } else if (volume.workSec !== undefined) {
-    stats.push({
-      value: formatDuration(t, volume.workSec, volume.workSecMax),
-      label: t('exercise.stats.time'),
-    });
+    work = formatDuration(t, volume.workSec, volume.workSecMax);
+    if (volume.perSide) work += ` ${t('exercise.volume.perSide')}`;
   }
-  if (volume.restSec > 0)
-    stats.push({ value: formatDuration(t, volume.restSec), label: t('exercise.stats.rest') });
-  return stats;
+  const main = work ? `${sets} ${t('exercise.volume.by')} ${work}` : sets;
+  return volume.restSec > 0
+    ? `${main} · ${t('exercise.volume.rest', { value: formatDuration(t, volume.restSec) })}`
+    : main;
 }
 
-/** Значок в углу превью: время работы или число подходов («30–45 с», «2 подхода»). */
-export function cardBadge(t: TFunction, exercise: Exercise, level: number): string {
+/** Значок карточки в списке: время работы (упражнения с одним уровнем) или число подходов. */
+export function cardDetail(t: TFunction, exercise: Exercise, level: number): string {
   const volume = exercise.levels[clampLevel(exercise, level) - 1]!.volume;
-  return exercise.levels.length === 1 && volume.workSec !== undefined
-    ? formatDuration(t, volume.workSec, volume.workSecMax)
-    : t('library.sets', { count: volume.sets });
-}
-
-/** Текст рядом с пипсами: «Ур. 2»; у упражнений с одним уровнем — «с 5-й недели», если они открываются позже. */
-export function cardLevelText(t: TFunction, exercise: Exercise, level: number): string | undefined {
-  if (exercise.levels.length > 1) return t('ui.levelShort', { level: clampLevel(exercise, level) });
-  return exercise.fromWeek ? t('library.fromWeek', { week: exercise.fromWeek }) : undefined;
+  const base =
+    exercise.levels.length === 1 && volume.workSec !== undefined
+      ? formatDuration(t, volume.workSec, volume.workSecMax)
+      : t('library.sets', { count: volume.sets });
+  return exercise.fromWeek ? `${base} · ${t('library.fromWeek', { week: exercise.fromWeek })}` : base;
 }

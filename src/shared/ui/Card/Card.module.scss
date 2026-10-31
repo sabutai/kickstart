@@ -2,19 +2,13 @@
 
 .card {
   position: relative;
-  overflow: hidden; // декоративные элементы (блёклая цифра в календаре) не вылезают за углы
+  overflow: hidden;
   border-radius: $radius-card;
-  background: $color-card-overlay-solid;
-
-  @supports (backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px)) {
-    background: $color-card-overlay;
-    -webkit-backdrop-filter: blur($blur-card);
-    backdrop-filter: blur($blur-card);
-  }
+  background: $color-white;
 }
 
 .md {
-  padding: 14px;
+  padding: 14px 16px;
 }
 
 .lg {

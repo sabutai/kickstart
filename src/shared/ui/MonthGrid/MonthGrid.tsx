@@ -20,7 +20,11 @@ type Props = {
   onSelect: (date: string) => void;
 };
 
-/** Сетка месяца с понедельника. Дни соседних месяцев не нажимаются. */
+/**
+ * Сетка месяца с понедельника (макет «Календарь»): число и точка под ним.
+ * Статус различим не только цветом: выполнено — тёмная заполненная точка, запланировано — пустая,
+ * пропущено — зачёркнутое число; то же дублируется в aria-label.
+ */
 export function MonthGrid({ month, label, today, selected, minDate, maxDate, getStatus, onSelect }: Props) {
   const { t } = useTranslation();
   const weeks = buildMonthGrid(month);
@@ -40,15 +44,7 @@ export function MonthGrid({ month, label, today, selected, minDate, maxDate, get
         {weeks.map((week) => (
           <tr key={week[0]!.date}>
             {week.map((cell) => {
-              if (!cell.inMonth) {
-                return (
-                  <td key={cell.date} className={styles.cell}>
-                    <span className={`${styles.day} ${styles.outside}`} aria-hidden="true">
-                      <span className={styles.disc}>{cell.day}</span>
-                    </span>
-                  </td>
-                );
-              }
+              if (!cell.inMonth) return <td key={cell.date} className={styles.cell} />;
               const status = getStatus?.(cell.date) ?? 'none';
               const isToday = cell.date === today;
               const outOfRange =
@@ -80,21 +76,8 @@ export function MonthGrid({ month, label, today, selected, minDate, maxDate, get
                     disabled={outOfRange}
                     onClick={() => onSelect(cell.date)}
                   >
-                    <span className={styles.disc}>
-                      {status === 'done' ? (
-                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                          <path
-                            d="M5 13L9.5 17.5L19 7"
-                            stroke="currentColor"
-                            strokeWidth="2.8"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                          />
-                        </svg>
-                      ) : (
-                        cell.day
-                      )}
-                    </span>
+                    <span>{cell.day}</span>
+                    <span className={styles.dot} aria-hidden="true" />
                   </button>
                 </td>
               );

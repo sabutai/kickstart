@@ -1,8 +1,8 @@
 import { useSearchParams } from 'react-router';
 import { useTranslation } from 'react-i18next';
 import { useUnit } from 'effector-react';
-import { cardBadge, cardLevelText } from '../../content/format';
-import { CATEGORY_ORDER, describeExercise, exercisesIn, isCategory } from '../../content/selectors';
+import { cardDetail } from '../../content/format';
+import { CATEGORY_ORDER, exercisesIn, isCategory } from '../../content/selectors';
 import type { Category } from '../../content/schema';
 import { $exerciseLevels } from '../../entities/progress/model';
 import { Chip } from '../../shared/ui/Chip/Chip';
@@ -18,7 +18,7 @@ export function LibraryPage() {
   const [params, setParams] = useSearchParams();
   const levelOf = useUnit($exerciseLevels);
 
-  // Фильтр живёт в адресе: «Назад» его не теряет, главная ссылается на него чипами. Мусор в адресе = «Все».
+  // Фильтр живёт в адресе: «Назад» его не теряет, профиль ссылается на него. Мусор в адресе = «Все».
   const raw = params.get('category');
   const category: Category | 'all' = isCategory(raw) ? raw : 'all';
   const list = exercisesIn(category);
@@ -27,46 +27,31 @@ export function LibraryPage() {
     setParams(next === 'all' ? {} : { category: next }, { replace: true });
 
   return (
-    <Screen title={t('screens.library')} background="library" pitchLines>
+    <Screen title={t('screens.library')}>
       <div className={styles.chips} role="group" aria-label={t('library.filterLabel')}>
         <Chip label={t('categories.all')} selected={category === 'all'} onClick={() => select('all')} />
         {CATEGORY_ORDER.map((c) => (
-          <Chip
-            key={c}
-            label={t(`categories.${c}`)}
-            dotColor={colorOf(c)}
-            selected={category === c}
-            onClick={() => select(c)}
-          />
+          <Chip key={c} label={t(`categories.${c}`)} selected={category === c} onClick={() => select(c)} />
         ))}
       </div>
 
       {list.length === 0 ? (
-        <EmptyState mascot="thinking" title={t('library.emptyTitle')} text={t('library.emptyText')} />
+        <EmptyState title={t('library.emptyTitle')} text={t('library.emptyText')} />
       ) : (
-        <>
-          <p className={styles.count} aria-live="polite">
-            {t('library.count', { count: list.length })}
-          </p>
-          <ul className={styles.list}>
-            {list.map((exercise) => {
-              const level = levelOf(exercise.id);
-              return (
-                <li key={exercise.id}>
-                  <ExerciseCard
-                    title={exercise.title.ru}
-                    description={describeExercise(exercise)}
-                    level={exercise.levels.length > 1 ? Math.min(level, exercise.levels.length) : undefined}
-                    levelText={cardLevelText(t, exercise, level)}
-                    badge={cardBadge(t, exercise, level)}
-                    categoryColor={colorOf(exercise.category)}
-                    to={`/exercise/${exercise.id}`}
-                  />
-                </li>
-              );
-            })}
-          </ul>
-        </>
+        <ul className={styles.list} aria-live="polite">
+          {list.map((exercise, index) => (
+            <li key={exercise.id}>
+              <ExerciseCard
+                title={exercise.title.ru}
+                category={t(`categories.${exercise.category}`)}
+                detail={cardDetail(t, exercise, levelOf(exercise.id))}
+                categoryColor={colorOf(exercise.category)}
+                to={`/exercise/${exercise.id}`}
+                index={index}
+              />
+            </li>
+          ))}
+        </ul>
       )}
     </Screen>
   );

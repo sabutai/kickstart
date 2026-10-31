@@ -20,11 +20,7 @@ const initialDraft = (): Draft => ({
 export const nameChanged = createEvent<string>();
 export const ageChanged = createEvent<number>();
 export const dayToggled = createEvent<{ group: 'club' | 'home'; day: number }>();
-/** «Пропустить» на шаге 2: вернуть дни по умолчанию. */
-export const daysSkipped = createEvent();
 export const startDateChanged = createEvent<string>();
-/** «Пропустить» на шаге 3: начать сегодня. */
-export const startSkipped = createEvent();
 export const remindersChanged = createEvent<boolean>();
 /** Выбранный PIN (null — «настроить позже»). */
 export const pinChosen = createEvent<string | null>();
@@ -44,9 +40,7 @@ export const $draft = createStore<Draft>(initialDraft())
       ? { ...d, clubDays: toggle(d.clubDays, day) }
       : { ...d, homeDays: toggle(d.homeDays, day) };
   })
-  .on(daysSkipped, (d) => ({ ...d, clubDays: [], homeDays: [...DEFAULT_HOME_DAYS] }))
   .on(startDateChanged, (d, startDate) => ({ ...d, startDate }))
-  .on(startSkipped, (d) => ({ ...d, startDate: toKey(new Date()) }))
   .on(remindersChanged, (d, remindersEnabled) => ({ ...d, remindersEnabled }))
   .on(pinChosen, (d, pin) => ({ ...d, pin }))
   .reset(draftReset);

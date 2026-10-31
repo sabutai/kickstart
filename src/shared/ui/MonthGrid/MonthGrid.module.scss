@@ -7,77 +7,80 @@
 }
 
 .weekday {
-  padding-bottom: 8px;
+  padding-bottom: 4px;
   font-size: $font-size-min;
   font-weight: 700;
-  color: $color-gray;
-  text-transform: uppercase;
+  color: $color-muted;
+  text-transform: lowercase;
 }
 
 .cell {
-  padding: 2px 0;
+  padding: 3px 0;
   text-align: center;
 }
 
 .day {
-  // Зона нажатия 44×44; сам кружок дня (.disc) — 29 px, как в макете.
   display: inline-flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-  width: $tap-min;
-  height: $tap-min;
-  border-radius: 50%;
-  color: $color-white;
-  font-size: 11px;
-  font-weight: 800;
+  gap: 3px;
+  width: 40px;
+  min-height: 48px;
+  border-radius: $radius-pill;
+  color: $color-muted;
+  font-size: 14px;
+  font-weight: 700;
 
   &:focus-visible {
-    outline: 2px solid $color-volt;
-    outline-offset: -2px;
+    outline: 3px solid $color-ink-soft;
+    outline-offset: 1px;
   }
 
   &:disabled {
-    opacity: 0.3;
+    opacity: 0.4;
     cursor: not-allowed;
   }
 }
 
-.disc {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 29px;
-  height: 29px;
-  border: 2px solid transparent;
+// Точка под числом: у дня без занятия её нет.
+.dot {
+  width: 6px;
+  height: 6px;
   border-radius: 50%;
+  background: transparent;
 }
 
-.outside {
-  opacity: 0.3;
+.planned .dot {
+  border: 1.5px solid currentColor;
 }
 
-.planned .disc {
-  border-color: var(--accent);
-}
-
-.done .disc {
-  background: $color-volt;
-  border-color: $color-volt;
+.done {
   color: $color-ink;
+
+  .dot {
+    background: $color-ink;
+  }
 }
 
-// Пропущенное не теряется: зачёркнутая цифра, плюс подпись в aria-label.
 .skipped {
-  color: $color-gray;
   text-decoration: line-through;
 }
 
-.today .disc {
-  background: var(--accent);
-  border-color: var(--accent);
-  color: var(--accent-text);
+.today {
+  background: $color-ink;
+  color: $color-white;
+
+  .dot {
+    border-color: $color-white;
+  }
+
+  &.done .dot {
+    background: $color-white;
+  }
 }
 
-.selected .disc {
-  box-shadow: 0 0 0 2px $color-white;
+.selected:not(.today) {
+  outline: 2px solid $color-ink;
+  outline-offset: -2px;
 }
