@@ -151,12 +151,6 @@
   right: calc($space-screen-x - 2px);
 }
 
-.closeUnderTiles {
-  position: absolute;
-  top: 100px;
-  left: 14px;
-}
-
 // ---- вступление и итоги: Кик на градиенте, белая панель снизу ----
 
 .readyScreen,
@@ -216,6 +210,35 @@
   box-shadow: $shadow-sheet;
 }
 
+.readySheet {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  max-height: 68%;
+  border-radius: $radius-sheet $radius-sheet 0 0;
+  background: $color-white;
+  box-shadow: $shadow-sheet;
+}
+
+// Текст прокручивается, кнопка «Начать» остаётся на виду.
+.readyScroll {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 14px;
+  padding: 22px 24px 8px;
+  overflow-y: auto;
+  scrollbar-width: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+.readyCta {
+  padding: 12px 24px calc(26px + env(safe-area-inset-bottom));
+}
+
 .sheetLabel {
   margin: 0;
   font-size: $font-size-min;
@@ -257,22 +280,6 @@
   font-size: 12px;
   color: $color-muted;
   text-align: center;
-}
-
-.sheetText {
-  margin: 0;
-  font-size: 13.5px;
-  line-height: 1.4;
-}
-
-.sheetNote {
-  margin: 0;
-  padding: 12px 14px;
-  border-radius: $radius-field;
-  background: $color-mint;
-  font-size: 13px;
-  font-weight: 600;
-  line-height: 1.45;
 }
 
 .stars,
@@ -335,18 +342,32 @@
 }
 
 .workNote {
-  // Ниже кнопки «завершить» и плашки стороны, чтобы они не перекрывались.
-  top: 168px;
+  // Ниже плашек и ряда с крестиком (с учётом выреза экрана), чтобы они не перекрывались.
+  top: calc(176px + env(safe-area-inset-top));
 }
 
-.tiles {
+// Плашки и ряд под ними — одна колонка: высота плашек и отступ под вырез экрана не могут их наложить друг на друга.
+.topArea {
   position: absolute;
   top: calc(28px + env(safe-area-inset-top));
   right: 16px;
   left: 16px;
   display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.tiles {
+  display: flex;
   gap: 8px;
   align-items: stretch;
+}
+
+.topRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-left: -2px;
 }
 
 .tileSet {
@@ -433,9 +454,6 @@
 }
 
 .sidePill {
-  position: absolute;
-  top: 112px;
-  right: 16px;
   padding: 8px 14px;
   border-radius: $radius-pill;
   background: $color-white;

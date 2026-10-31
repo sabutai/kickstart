@@ -1,0 +1,62 @@
+@use '../../shared/styles/tokens' as *;
+
+// Описание упражнения: общее для экрана упражнения и вступления в таймере.
+.root {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.text {
+  margin: 0;
+  font-size: 13.5px;
+  line-height: 1.4;
+}
+
+.steps {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.step {
+  display: flex;
+  gap: 12px;
+  font-size: 13.5px;
+  line-height: 1.4;
+}
+
+.stepNumber {
+  display: flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: $radius-pill;
+  background: $color-mint;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.note {
+  margin: 0;
+  padding: 12px 14px;
+  border-radius: $radius-field;
+  background: $color-mint;
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.45;
+}
+
+.why {
+  margin: 0;
+  padding: 12px 14px;
+  border-radius: $radius-field;
+  background: $color-field;
+  font-size: 13px;
+  line-height: 1.45;
+}

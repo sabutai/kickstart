@@ -13,6 +13,7 @@ import { DemoPlayer, DemoSoonNote } from '../../shared/ui/DemoPlayer/DemoPlayer'
 import { EmptyState } from '../../shared/ui/EmptyState/EmptyState';
 import { IconButton } from '../../shared/ui/IconButton/IconButton';
 import { Mascot } from '../../shared/ui/Mascot/Mascot';
+import { ExerciseDescription } from './ExerciseDescription';
 import styles from './ExercisePage.module.scss';
 
 const BACK_ICON = (
@@ -93,34 +94,7 @@ export function ExercisePage() {
             </p>
           </header>
 
-          {exercise.setup && <p className={styles.text}>{exercise.setup.ru}</p>}
-          <p className={styles.text}>{data.variation.ru}</p>
-
-          {exercise.steps && (
-            <ol className={styles.steps}>
-              {exercise.steps.ru.map((step, i) => (
-                <li key={i} className={styles.step}>
-                  <span className={styles.stepNumber} aria-hidden="true">
-                    {i + 1}
-                  </span>
-                  <span>{step}</span>
-                </li>
-              ))}
-            </ol>
-          )}
-
-          {exercise.safety?.needsMat && (
-            <p className={styles.note2} role="note">
-              {t('exercise.safetyMat')}
-            </p>
-          )}
-
-          {exercise.why && (
-            <p className={styles.why}>
-              <b>{t('exercise.why')} </b>
-              {exercise.why.ru}
-            </p>
-          )}
+          <ExerciseDescription exercise={exercise} level={data} />
 
           {isCoach && (
             <section className={styles.coach} aria-label={t('exercise.forAdult')}>
