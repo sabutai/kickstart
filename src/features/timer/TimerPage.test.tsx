@@ -103,6 +103,25 @@ async function renderTimer(
   return scope;
 }
 
+/** Как renderTimer, но возвращает DOM-контейнер (для проверок разметки). */
+async function renderTimerAndContainer(player: PlayerState) {
+  const scope = fork({
+    values: [
+      [$player, player],
+      [$planId, `ps-${TODAY}`],
+    ],
+  });
+  await allSettled(plannedSessionsSaved, { scope, params: [planned()] });
+  await allSettled(profileSaved, { scope, params: { name: 'Тимур', age: 8, lang: 'ru', mode: 'child' } });
+  return render(
+    <Provider value={scope}>
+      <MemoryRouter>
+        <TimerPage />
+      </MemoryRouter>
+    </Provider>,
+  );
+}
+
 const advance = (ms: number) => act(async () => void vi.advanceTimersByTime(ms));
 
 describe('до начала занятия', () => {
@@ -151,7 +170,7 @@ describe('вступление и работа на время', () => {
     await renderTimer({ player: plank() });
     expect(screen.getByRole('heading', { level: 1, name: 'Упор лёжа' })).toBeInTheDocument();
     expect(screen.getByText(/Упор лёжа на прямых руках/)).toBeInTheDocument();
-    expect(screen.getByText('2 подхода по 15 сек · отдых 20 сек')).toBeInTheDocument();
+    expect(screen.getByText('Уровень 1 · 2 подхода по 15 сек · отдых 20 сек')).toBeInTheDocument();
     await userEvent.click(screen.getByRole('button', { name: 'Начать' }));
     expect(await screen.findByLabelText('Подход 1 из 2')).toBeInTheDocument();
   });
@@ -193,6 +212,53 @@ describe('вступление и работа на время', () => {
     await renderTimer({ player: play(plank(), { type: 'begin' }) });
     await userEvent.click(screen.getByRole('button', { name: 'Дальше' }));
     expect(await screen.findByRole('heading', { name: 'Отдых' })).toBeInTheDocument();
+  });
+});
+
+describe('вступление к упражнению: полное описание, как на экране упражнения', () => {
+  const ready = (id: string, part: 'program' | 'ball' = 'program') =>
+    createPlayer(tiny(item(id, part, { reps: 5, workSec: undefined })), Date.now());
+
+  it('блок А: исходное положение, описание уровня, все шаги и «Зачем»', async () => {
+    await renderTimer({ player: ready('alertness-run') });
+    expect(screen.getByText(/Ребёнок в одном конце коридора/)).toBeInTheDocument();
+    expect(screen.getByText('По голосу «правая/левая» встать на эту ногу на 3 с.')).toBeInTheDocument();
+    expect(within(screen.getByRole('list')).getAllByRole('listitem')).toHaveLength(5);
+    expect(screen.getByText(/Учит резко останавливаться/)).toHaveTextContent('Зачем:');
+  });
+
+  it('упражнение с матрасом: предупреждение и в таймере', async () => {
+    await renderTimer({ player: ready('sideways-roll') });
+    expect(screen.getByRole('note')).toHaveTextContent('на ковре или матрасе');
+  });
+
+  it('кнопка «Начать» остаётся вне прокручиваемого текста', async () => {
+    const { container } = await renderTimerAndContainer(ready('alertness-run'));
+    const scroll = container.querySelector('.readyScroll')!;
+    expect(scroll).toContainElement(screen.getByText(/Ребёнок в одном конце коридора/));
+    expect(scroll).not.toContainElement(screen.getByRole('button', { name: 'Начать' }));
+  });
+});
+
+describe('экран подхода: плашки и крестик в одной колонке', () => {
+  it('крестик и подпись стороны лежат под плашками в общем контейнере, а не на фиксированных координатах', async () => {
+    const both = play(
+      createPlayer(
+        tiny(item('skating-jumps', 'program', { reps: 5, workSec: undefined, perSide: true })),
+        Date.now(),
+      ),
+      { type: 'begin' },
+    );
+    const { container } = await renderTimerAndContainer(both);
+    const area = container.querySelector('.topArea')!;
+    const tiles = area.querySelector('.tiles')!;
+    const row = area.querySelector('.topRow')!;
+    expect(area.children[0]).toBe(tiles);
+    expect(area.children[1]).toBe(row);
+    expect(
+      within(row as HTMLElement).getByRole('button', { name: 'Завершить тренировку' }),
+    ).toBeInTheDocument();
+    expect(within(row as HTMLElement).getByText('Первая сторона')).toBeInTheDocument();
   });
 });
 

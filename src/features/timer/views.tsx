@@ -2,7 +2,6 @@ import { useState, type ReactNode } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useUnit } from 'effector-react';
 import { volumeLine } from '../../content/format';
-import { describeExercise } from '../../content/selectors';
 import {
   currentItem,
   currentTurn,
@@ -16,6 +15,7 @@ import { streak as streakOf } from '../../entities/schedule/home';
 import { $plannedSessions } from '../../entities/schedule/model';
 import { useToday } from '../../shared/lib/useToday';
 import { Button } from '../../shared/ui/Button/Button';
+import { ExerciseDescription } from '../exercise/ExerciseDescription';
 import { DemoPlayer, DemoSoonNote } from '../../shared/ui/DemoPlayer/DemoPlayer';
 import { IconButton } from '../../shared/ui/IconButton/IconButton';
 import { Mascot } from '../../shared/ui/Mascot/Mascot';
@@ -110,19 +110,23 @@ export function ReadyView({ player }: ViewProps) {
         />
       </div>
       <CloseButton className={styles.closeTopLeft} />
-      <section className={styles.sheet}>
-        <p className={styles.sheetLabel}>{t(`timer.parts.${item.partKind}`)}</p>
-        <h1 className={styles.sheetTitle}>{item.exercise.title.ru}</h1>
-        <p className={styles.sheetMeta}>{volumeLine(t, item.volume)}</p>
-        <p className={styles.sheetText}>{item.exercise.setup?.ru ?? describeExercise(item.exercise)}</p>
-        {item.exercise.safety?.needsMat && (
-          <p className={styles.sheetNote} role="note">
-            {t('exercise.safetyMat')}
-          </p>
-        )}
-        <Button size="lg" fullWidth onClick={() => send({ type: 'begin' })}>
-          {t('timer.start')}
-        </Button>
+      <section className={styles.readySheet}>
+        <div className={styles.readyScroll}>
+          <div>
+            <p className={styles.sheetLabel}>{t(`timer.parts.${item.partKind}`)}</p>
+            <h1 className={styles.sheetTitle}>{item.exercise.title.ru}</h1>
+            <p className={styles.sheetMeta}>
+              {item.exercise.levels.length > 1 && `${t('exercise.levelNow', { level: item.level })} · `}
+              {volumeLine(t, item.volume)}
+            </p>
+          </div>
+          <ExerciseDescription exercise={item.exercise} level={level} />
+        </div>
+        <div className={styles.readyCta}>
+          <Button size="lg" fullWidth onClick={() => send({ type: 'begin' })}>
+            {t('timer.start')}
+          </Button>
+        </div>
       </section>
     </div>
   );
@@ -196,61 +200,64 @@ export function WorkView({ player, now }: ViewProps) {
         />
       </div>
 
-      <div className={styles.tiles}>
-        <div
-          className={styles.tileSet}
-          aria-label={t('timer.work.setLabel', { n: turn.set + 1, total: turn.sets })}
-        >
-          <div className={styles.tileSetNumber}>
-            {turn.set + 1}
-            <span className={styles.tileSetOf}> {t('timer.work.of', { total: turn.sets })}</span>
-          </div>
-          <div className={styles.setPips} aria-hidden="true">
-            {Array.from({ length: turn.sets }, (_, i) => (
-              <span
-                key={i}
-                className={
-                  i < setsDone || i === turn.set ? `${styles.setPip} ${styles.setPipOn}` : styles.setPip
-                }
-              />
-            ))}
-          </div>
-        </div>
-        <div className={styles.tileMain}>
-          <div className={styles.tileMainNumber}>
-            {timed
-              ? inMinutes
-                ? Math.ceil(remaining / 60_000)
-                : Math.ceil(remaining / 1000)
-              : item.volume.reps}
-          </div>
-          <div className={styles.tileMainUnit}>
-            {timed
-              ? t(inMinutes ? 'timer.work.min' : 'timer.work.sec')
-              : t('timer.work.repsUnit', { count: item.volume.reps ?? 0 })}
-          </div>
-        </div>
-        {timed && (
-          <div className={styles.tileTime}>
-            <div className={styles.tileTimeValue} role="timer">
-              {formatClock(remaining)}
+      <div className={styles.topArea}>
+        <div className={styles.tiles}>
+          <div
+            className={styles.tileSet}
+            aria-label={t('timer.work.setLabel', { n: turn.set + 1, total: turn.sets })}
+          >
+            <div className={styles.tileSetNumber}>
+              {turn.set + 1}
+              <span className={styles.tileSetOf}> {t('timer.work.of', { total: turn.sets })}</span>
             </div>
-            <div className={styles.bar} aria-hidden="true">
-              <div
-                className={styles.barFill}
-                style={{ width: `${(1 - fractionElapsed(player, now)) * 100}%` }}
-              />
+            <div className={styles.setPips} aria-hidden="true">
+              {Array.from({ length: turn.sets }, (_, i) => (
+                <span
+                  key={i}
+                  className={
+                    i < setsDone || i === turn.set ? `${styles.setPip} ${styles.setPipOn}` : styles.setPip
+                  }
+                />
+              ))}
             </div>
           </div>
-        )}
+          <div className={styles.tileMain}>
+            <div className={styles.tileMainNumber}>
+              {timed
+                ? inMinutes
+                  ? Math.ceil(remaining / 60_000)
+                  : Math.ceil(remaining / 1000)
+                : item.volume.reps}
+            </div>
+            <div className={styles.tileMainUnit}>
+              {timed
+                ? t(inMinutes ? 'timer.work.min' : 'timer.work.sec')
+                : t('timer.work.repsUnit', { count: item.volume.reps ?? 0 })}
+            </div>
+          </div>
+          {timed && (
+            <div className={styles.tileTime}>
+              <div className={styles.tileTimeValue} role="timer">
+                {formatClock(remaining)}
+              </div>
+              <div className={styles.bar} aria-hidden="true">
+                <div
+                  className={styles.barFill}
+                  style={{ width: `${(1 - fractionElapsed(player, now)) * 100}%` }}
+                />
+              </div>
+            </div>
+          )}
+        </div>
+        <div className={styles.topRow}>
+          <CloseButton />
+          {turn.side !== null && (
+            <span className={styles.sidePill}>
+              {t(turn.side === 0 ? 'timer.work.sideFirst' : 'timer.work.sideSecond')}
+            </span>
+          )}
+        </div>
       </div>
-
-      <CloseButton className={styles.closeUnderTiles} />
-      {turn.side !== null && (
-        <span className={styles.sidePill}>
-          {t(turn.side === 0 ? 'timer.work.sideFirst' : 'timer.work.sideSecond')}
-        </span>
-      )}
 
       <div className={styles.workBottom}>
         {mode === 'child' && <div className={styles.encourage}>{t('timer.work.encourage')}</div>}
