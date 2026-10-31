@@ -60,3 +60,34 @@
   font-size: 13px;
   line-height: 1.45;
 }
+
+.cue,
+.look {
+  margin: 0;
+  font-size: 13.5px;
+  line-height: 1.4;
+}
+
+.cue {
+  font-weight: 700;
+}
+
+.rules {
+  padding: 12px 14px;
+  border-radius: $radius-field;
+  background: $color-field;
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+.rulesTitle {
+  margin: 0 0 6px;
+}
+
+.rulesList {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin: 0;
+  padding-left: 18px;
+}

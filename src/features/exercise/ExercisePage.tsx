@@ -96,7 +96,7 @@ export function ExercisePage() {
 
           <ExerciseDescription exercise={exercise} level={data} />
 
-          {isCoach && (
+          {isCoach && (multiLevel || exercise.mistakes) && (
             <section className={styles.coach} aria-label={t('exercise.forAdult')}>
               <p className={styles.coachTitle}>
                 <b>{t('exercise.forAdult')}</b>
@@ -125,18 +125,6 @@ export function ExercisePage() {
                       <li key={m}>{m}</li>
                     ))}
                   </ul>
-                </>
-              )}
-              {exercise.lookFor && (
-                <>
-                  <p className={styles.coachLabel}>{t('exercise.lookFor')}</p>
-                  <p className={styles.coachText}>{exercise.lookFor.ru}</p>
-                </>
-              )}
-              {exercise.cue && (
-                <>
-                  <p className={styles.coachLabel}>{t('exercise.cue')}</p>
-                  <p className={styles.coachText}>«{exercise.cue.ru}»</p>
                 </>
               )}
             </section>
