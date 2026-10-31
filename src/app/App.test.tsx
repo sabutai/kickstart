@@ -1,4 +1,4 @@
-import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { fork } from 'effector';
@@ -110,6 +110,7 @@ describe('ворота приложения', () => {
 });
 
 describe('онбординг', () => {
+  afterEach(() => vi.useRealTimers()); // тесты с зафиксированной датой не должны влиять на остальные
   const next = () => screen.getByRole('button', { name: /^(Далее|Начать)$/ });
   const nameField = () => screen.findByLabelText('Имя');
 
@@ -157,16 +158,31 @@ describe('онбординг', () => {
   });
 
   it('шаг 3: дата старта, «Изменить» открывает пресеты и сетку, прошлые дни недоступны', async () => {
+    // Дата зафиксирована: от конца месяца зависит, какой месяц откроется после «Завтра».
+    vi.useFakeTimers({ toFake: ['Date'] });
+    vi.setSystemTime(new Date('2026-11-10T10:00:00'));
     renderAt('/onboarding/3');
     await screen.findByRole('heading', { name: 'Старт программы' });
     expect(screen.getByText('Первое занятие')).toBeInTheDocument();
     await userEvent.click(screen.getByRole('button', { name: /Изменить/ }));
+    await userEvent.click(screen.getByRole('button', { name: 'Сегодня' }));
     expect(screen.getByRole('button', { name: 'Сегодня', pressed: true })).toBeInTheDocument();
     await userEvent.click(screen.getByRole('button', { name: 'Завтра' }));
     expect(screen.getByRole('button', { name: 'Завтра', pressed: true })).toBeInTheDocument();
     expect(screen.getByRole('button', { name: 'Предыдущий месяц' })).toBeDisabled();
     await userEvent.click(screen.getByRole('button', { name: 'Готово' }));
     expect(screen.getByText('Первое занятие')).toBeInTheDocument();
+  });
+
+  it('шаг 3: в конце месяца «Завтра» открывает следующий месяц, и назад в него можно вернуться', async () => {
+    vi.useFakeTimers({ toFake: ['Date'] });
+    vi.setSystemTime(new Date('2026-10-31T10:00:00'));
+    renderAt('/onboarding/3');
+    await userEvent.click(await screen.findByRole('button', { name: /Изменить/ }));
+    expect(screen.getByRole('button', { name: 'Предыдущий месяц' })).toBeDisabled();
+    await userEvent.click(screen.getByRole('button', { name: 'Завтра' }));
+    expect(screen.getByRole('button', { name: 'Предыдущий месяц' })).toBeEnabled();
+    expect(screen.getByRole('button', { name: '1 ноября' })).toBeEnabled();
   });
 
   it('шаг 3: напоминания включены по умолчанию и переключаются', async () => {
