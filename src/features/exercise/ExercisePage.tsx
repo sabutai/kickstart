@@ -13,6 +13,7 @@ import { DemoPlayer, DemoSoonNote } from '../../shared/ui/DemoPlayer/DemoPlayer'
 import { EmptyState } from '../../shared/ui/EmptyState/EmptyState';
 import { IconButton } from '../../shared/ui/IconButton/IconButton';
 import { Mascot } from '../../shared/ui/Mascot/Mascot';
+import { ScrollArea } from '../../shared/ui/ScrollArea/ScrollArea';
 import { ExerciseDescription } from './ExerciseDescription';
 import styles from './ExercisePage.module.scss';
 
@@ -85,7 +86,7 @@ export function ExercisePage() {
       <span className={styles.category}>{t(`categories.${exercise.category}`)}</span>
 
       <section className={styles.sheet}>
-        <div className={styles.scroll}>
+        <ScrollArea className={styles.scroll}>
           <header>
             <h1 className={styles.title}>{exercise.title.ru}</h1>
             <p className={styles.meta}>
@@ -141,7 +142,7 @@ export function ExercisePage() {
               )}
             </section>
           )}
-        </div>
+        </ScrollArea>
         <div className={styles.cta}>
           <Button to="/timer" fullWidth size="lg">
             {t('exercise.start')}

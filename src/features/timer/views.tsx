@@ -19,6 +19,7 @@ import { ExerciseDescription } from '../exercise/ExerciseDescription';
 import { DemoPlayer, DemoSoonNote } from '../../shared/ui/DemoPlayer/DemoPlayer';
 import { IconButton } from '../../shared/ui/IconButton/IconButton';
 import { Mascot } from '../../shared/ui/Mascot/Mascot';
+import { ScrollArea } from '../../shared/ui/ScrollArea/ScrollArea';
 import { averageRating, formatClock } from './format';
 import { endDialogOpened, playerEvent, sessionLeft } from './model';
 import styles from './Timer.module.scss';
@@ -111,7 +112,7 @@ export function ReadyView({ player }: ViewProps) {
       </div>
       <CloseButton className={styles.closeTopLeft} />
       <section className={styles.readySheet}>
-        <div className={styles.readyScroll}>
+        <ScrollArea className={styles.readyScroll}>
           <div>
             <p className={styles.sheetLabel}>{t(`timer.parts.${item.partKind}`)}</p>
             <h1 className={styles.sheetTitle}>{item.exercise.title.ru}</h1>
@@ -121,7 +122,7 @@ export function ReadyView({ player }: ViewProps) {
             </p>
           </div>
           <ExerciseDescription exercise={item.exercise} level={level} />
-        </div>
+        </ScrollArea>
         <div className={styles.readyCta}>
           <Button size="lg" fullWidth onClick={() => send({ type: 'begin' })}>
             {t('timer.start')}

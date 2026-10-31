@@ -68,16 +68,9 @@
 
 .scroll {
   display: flex;
-  flex: 1;
   flex-direction: column;
   gap: 14px;
   padding: 22px 22px 8px;
-  overflow-y: auto;
-  scrollbar-width: none;
-
-  &::-webkit-scrollbar {
-    display: none;
-  }
 }
 
 .title {
