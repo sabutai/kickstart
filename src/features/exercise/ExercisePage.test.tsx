@@ -193,6 +193,22 @@ describe('экран упражнения: взрослый', () => {
     expect(tabs.getByRole('button', { name: 'Ур. 5 · не дома' })).toBeInTheDocument();
   });
 
+  it('«Как исправить» (поправки из руководства) видны взрослому после ошибок', async () => {
+    await renderExercise('press-up-plank', { mode: 'coach' });
+    const adult = await screen.findByRole('region', { name: 'Для взрослого' });
+    expect(within(adult).getByText('Ошибки')).toBeInTheDocument();
+    expect(within(adult).getByText('Как исправить')).toBeInTheDocument();
+    expect(within(adult).getByText('Подтяни живот и ягодицы.')).toBeInTheDocument();
+    expect(within(adult).getByText('Движения медленные и осознанные.')).toBeInTheDocument();
+  });
+
+  it('ребёнку «Как исправить» не показываем', async () => {
+    await renderExercise('press-up-plank');
+    await screen.findByRole('heading', { level: 1 });
+    expect(screen.queryByText('Как исправить')).toBeNull();
+    expect(screen.queryByText('Подтяни живот и ягодицы.')).toBeNull();
+  });
+
   it('переключение уровня меняет текст и объём', async () => {
     await renderExercise('single-leg-stance', { mode: 'coach' });
     await screen.findByRole('heading', { level: 1 });

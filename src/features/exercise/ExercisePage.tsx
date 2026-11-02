@@ -127,6 +127,16 @@ export function ExercisePage() {
                   </ul>
                 </>
               )}
+              {exercise.tips && (
+                <>
+                  <p className={styles.coachLabel}>{t('exercise.tips')}</p>
+                  <ul className={styles.mistakes}>
+                    {exercise.tips.ru.map((tip) => (
+                      <li key={tip}>{tip}</li>
+                    ))}
+                  </ul>
+                </>
+              )}
             </section>
           )}
         </div>
