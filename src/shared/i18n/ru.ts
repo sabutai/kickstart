@@ -157,6 +157,7 @@ export const ru = {
     setup: 'Исходное положение',
     forAdult: 'Для взрослого',
     mistakes: 'Ошибки',
+    tips: 'Как исправить',
     lookFor: 'На что смотреть',
     cue: 'Команда',
     levelsLabel: 'Уровни',

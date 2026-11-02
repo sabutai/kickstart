@@ -64,6 +64,7 @@ export const ExerciseSchema = z
     setup: Localized.optional(), // исходное положение
     steps: LocalizedList.optional(), // общее выполнение для всех уровней
     mistakes: LocalizedList.optional(), // ошибки — для взрослого (блок А)
+    tips: LocalizedList.optional(), // как исправить ошибки (блок «IMPORTANT» руководства) — для взрослого
     lookFor: Localized.optional(), // на что смотреть взрослому (блоки Б–Г)
     cue: Localized.optional(), // команда ребёнку
     fromWeek: z.int().min(1).max(12).optional(), // с какой недели программы

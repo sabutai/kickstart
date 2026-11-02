@@ -179,6 +179,8 @@ describe('онбординг', () => {
     vi.setSystemTime(new Date('2026-10-31T10:00:00'));
     renderAt('/onboarding/3');
     await userEvent.click(await screen.findByRole('button', { name: /Изменить/ }));
+    // Черновик запоминает «сегодня» при загрузке модуля, поэтому сначала выбираем «Сегодня» уже при зафиксированной дате.
+    await userEvent.click(screen.getByRole('button', { name: 'Сегодня' }));
     expect(screen.getByRole('button', { name: 'Предыдущий месяц' })).toBeDisabled();
     await userEvent.click(screen.getByRole('button', { name: 'Завтра' }));
     expect(screen.getByRole('button', { name: 'Предыдущий месяц' })).toBeEnabled();

@@ -110,4 +110,19 @@ describe('программа (docs/program.md)', () => {
       }
     }
   });
+
+  it('«Как исправить»: есть у всех 7 упражнений блока А и только у них', () => {
+    expect(exercises.filter((e) => e.tips).map((e) => e.id)).toEqual(blockA);
+  });
+
+  it('«Как исправить» дословно совпадает с разделом docs/program.md (перевод руководства, на проверку)', () => {
+    const doc = readFileSync('docs/program.md', 'utf8');
+    for (const e of exercises.filter((x) => x.tips)) {
+      const section = doc.slice(doc.indexOf(`### \`${e.id}\``));
+      const end = section.indexOf('\n###', 5);
+      const block = end === -1 ? section : section.slice(0, end);
+      const listed = [...block.matchAll(/^- (.+)$/gm)].map((m) => m[1]);
+      expect(e.tips!.ru, e.id).toEqual(listed);
+    }
+  });
 });
